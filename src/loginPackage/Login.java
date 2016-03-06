@@ -5,7 +5,10 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import org.apache.log4j.*;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -32,12 +35,12 @@ import dataAccessObject.UserPropertiesDao2;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Logger logger = Logger.getLogger(Login.class.getName());
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public Login() {
-        super();
         // TODO Auto-generated constructor stub
     }
 

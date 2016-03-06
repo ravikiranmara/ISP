@@ -14,7 +14,7 @@
 	function validate(){
 		var a = document.getElementById("username").value;
 		var b = document.getElementById("password").value;
-		if(a && b){
+		if(a && b){f
 			document.getElementById("login-form").action = "Login";
 			document.forms[0].submit;
 			
