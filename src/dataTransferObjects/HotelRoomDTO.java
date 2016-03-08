@@ -2,23 +2,32 @@ package dataTransferObjects;
 
 import java.util.Date;
 
+import utils.dbContextSingleton;
+import java.sql.*;
+import org.apache.log4j.Logger;
+
 class HotelRoomDTO
 {
-    int id;
+	String tableName = "Hotels";
+	int id;
     int roomTypeId;
     int hotelId;
     int availableNumber;
     float pricePerNight;
     Date startDate;
     Date endDate;
+    boolean isInitialized;
+    
+    static Logger logger = Logger.getLogger(UserDTO.class.getName());
     
     public HotelRoomDTO()
     {
     	id = roomTypeId = hotelId = availableNumber = -1;
     	pricePerNight = 0;
+    	isInitialized = false;
     }
     
-    public boolean getHotelRoomById()
+    public boolean getHotelRoomById(int id)
     {
     	boolean status = false;
     	

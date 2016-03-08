@@ -1,7 +1,13 @@
 package dataTransferObjects;
 
+import utils.dbContextSingleton;
+import java.sql.*;
+
+import org.apache.log4j.Logger;
+
 public class UserDTO 
 {
+	String tableName; 
 	int id;
 	String firstName;
 	String lastName;
@@ -11,10 +17,12 @@ public class UserDTO
 	String state;
 	String postalCode;
 	int type;
-	int status;
+	int userStatus;
 	String username;
 	String password;
 	boolean isInitialized;
+
+	static Logger logger = Logger.getLogger(UserDTO.class.getName());
 	
 	public UserDTO()
 	{
@@ -28,43 +36,237 @@ public class UserDTO
 		city = "";
 		postalCode = "";
 		type = -1;
-		status = -1;
+		userStatus = -1;
 		username = "";
 		password = "";
+		tableName = "Users";
 	}
 	
-	public boolean getUserById(int id)
+	public boolean getUserById(int id) throws Exception
 	{
 		boolean status = false;
+		Connection connection = null;
+		String query = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id, FirstName, LastName, AddressLine1, AddressLine2, City, State, PostalCode, " +
+					"Status, Type, Username, Password" +
+					" from " + this.tableName + 
+					" WHERE Id = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next())
+			{
+				this.id = resultSet.getInt("Id");
+				this.firstName = resultSet.getString("FirstName");
+				this.lastName = resultSet.getString("LasstName");
+				this.addressLine1 = resultSet.getString("AddressLine1");
+				this.addressLine2 = resultSet.getString("AddressLine2");
+				this.city = resultSet.getString("City");
+				this.state = resultSet.getString("State");
+				this.postalCode = resultSet.getString("PostalCode");
+				this.type = resultSet.getInt("Type");
+				this.userStatus = resultSet.getInt("Status");
+				this.username = resultSet.getString("UserName");
+				this.password = resultSet.getString("Password");
+				this.isInitialized = true;
+				status = true;
+			}
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
 		
 		return status;
 	}
 	
-	public boolean getUserByUsername(int id)
+	public boolean getUserByUsername(String username) throws Exception
 	{
 		boolean status = false;
+		Connection connection = null;
+		String query = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id, FirstName, LastName, AddressLine1, AddressLine2, City, State, PostalCode, " +
+					"Status, Type, Username, Password" +
+					" from " + this.tableName + " Username = ?";
+			
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, username);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next())
+			{
+				this.id = resultSet.getInt("Id");
+				this.firstName = resultSet.getString("FirstName");
+				this.lastName = resultSet.getString("LasstName");
+				this.addressLine1 = resultSet.getString("AddressLine1");
+				this.addressLine2 = resultSet.getString("AddressLine2");
+				this.city = resultSet.getString("City");
+				this.state = resultSet.getString("State");
+				this.postalCode = resultSet.getString("PostalCode");
+				this.type = resultSet.getInt("Type");
+				this.userStatus = resultSet.getInt("Status");
+				this.username = resultSet.getString("UserName");
+				this.password = resultSet.getString("Password");
+				this.isInitialized = true;
+				status = true;
+			}
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			preparedStatement.close();
+		}
 		
 		return status;
 	}
 	
-	public int addNewUser()
+	public int addNewUser() throws Exception
 	{
 		int insertUid = -1;
+		Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "Insert Into " + this.tableName + " (FirstName, LastName, " +
+					"AddressLine1, AddressLine2, City, State, PostalCode, " +
+					"Status, Type, Username, Password)" +
+					" values (?, ?, " +
+					"?, ?, ?, ?, ?, " +
+					"?, ?, ?, ?)";
+			ps = connection.prepareStatement(query);
+			
+			// init
+			ps.setString(1, this.firstName);
+			ps.setString(2, this.lastName);
+			ps.setString(3, this.addressLine1);
+			ps.setString(4, this.addressLine2);
+			ps.setString(5, this.city);
+			ps.setString(6, this.state);
+			ps.setString(7, this.postalCode);
+			ps.setInt(8, this.userStatus);
+			ps.setInt(9, this.type);
+			ps.setString(10, username);
+			ps.setString(11, this.password);
+			
+			this.id = ps.executeUpdate();
+			insertUid = this.id;
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
 		
 		return insertUid;
 	}
 	
-	public boolean updateUser()
+	public boolean updateUser(int id) throws Exception
 	{
 		boolean status = false;
+		Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
 		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "UPDATE " + this.tableName + " (FirstName = ?, LastName = ?, " +
+					"AddressLine1 = ?, AddressLine2 = ?, City = ?, State = ?, PostalCode = ?, " +
+					"Status = ?, Type = ?, Username = ?, Password = ?)" +
+					"WHERE Id = ?";
+			
+			ps = connection.prepareStatement(query);
+			
+			// init
+			ps.setString(1, this.firstName);
+			ps.setString(2, this.lastName);
+			ps.setString(3, this.addressLine1);
+			ps.setString(4, this.addressLine2);
+			ps.setString(5, this.city);
+			ps.setString(6, this.state);
+			ps.setString(7, this.postalCode);
+			ps.setInt(8, this.userStatus);
+			ps.setInt(9, this.type);
+			ps.setString(10, username);
+			ps.setString(11, this.password);
+			ps.setInt(12, id);
+			
+			ps.executeUpdate();
+			status = true;
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+	
 		return status;
 	}
 	
-	public boolean deleteUserById()
+	public boolean deleteUserById(int id) throws Exception
 	{
 		boolean status = false;
+		Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
 		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, id);
+			
+			
+			ps.executeUpdate();
+			status = true;
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+	
 		return status;
 	}
 	
@@ -129,10 +331,10 @@ public class UserDTO
 		this.type = type;
 	}
 	public int getStatus() {
-		return status;
+		return userStatus;
 	}
 	public void setStatus(int status) {
-		this.status = status;
+		this.userStatus = status;
 	}
 	public String getUsername() {
 		return username;

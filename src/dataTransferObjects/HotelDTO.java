@@ -1,7 +1,13 @@
 package dataTransferObjects;
 
+import utils.dbContextSingleton;
+import java.sql.*;
+
+import org.apache.log4j.Logger;
+
 class HotelDTO
 {
+	String tableName = "Hotels";
     int id;
     String name;
 	String city;
@@ -9,47 +15,184 @@ class HotelDTO
     int ownerUserId;
     String description;
     String nearestPoints;
-    String address;    
+    String address; 
+    boolean isInitialized;
+    
+    static Logger logger = Logger.getLogger(UserDTO.class.getName());
+	
     
     public HotelDTO()
     {
     	id = -1;
     	name = city = state = description = address = "";
     	nearestPoints = "";
+    	isInitialized = false;
     }
     
-    public int addHotel()
+    public int addHotel() throws Exception
     {
     	int insertHotelId = -1;
     	
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "Insert Into " + this.tableName + " (Name, City, " +
+					"State, OwnerUserId, Description, NearestPoints, Address)" +
+					" values (?, ?, " +
+					"?, ?, ?, ?, ?)";
+			
+			ps = connection.prepareStatement(query);
+		
+			ps.setString(1, this.name);
+			ps.setString(2, this.city);
+			ps.setString(3, this.state);
+			ps.setInt(4, this.ownerUserId);
+			ps.setString(5, this.description);
+			ps.setString(6, this.nearestPoints);
+			ps.setString(7, this.address);
+
+			this.id = ps.executeUpdate();
+			insertHotelId = this.id;
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to insert Hotel details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+			
     	return insertHotelId;
     }
     
-    public boolean getHotelById(int hotelId)
+    public boolean getHotelById(int hotelId) throws Exception
     {
     	boolean status = false;
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id, Name, City, State, " +
+					"OwnerUserId, Description, NearestPoints, Address" +
+					" from " + this.tableName + 
+					" WHERE Id = ?";
+			
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			
+			while(rs.next())
+			{
+				this.id = rs.getInt("Id");
+				this.name = rs.getString("Name");
+				this.city = rs.getString("City");
+				this.state = rs.getString("State");
+				this.description = rs.getString("Description");
+				this.nearestPoints = rs.getString("NearestPoints");
+				this.address = rs.getString("Address");
+				this.ownerUserId = rs.getInt("OwnerUserId");
+				this.isInitialized = true;
+				status = true;
+			}
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
+    	return status;
+    }
+    
+    public boolean updateHotel(int id) throws Exception
+    {
+    	boolean status = false;
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "Insert " + this.tableName + " (Name = ?, City= ?, " +
+					"State= ?, OwnerUserId= ?, Description= ?, NearestPoints= ?, Address= ?)" +
+					" WHERE Id = ?";
+			
+			ps = connection.prepareStatement(query);
+		
+			ps.setString(1, this.name);
+			ps.setString(2, this.city);
+			ps.setString(3, this.state);
+			ps.setInt(4, this.ownerUserId);
+			ps.setString(5, this.description);
+			ps.setString(6, this.nearestPoints);
+			ps.setString(7, this.address);
+			ps.setInt(8, id);
+			
+			this.id = ps.executeUpdate();
+			status = true;
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to insert Hotel details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
     	
     	return status;
     }
     
-    public boolean getHotelByNameAndOwner(String hotelName, int ownerId)
+    public boolean deleteHotelById(int id) throws Exception
     {
     	boolean status = false;
-    	
-    	return status;
-    }
-    
-    public boolean updateHotel()
-    {
-    	boolean status = true;
-    	
-    	return status;
-    }
-    
-    public boolean deleteHotelById(int id)
-    {
-    	boolean status = false;
-    	
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, id);
+			
+			
+			ps.executeUpdate();
+			status = true;
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+	
     	return status;
     }
     

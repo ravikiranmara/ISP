@@ -2,29 +2,23 @@ package modelObject;
 
 import utils.UserType;
 
-public class User
+public class UserBasic
 {
-	int userId; 
-	String username;
-	String password;
-	UserType userType;
-	String firstName;
-	String lastName;
-	String addressLine1;
-	String addressLine2;
-	String city;
-	String state;
-	String postalCode;
-	int userStatus;
-	boolean isInitialized;
-	int id;
-	String holderName;
-	String cardNumber;
-	float balance;
-	String nickName;
-	String cvv;
+	public int userId; 
+	public String username;
+	public String password;
+	public UserType userType;
+	public String firstName;
+	public String lastName;
+	public String addressLine1;
+	public String addressLine2;
+	public String city;
+	public String state;
+	public String postalCode;
+	public int userStatus;
+	public boolean isInitialized;
 
-	public User()
+	public UserBasic()
 	{
 		isInitialized = false;
 		userId = -1;
@@ -33,13 +27,9 @@ public class User
 		addressLine1 = addressLine2 = "";
 		city = state = postalCode = "";
 		userStatus = -1;
-		
-		id = -1;
-		holderName = cardNumber = nickName = cvv = "";
-		balance = 0;
 	}
 
-	// getters and settes
+	// getter an dsetter
 	public int getUserId() {
 		return userId;
 	}
@@ -142,53 +132,5 @@ public class User
 
 	public void setInitialized(boolean isInitialized) {
 		this.isInitialized = isInitialized;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getHolderName() {
-		return holderName;
-	}
-
-	public void setHolderName(String holderName) {
-		this.holderName = holderName;
-	}
-
-	public String getCardNumber() {
-		return cardNumber;
-	}
-
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
-
-	public float getBalance() {
-		return balance;
-	}
-
-	public void setBalance(float balance) {
-		this.balance = balance;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public String getCvv() {
-		return cvv;
-	}
-
-	public void setCvv(String cvv) {
-		this.cvv = cvv;
 	}
 }
