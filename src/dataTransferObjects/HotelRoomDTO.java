@@ -1,14 +1,17 @@
 package dataTransferObjects;
 
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 
 import utils.dbContextSingleton;
 import java.sql.*;
+
 import org.apache.log4j.Logger;
 
-class HotelRoomDTO
+public class HotelRoomDTO
 {
-	String tableName = "Hotels";
+	String tableName = "HotelRooms";
 	int id;
     int roomTypeId;
     int hotelId;
@@ -27,38 +30,165 @@ class HotelRoomDTO
     	isInitialized = false;
     }
     
-    public boolean getHotelRoomById(int id)
+    public boolean getHotelRoomById(int id) throws Exception
     {
     	boolean status = false;
-    	
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id, RoomTypeId, HotelId, " +
+					"AvailableNumber, PricePerNight, StartDate, EndDate" +
+					" from " + this.tableName + " Id = ?";
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, id);
+			
+			rs = ps.executeQuery();
+			
+			while(rs.next())
+			{
+				this.id = rs.getInt("Id");
+				this.roomTypeId = rs.getInt("RoomTypeId");
+				this.hotelId = rs.getInt("HotelId");
+				this.availableNumber = rs.getInt("AvailableNumber");
+				this.pricePerNight = rs.getFloat("PricePerNight");
+				this.startDate = rs.getDate("StartDate");
+				this.endDate = rs.getDate("EndDate");
+
+				this.isInitialized = true;
+				status = true;
+			}
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+			
     	return status;
     }
-    
-    public boolean getHotelRoomByHotelId()
-    {
-    	boolean status = false;
-    	
-    	return status;
-    }
-    
-    public int addHotelRoom()
+        
+    public int addHotelRoom() throws Exception
     {
     	int insertId = -1;
-    	
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "Insert Into " + this.tableName + " (RoomTypeId, HotelId, " +
+					"AvailableNumber, PricePerNight, StartDate, EndDate)" +
+					" values (?, ?, " +
+					"?, ?, ?, ?)";
+			
+			ps = connection.prepareStatement(query);
+			
+			// init
+			ps.setInt(1, this.roomTypeId);
+			ps.setInt(2, this.hotelId);
+			ps.setInt(3, this.availableNumber);
+			ps.setFloat(4, this.pricePerNight);
+			ps.setDate(5, this.startDate);
+			ps.setDate(6, this.endDate);
+			
+			this.id = ps.executeUpdate();
+			insertId = this.id;
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
     	return insertId;
     }
     
-    public boolean updateHotelRoom()
+    public boolean updateHotelRoom() throws Exception
     {
     	boolean status = false;
-    	
-    	return status;
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "UPDATE " + this.tableName + " (RoomTypeId = ?, HotelId = ?, " +
+					"AvailableNumber = ?, PricePerNight = ?, StartDate = ?, EndDate = ?)" +
+					" WHERE Id = ?";
+			
+			ps = connection.prepareStatement(query);
+			
+			// init
+			ps.setInt(1, this.roomTypeId);
+			ps.setInt(2, this.hotelId);
+			ps.setInt(3, this.availableNumber);
+			ps.setFloat(4, this.pricePerNight);
+			ps.setDate(5, this.startDate);
+			ps.setDate(6, this.endDate);
+			ps.setInt(7, this.id);
+			
+			this.id = ps.executeUpdate();
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+	
+    	return status;	
     }
     
-    public boolean deleteHotelRoom()
+    public boolean deleteHotelRoom() throws Exception
     {
     	boolean status = false;
-    	
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, id);
+			
+			ps.executeUpdate();
+			status = true;
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+	
     	return status;
     }
     

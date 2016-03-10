@@ -5,7 +5,7 @@ import java.sql.*;
 
 import org.apache.log4j.Logger;
 
-class HotelDTO
+public class HotelDTO
 {
 	String tableName = "Hotels";
     int id;

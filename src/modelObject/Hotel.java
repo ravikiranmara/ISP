@@ -1,5 +1,7 @@
 package modelObject;
 
+import java.util.ArrayList;
+
 public class Hotel 
 {
     int id;
@@ -11,9 +13,9 @@ public class Hotel
     String nearestPoints;
     String address;
 	
-    Amenity[] amenity;
-    Room[] room;
-    Review[] review;
+    ArrayList<Amenity> amenity;
+    ArrayList<Room> room;
+    ArrayList<Review> review;
     
     // getter and setter
 	public int getId() {
@@ -64,23 +66,23 @@ public class Hotel
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Amenity[] getAmenity() {
+	public ArrayList<Amenity> getAmenity() {
 		return amenity;
 	}
-	public void setAmenity(Amenity[] amenity) {
+	public void setAmenity(ArrayList<Amenity >amenity) {
 		this.amenity = amenity;
 	}
-	public Room[] getRoom() {
+	public ArrayList<Room> getRoom() {
 		return room;
 	}
-	public void setRoom(Room[] room) {
+	public void setRoom(ArrayList<Room> room) {
 		this.room = room;
 	}
-	public Review[] getReview()
+	public ArrayList<Review> getReview()
 	{
 		return review;
 	}
-	public void setReview(Review[] review)
+	public void setReview(ArrayList<Review> review)
 	{
 		this.review = review;
 	}

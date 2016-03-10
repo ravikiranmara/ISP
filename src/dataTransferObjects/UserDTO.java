@@ -85,6 +85,10 @@ public class UserDTO
 			e.printStackTrace();
 			throw e;
 		} 
+		finally
+		{
+			preparedStatement.close();
+		}
 		
 		return status;
 	}

@@ -1,5 +1,7 @@
 package modelObject;
 
+import java.util.ArrayList;
+
 import utils.UserType;
 
 public class User
@@ -17,13 +19,8 @@ public class User
 	String postalCode;
 	int userStatus;
 	boolean isInitialized;
-	int id;
-	String holderName;
-	String cardNumber;
-	float balance;
-	String nickName;
-	String cvv;
-
+	ArrayList<CreditCard> creditCard;
+	
 	public User()
 	{
 		isInitialized = false;
@@ -34,9 +31,7 @@ public class User
 		city = state = postalCode = "";
 		userStatus = -1;
 		
-		id = -1;
-		holderName = cardNumber = nickName = cvv = "";
-		balance = 0;
+		creditCard = null;
 	}
 
 	// getters and settes
@@ -144,51 +139,12 @@ public class User
 		this.isInitialized = isInitialized;
 	}
 
-	public int getId() {
-		return id;
+	public ArrayList<CreditCard> getCreditCard() {
+		return creditCard;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setCreditCard(ArrayList<CreditCard> creditCard) {
+		this.creditCard = creditCard;
 	}
-
-	public String getHolderName() {
-		return holderName;
-	}
-
-	public void setHolderName(String holderName) {
-		this.holderName = holderName;
-	}
-
-	public String getCardNumber() {
-		return cardNumber;
-	}
-
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
-	}
-
-	public float getBalance() {
-		return balance;
-	}
-
-	public void setBalance(float balance) {
-		this.balance = balance;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public String getCvv() {
-		return cvv;
-	}
-
-	public void setCvv(String cvv) {
-		this.cvv = cvv;
-	}
+	
 }

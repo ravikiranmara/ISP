@@ -1,6 +1,6 @@
 package modelObject;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Room 
 {
@@ -9,10 +9,24 @@ public class Room
 	float pricePerNight;
 	Date startDate;
 	Date endDate;
+	int roomTypeId;
 	String roomType;
 	String description;
+	int hotelId;
 	
 	// getter and setter
+	public int getHotelId() {
+		return hotelId;
+	}
+	public int getRoomTypeId() {
+		return roomTypeId;
+	}
+	public void setRoomTypeId(int roomTypeId) {
+		this.roomTypeId = roomTypeId;
+	}
+	public void setHotelId(int hotelId) {
+		this.hotelId = hotelId;
+	}
 	public int getId() {
 		return id;
 	}

@@ -146,4 +146,10 @@ public class UserPropertiesDao implements IUserDao
 		return user;
 	}
 
+	@Override
+	public User getUserById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

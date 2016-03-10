@@ -2,9 +2,12 @@ package dataTransferObjects;
 
 import utils.dbContextSingleton;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
-class CreditCardDTO
+public class CreditCardDTO
 {
 	String tableName = "CreditCards";
     int id;
@@ -18,7 +21,7 @@ class CreditCardDTO
     
     static Logger logger = Logger.getLogger(UserDTO.class.getName());
 	
-    public CreditCardDTO()
+    private void initialize()
     {
     	userId = id = -1;
     	cardHolderName = creditCardNumber = 
@@ -27,6 +30,59 @@ class CreditCardDTO
     	isInitialized  = false;
     	
     	return;
+    }
+    
+    public CreditCardDTO()
+    {
+    	this.initialize();
+    	
+    	return;
+    }
+    
+    public void Clear()
+    {
+    	this.initialize();
+    }
+    
+    public ArrayList<String> getCreditCardNumbersForUser(int userid) throws Exception
+    {
+    	ArrayList<String> cardNumberList = null;
+    	
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select CreditCardNumber " +
+					"FROM " + this.tableName +
+					"WHERE UserId = ?";
+			
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, userId);
+			
+			rs = ps.executeQuery();
+			
+			cardNumberList = new ArrayList<String>();
+			while (rs.next())
+			{
+				cardNumberList.add(rs.getString("CreditCardNumber"));
+			}
+		}
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get CreditCard details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+
+    	return cardNumberList;
     }
     
     public boolean getCreditCardById(int id) throws Exception
@@ -71,8 +127,7 @@ class CreditCardDTO
 			e.printStackTrace();
 			throw e;
 		} 
-	
-    	
+		
     	return status;
     }
     
@@ -200,7 +255,6 @@ class CreditCardDTO
 		{
 			ps.close();
 		}
-    	
     	
     	return status;
     }

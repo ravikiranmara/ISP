@@ -9,7 +9,7 @@ import java.sql.*;
 
 import org.apache.log4j.Logger;
 
-class HotelReviewDTO
+public class HotelReviewDTO
 {
     String tableName = "HotelReviews";
 	int id;

@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import utils.dbContextSingleton;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 
-class AmenityDTO
+public class AmenityDTO
 {
 	String tableName = "Amenities";
     int id;
@@ -19,10 +22,72 @@ class AmenityDTO
 	
     public AmenityDTO()
     {
-    	id = -1;
-    	name = description = "";
-    	isInitialized = false;
+    	this.initialize();
 	}
+
+    public void clear()
+    {
+    	this.initialize();
+    }
+    
+    private void initialize()
+    {
+    	id = -1;
+    	description = name = "";
+    	isInitialized = false;
+    }
+    
+    public void initialize(Integer id, String[] nameDesc)
+    {
+    	this.id = id;
+    	this.name = nameDesc[0];
+    	this.description = nameDesc[1];
+    }
+    
+	public HashMap<Integer, String[]> getAllAmenity() throws Exception
+    {
+    	HashMap<Integer, String[]> tempAmenityHash = null;
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		int tempId;
+		String tempName;
+		String tempDescription;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id, Name, Description" +
+					" from " + this.tableName;
+			
+			ps = connection.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			tempAmenityHash = new HashMap<Integer, String[]>();
+			while(rs.next())
+			{
+				tempId = rs.getInt("Id");
+				tempName = rs.getString("Name");
+				tempDescription = rs.getString("Description");
+				tempAmenityHash.put(tempId, tempName);
+				this.isInitialized = true;
+			}
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+			
+    	return tempAmenityHash;
+    }
     
     public boolean getAmenitybyId(int id) throws Exception
     {
@@ -61,8 +126,7 @@ class AmenityDTO
 		{
 			ps.close();
 		}
-			
-    
+	
     	return status;
     }
     
@@ -77,7 +141,7 @@ class AmenityDTO
 		{
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Insert Into " + this.tableName + " (Name, Description)" +
-					" values (?, ?)";
+					" values (?)";
 			
 			ps = connection.prepareStatement(query);
 			
@@ -184,10 +248,17 @@ class AmenityDTO
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDescription() {
+    public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	public boolean isInitialized() {
+		return isInitialized;
+	}
+	public void setInitialized(boolean isInitialized) {
+		this.isInitialized = isInitialized;
+	}
+
 }

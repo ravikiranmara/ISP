@@ -4,7 +4,7 @@ import utils.dbContextSingleton;
 import java.sql.*;
 import org.apache.log4j.Logger;
 
-class HotelRoomTypeDTO
+public class HotelRoomTypeDTO
 {
     String tableName = "HotelRoomType";
 	int id;

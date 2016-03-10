@@ -8,15 +8,23 @@ public class CreditCard
 	float balance;
 	String nickName;
 	String cvv;
+	int userId;
 	
 	public CreditCard()
 	{
-		id = -1;
+		userId = id = -1;
 		holderName = cardNumber = nickName = cvv = "";
 		balance = 0;
 	}
 	
 	// getter and setter
+
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public int getId() {
 		return id;
 	}
@@ -24,10 +32,10 @@ public class CreditCard
 		this.id = id;
 	}
 	public String getHolderName() {
-		return HolderName;
+		return holderName;
 	}
 	public void setHolderName(String holderName) {
-		HolderName = holderName;
+		this.holderName = holderName;
 	}
 	public String getCardNumber() {
 		return cardNumber;

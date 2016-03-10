@@ -2,36 +2,43 @@ package modelObject;
 
 public class Amenity 
 {
-	int id;
+	int linkId;
+	int amenityId;
+	int hotelId;
 	String name;
-	String description;
 	boolean value;
 	
 	public Amenity()
 	{
-		id = 1;
-		name = description = "";
+		amenityId = 1;
+		name = "";
 		value = false;
 	}
 	
 	// getter and setter
-	public int getId() {
-		return id;
+	public int getLinkId() {
+		return linkId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setLinkId(int linkId) {
+		this.linkId = linkId;
+	}
+	public int getHotelId() {
+		return hotelId;
+	}
+	public void setHotelId(int hotelId) {
+		this.hotelId = hotelId;
+	}
+	public int getamenityId() {
+		return amenityId;
+	}
+	public void setamenityId(int id) {
+		this.amenityId = id;
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	public boolean isValue() {
 		return value;
