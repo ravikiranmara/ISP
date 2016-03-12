@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 
 import utils.dbContextSingleton;
 import java.sql.*;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -25,10 +26,62 @@ public class HotelRoomDTO
     
     public HotelRoomDTO()
     {
+    	this.initialize();
+    }
+
+    public void clear()
+    {
+    	this.clear();
+    }
+    
+    private void initialize()
+    {
     	id = roomTypeId = hotelId = availableNumber = -1;
     	pricePerNight = 0;
     	isInitialized = false;
+
+    	return;
     }
+    
+    public ArrayList<Integer> getHotelRoomIdByHotelId(int hotelId) throws Exception
+    {
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<Integer> idlist = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id" +
+					" from " + this.tableName + 
+					" Where HotelId = ?";
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, hotelId);
+			
+			rs = ps.executeQuery();
+			
+			idlist = new ArrayList<Integer>();
+			while(rs.next())
+			{
+				idlist.add(rs.getInt("Id"));
+			}	
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
+    	return idlist;
+    }
+
     
     public boolean getHotelRoomById(int id) throws Exception
     {
@@ -160,7 +213,7 @@ public class HotelRoomDTO
     	return status;	
     }
     
-    public boolean deleteHotelRoom() throws Exception
+    public boolean deleteHotelRoom(int roomId) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -173,7 +226,7 @@ public class HotelRoomDTO
 			query = "DELETE " + this.tableName + " WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, roomId);
 			
 			ps.executeUpdate();
 			status = true;

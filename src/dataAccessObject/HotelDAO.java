@@ -74,10 +74,22 @@ public class HotelDAO implements IHotelDAO
 	{
 		amenity.setamenityId(amenityDto.getId());
 		amenity.setName(amenityDto.getName());
+		amenity.setDescription(amenity.getDescription());
 		amenity.setHotelId(hotelAmenityDto.getHotelId());
 		amenity.setLinkId(hotelAmenityDto.getId());
 		amenity.setValue(hotelAmenityDto.getValue());
 	}
+	
+	private void initializeDTOFromAmenity(Amenity amenity, HotelAmenityDTO hotelAmenityDto, AmenityDTO amenityDto)
+	{
+		amenityDto.setId(amenity.getamenityId());		
+		amenityDto.setName(amenity.getName());
+		amenityDto.setDescription(amenity.getDescription());
+		hotelAmenityDto.setHotelId(amenity.getHotelId());
+		hotelAmenityDto.setId(amenity.getLinkId());
+		hotelAmenityDto.setValue(amenity.getValue());
+	}
+	
 	
 	private void initializeHotelFromDto(Hotel hotel, HotelDTO hotelDto)
 	{
@@ -115,12 +127,15 @@ public class HotelDAO implements IHotelDAO
 		AmenityDTO amenityDto = null;
 		HotelRoomDTO hotelRoomDto = null;
 		HotelRoomTypeDTO hotelRoomTypeDto = null;
+		HotelReviewDTO hotelReviewDto = null;
 		
 		ArrayList<Amenity> amenityList = null;
 		ArrayList<Room> roomList = null;
 		ArrayList<Review> reviewList = null;
 		HashMap<Integer, String[]> amenityHash = null;
+		HashMap<Integer, String[]> roomTypeHash = null;
 		ArrayList<Integer> listOfHotelAmenityId = null;
+		ArrayList<Integer> listOfRoomId = null;
 		
 		Hotel tempHotel = null;
 		Amenity tempAmenity = null;
@@ -159,20 +174,55 @@ public class HotelDAO implements IHotelDAO
 				amenityList.add(tempAmenity);
 			}
 			
-			creditCard = new ArrayList<CreditCard>();
-			for (String number : creditCardNumber)
+			// add amenit to temp hotel
+			tempHotel.setAmenity(amenityList);
+			
+			logger.info("Get list of hotel reviews Ids");
+			hotelReviewDto = new HotelReviewDTO();
+			ArrayList<Integer> hotelReviewIdList = new ArrayList<Integer>();
+			hotelReviewIdList = hotelReviewDto.getHotelReviewsForHotel(id);
+			reviewList = new ArrayList<Review>();
+			logger.info("For each id, get review from table");
+			for (Integer rid : hotelReviewIdList)
 			{
-				// lets get the dto and initialize
-				temp = new CreditCard();
-				creditCardDto.Clear();
-				creditCardDto.getCreditCardByCreditCardNumber(number);
+				tempReview = new Review();
 				
-				this.initializeCreditCardFromDTO(temp, creditCardDto);
-				creditCard.add(temp);
+				hotelReviewDto.clear();
+				hotelReviewDto.getHotelReviewById(rid);
+				this.initializeReviewFromReviewDto(tempReview, hotelReviewDto);
+				reviewList.add(tempReview);
 			}
 			
-			// no exceptions so make final assignment
-			tempUser.setCreditCard(creditCard);
+			// hotel set reviews
+			tempHotel.setReview(reviewList);
+			
+			logger.info("Get Hotel room Type list");
+			hotelRoomTypeDto = new HotelRoomTypeDTO();
+			roomTypeHash = hotelRoomTypeDto.getAllHotelRoomType();
+			
+			logger.info("Get Hotel Room list");
+			hotelRoomDto = new HotelRoomDTO();
+			listOfRoomId = hotelRoomDto.getHotelRoomIdByHotelId(id);
+			
+			logger.info("foreach room id, get room details");
+			roomList = new ArrayList<Room>();
+			HotelRoomTypeDTO tempRoomTypeDto = new HotelRoomTypeDTO();
+			for (Integer rid : listOfRoomId)
+			{
+				tempRoom = new Room();
+				
+				hotelRoomDto.clear();
+				hotelRoomDto.getHotelRoomById(rid);
+				
+				tempRoomTypeDto.initialize(hotelRoomDto.getRoomTypeId(),
+						roomTypeHash.get(hotelRoomDto.getRoomTypeId()));
+				this.initializeHotelRoomFromDTO(tempRoom, hotelRoomDto, tempRoomTypeDto);
+				
+				roomList.add(tempRoom);
+			}
+			
+			// set hotel rooms
+			tempHotel.setRoom(roomList);
 		}
 		catch (Exception e)
 		{
@@ -184,87 +234,547 @@ public class HotelDAO implements IHotelDAO
 			
 		}
 		
-		return tempUser;
+		return tempHotel;
+	}
 
+	@Override
+	public boolean addHotel(Hotel hotel) throws Exception 
+	{
+		boolean status = false;
+		HotelDTO hotelDto = null;
 		
-		return null;
+		ArrayList<Amenity> amenityList = null;
+		ArrayList<Room> roomList = null;
+		ArrayList<Review> reviewList = null;
+		
+		try
+		{
+			logger.info("Insert hotel details");
+			hotelDto = new HotelDTO();
+			this.initializeDtoFromHotel(hotel, hotelDto);
+			hotelDto.addHotel();
+			
+			logger.info("insert amenities in case it does not exist");
+			amenityList = hotel.getAmenity();
+			for(Amenity amenity : amenityList)
+			{
+				this.addHotelAmenity(hotel, amenity);
+			}
+			
+			logger.info("insert room types if it does not exist");
+			roomList = hotel.getRoom();
+			for(Room room : roomList)
+			{
+				this.addHotelRoom(hotel, room);
+			}
+			
+			
+			logger.info("Insert hotel reviews");
+			reviewList = hotel.getReview();
+			for(Review review : reviewList)
+			{
+				this.addHotelReview(hotel, review);
+			}
+			
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+		
+		return status;
 	}
 
 	@Override
-	public boolean addHotel(Hotel hotel) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeHotel(Hotel hotel) throws Exception 
+	{
+		boolean status = false;
+		HotelDTO hotelDto = null;
+		
+		ArrayList<Amenity> amenityList = null;
+		ArrayList<Room> roomList = null;
+		ArrayList<Review> reviewList = null;
+		
+		try
+		{
+			logger.info("Insert hotel reviews");
+			reviewList = hotel.getReview();
+			for(Review review : reviewList)
+			{
+				this.removeHotelReview(hotel, review);
+			}
+			
+			logger.info("insert room types if it does not exist");
+			roomList = hotel.getRoom();
+			for(Room room : roomList)
+			{
+				this.removeHotelRoom(hotel, room);
+			}
+			
+			logger.info("insert amenities in case it does not exist");
+			amenityList = hotel.getAmenity();
+			for(Amenity amenity : amenityList)
+			{
+				this.removeHotelAmenity(hotel, amenity);
+			}
+			
+			logger.info("Insert hotel details");
+			hotelDto = new HotelDTO();
+			hotelDto.deleteHotelById(hotel.getId());
+			
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+		
+		return status;
+	}
+
+	// we update only the hotel details, and not the rooms, reviews
+	// or other data. that needs to be done separately. 
+	@Override
+	public boolean updateHotel(Hotel hotel) throws Exception 
+	{
+		boolean status = false;
+		HotelDTO hotelDto = null;
+		
+		try
+		{
+			logger.info("update hotel details");
+			hotelDto = new HotelDTO();
+			this.initializeDtoFromHotel(hotel, hotelDto);
+			hotelDto.updateHotel(hotel.getId());
+		
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
 	}
 
 	@Override
-	public boolean removeHotel(Hotel hotel) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean updateHotel(Hotel hotel) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean addHotelAmenity(Hotel hotel, Amenity amenity)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addHotelAmenity(Hotel hotel, Amenity amenity) throws Exception 
+	{
+		boolean status = false;
+		HotelAmenityDTO hotelAmenityDto = null;
+		AmenityDTO amenityDto = null;
+		
+		try
+		{
+			logger.info("update hotel amenity");
+			hotelAmenityDto = new HotelAmenityDTO();
+			amenityDto = new AmenityDTO();
+			
+			this.initializeDTOFromAmenity(amenity, hotelAmenityDto, amenityDto);
+			int id = hotelAmenityDto.addHotelAmenity();
+			amenity.setLinkId(id);
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
 	}
 
 	@Override
 	public boolean removeHotelAmenity(Hotel hotel, Amenity amenity)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+			throws Exception 
+	{
+		boolean status = false;
+		HotelAmenityDTO hotelAmenityDto = null;
+		
+		try
+		{
+			logger.info("delete hotel amenity");
+			hotelAmenityDto = new HotelAmenityDTO();
+			
+			hotelAmenityDto.deleteHotelAmenity(amenity.getLinkId());
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
 	}
 
 	@Override
 	public boolean updateHotelAmenity(Hotel hotel, Amenity amenity)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+			throws Exception 
+	{
+		boolean status = false;
+		HotelAmenityDTO hotelAmenityDto = null;
+		AmenityDTO amenityDto = null;
+		
+		try
+		{
+			logger.info("update hotel amenity");
+			hotelAmenityDto = new HotelAmenityDTO();
+			amenityDto = new AmenityDTO();
+			
+			this.initializeDTOFromAmenity(amenity, hotelAmenityDto, amenityDto);
+			hotelAmenityDto.updateHotelAmenity();
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
+	
 	}
 
 	@Override
-	public boolean addHotelRoom(Hotel hotel, Room room) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addHotelRoom(Hotel hotel, Room room) throws Exception 
+	{
+		boolean status = false;
+		HotelRoomDTO hotelRoomDto = null;
+		HotelRoomTypeDTO hotelRoomTypeDto = null;
+		
+		try
+		{
+			hotelRoomDto = new HotelRoomDTO();
+			hotelRoomTypeDto = new HotelRoomTypeDTO();
+			
+			logger.info("add hotel room ");
+			this.initializeDTOFromHotelRoom(hotelRoomDto, hotelRoomTypeDto, room);
+			int id = hotelRoomDto.addHotelRoom();
+			room.setId(id);
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
 	}
 
 	@Override
-	public boolean removeHotelRoom(Hotel hotel, Room room) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeHotelRoom(Hotel hotel, Room room) throws Exception 
+	{
+		boolean status = false;
+		HotelRoomDTO hotelRoomDto = null;
+		
+		try
+		{
+			hotelRoomDto = new HotelRoomDTO();
+			
+			logger.info("remove hotel room ");
+			hotelRoomDto.deleteHotelRoom(room.getId());
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
 	}
 
 	@Override
-	public boolean updateHotelRoom(Hotel hotel, Room room) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateHotelRoom(Hotel hotel, Room room) throws Exception 
+	{
+		boolean status = false;
+		HotelRoomDTO hotelRoomDto = null;
+		HotelRoomTypeDTO hotelRoomTypeDto = null;
+		
+		try
+		{
+			hotelRoomDto = new HotelRoomDTO();
+			hotelRoomTypeDto = new HotelRoomTypeDTO();
+			
+			logger.info("add hotel room ");
+			this.initializeDTOFromHotelRoom(hotelRoomDto, hotelRoomTypeDto, room);
+			hotelRoomDto.updateHotelRoom();
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
 	}
 
 	@Override
-	public boolean addHotelReview(Hotel hotel, Review review) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addHotelReview(Hotel hotel, Review review) throws Exception 
+	{
+		boolean status = false;
+		HotelReviewDTO hotelReviewDto = null;
+		
+		try
+		{
+			hotelReviewDto = new HotelReviewDTO();
+			
+			logger.info("add hotel review ");
+			this.initializeReviewDtoFromReview(hotelReviewDto, review);
+			int id = hotelReviewDto.addHotelReview();
+			review.setId(id);
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
 	}
 
 	@Override
 	public boolean removeHotelReview(Hotel hotel, Review review)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+			throws Exception 
+	{
+		boolean status = false;
+		HotelReviewDTO hotelReviewDto = null;
+		
+		try
+		{
+			hotelReviewDto = new HotelReviewDTO();
+			
+			logger.info("add hotel review ");
+			hotelReviewDto.deleteHotelReview(review.getId());
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
 	}
 
 	@Override
 	public boolean updateHotelReview(Hotel hotel, Review review)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+			throws Exception 
+	{
+		boolean status = false;
+		HotelReviewDTO hotelReviewDto = null;
+		
+		try
+		{
+			hotelReviewDto = new HotelReviewDTO();
+			
+			logger.info("add hotel review ");
+			this.initializeReviewDtoFromReview(hotelReviewDto, review);
+			hotelReviewDto.updateHotelReview();
+			
+			// we are assuming that amenity already exists. 
+			// if we made it till here, then all went well
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return status;
+	}
+
+	@Override
+	public int addNewAmenity(String name, String description) throws Exception 
+	{
+		AmenityDTO amenityDto = null;
+		int rval = -1;
+		
+		try
+		{
+			amenityDto = new AmenityDTO();
+			
+			logger.info("add hotel amenity");
+			amenityDto.setName(name);
+			amenityDto.setDescription(description);
+			
+			rval = amenityDto.addAmenity();
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return rval;
+	}
+
+	@Override
+	public HashMap<Integer, String[]> getAllAmenity() throws Exception 
+	{
+		AmenityDTO amenityDto = null;
+		HashMap<Integer, String[]> rval = null;
+		
+		try
+		{
+			logger.info("add hotel amenity");
+			amenityDto = new AmenityDTO();
+			rval = amenityDto.getAllAmenity();
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return rval;
+	}
+
+	@Override
+	public int addNewHotelRoomType(String roomType, String description)
+			throws Exception 
+	{
+		HotelRoomTypeDTO hotelRoomTypeDto = null;
+		int rval = -1;
+		
+		try
+		{
+			hotelRoomTypeDto = new HotelRoomTypeDTO();
+			
+			logger.info("add hotel amenity");
+			hotelRoomTypeDto.setRoomType(roomType);
+			hotelRoomTypeDto.setDescription(description);
+			
+			rval = hotelRoomTypeDto.addHotelRoomType();
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return rval;
+	}
+
+	@Override
+	public HashMap<Integer, String[]> getAllHotelRoomTypes() throws Exception 
+	{
+		HotelRoomTypeDTO hotelRoomTypeDto = null;
+		HashMap<Integer, String[]> rval = null;
+		
+		try
+		{
+			logger.info("add hotel amenity");
+			hotelRoomTypeDto = new HotelRoomTypeDTO();
+			rval = hotelRoomTypeDto.getAllHotelRoomType();
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get User : ");
+			throw e;
+		}
+		finally
+		{
+			
+		}
+	
+		return rval;
 	}
 
 }

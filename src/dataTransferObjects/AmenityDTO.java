@@ -71,7 +71,7 @@ public class AmenityDTO
 				tempId = rs.getInt("Id");
 				tempName = rs.getString("Name");
 				tempDescription = rs.getString("Description");
-				tempAmenityHash.put(tempId, tempName);
+				tempAmenityHash.put(tempId, new String[]{tempName, tempDescription});
 				this.isInitialized = true;
 			}
 		} 

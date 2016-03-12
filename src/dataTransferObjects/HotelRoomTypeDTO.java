@@ -2,6 +2,8 @@ package dataTransferObjects;
 
 import utils.dbContextSingleton;
 import java.sql.*;
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 
 public class HotelRoomTypeDTO
@@ -16,9 +18,71 @@ public class HotelRoomTypeDTO
 	
     public HotelRoomTypeDTO()
     {
+    	this.initialize();
+    }
+
+    public void initialize(Integer id, String[] roomDesc)
+    {
+    	this.id = id;
+    	this.roomType = roomDesc[0];
+    	this.description = roomDesc[1];
+    	
+    	return;
+    }
+    		
+    
+    public void clear()
+    {
+    	this.initialize();
+    }
+    
+    private void initialize()
+    {
     	id = -1;
     	isInitialized = false;
     	roomType = description = "";
+    }
+    
+    public HashMap<Integer, String[]> getAllHotelRoomType() throws Exception
+    {
+    	HashMap<Integer, String[]> maplist = null;
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id, roomType, Description" +
+					" from " + this.tableName;
+			ps = connection.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			int tempId;
+			String tempRoomType, tempDescription;
+			maplist = new HashMap<Integer, String[]>();
+			while(rs.next())
+			{
+				tempId = rs.getInt("Id");
+				tempRoomType = rs.getString("RoomType");
+				tempDescription = rs.getString("Description");
+
+				maplist.put(tempId, new String[]{tempRoomType, tempDescription});
+			}
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get User details : " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
+    	return maplist;
     }
     
     public boolean getHotelRoomTypeById(int id) throws Exception
@@ -33,7 +97,8 @@ public class HotelRoomTypeDTO
 		{
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "select Id, roomType, Description" +
-					" from " + this.tableName + " Id = ?";
+					" from " + this.tableName + 
+					" WHERE Id = ?";
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, id);
 			

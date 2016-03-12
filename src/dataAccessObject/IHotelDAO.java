@@ -1,5 +1,7 @@
 package dataAccessObject;
 
+import java.util.HashMap;
+
 import modelObject.Amenity;
 import modelObject.Hotel;
 import modelObject.Review;
@@ -26,6 +28,12 @@ public interface IHotelDAO
 	boolean addHotelReview(Hotel hotel, Review review) throws Exception;
 	boolean removeHotelReview(Hotel hotel, Review review) throws Exception;
 	boolean updateHotelReview(Hotel hotel, Review review) throws Exception;
+	
+	int addNewAmenity(String name, String description) throws Exception;
+	HashMap<Integer, String[]> getAllAmenity() throws Exception;
+	
+	int addNewHotelRoomType(String roomType, String description) throws Exception;
+	HashMap<Integer, String[]> getAllHotelRoomTypes() throws Exception;
 	
 	// Logger
 	static Logger logger = Logger.getLogger(IUserDao.class.getName());

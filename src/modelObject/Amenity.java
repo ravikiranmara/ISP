@@ -6,13 +6,14 @@ public class Amenity
 	int amenityId;
 	int hotelId;
 	String name;
-	boolean value;
+	String description;
+	short amenityValue;
 	
 	public Amenity()
 	{
 		amenityId = 1;
 		name = "";
-		value = false;
+		amenityValue = false;
 	}
 	
 	// getter and setter
@@ -40,11 +41,18 @@ public class Amenity
 	public void setName(String name) {
 		this.name = name;
 	}
-	public boolean isValue() {
-		return value;
+	public short getValue() {
+		return amenityValue;
 	}
-	public void setValue(boolean value) {
-		this.value = value;
+	public void setValue(short value) {
+		this.amenityValue = value;
 	}
-	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 }
