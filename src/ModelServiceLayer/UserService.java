@@ -9,7 +9,7 @@ public class UserService implements IUserService
 {
 
     @Override
-    public User getUserByUsername(String username)
+    public User getUserByUsername(String username) throws Exception
     {
         // this class needs no special processing.
         IUserDao userDao = new UserPropertiesDao();
@@ -17,10 +17,18 @@ public class UserService implements IUserService
     }
 
     @Override
-    public boolean putUser(User user)
-    {       
-        IUserDao userDao = new UserPropertiesDao();
-        return userDao.putUser(user);
+    public boolean putUser(User user) throws Exception
+    {
+	    try 
+	    {
+			IUserDao userDao = new UserPropertiesDao();
+		    return userDao.addUser(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    return true;
     }
     
 }

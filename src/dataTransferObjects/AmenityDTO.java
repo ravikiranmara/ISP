@@ -18,7 +18,7 @@ public class AmenityDTO
     String description;
     boolean isInitialized;
     
-    static Logger logger = Logger.getLogger(UserDTO.class.getName());
+    static Logger logger = Logger.getLogger(AmenityDTO.class.getName());
 	
     public AmenityDTO()
     {
@@ -42,11 +42,11 @@ public class AmenityDTO
     	this.id = id;
     	this.name = nameDesc[0];
     	this.description = nameDesc[1];
+    	isInitialized = true;
     }
     
 	public HashMap<Integer, String[]> getAllAmenity() throws Exception
     {
-    	HashMap<Integer, String[]> tempAmenityHash = null;
     	Connection connection = null;
 		String query = null;
 		PreparedStatement ps = null;
@@ -56,28 +56,30 @@ public class AmenityDTO
 		String tempName;
 		String tempDescription;
 		
+		HashMap<Integer, String[]> tempAmenityHash = new HashMap<Integer, String[]>();
+    	
 		try 
 		{
 			connection = dbContextSingleton.getSingletonObject().getConnection();
+			logger.info("Get all Amenities dto");
+			
 			query = "select Id, Name, Description" +
 					" from " + this.tableName;
 			
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
 			
-			tempAmenityHash = new HashMap<Integer, String[]>();
 			while(rs.next())
 			{
 				tempId = rs.getInt("Id");
 				tempName = rs.getString("Name");
 				tempDescription = rs.getString("Description");
 				tempAmenityHash.put(tempId, new String[]{tempName, tempDescription});
-				this.isInitialized = true;
 			}
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to get all amenities dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -99,9 +101,11 @@ public class AmenityDTO
 		
 		try 
 		{
+			logger.info("Get amenity by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "select Id, Name, Description" +
-					" from " + this.tableName + " Id = ?";
+					" from " + this.tableName + 
+					" WHERE  Id = ?";
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, id);
 			
@@ -118,7 +122,7 @@ public class AmenityDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to get amenity by id dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -139,9 +143,10 @@ public class AmenityDTO
 		
 		try 
 		{
+			logger.info("add amenity dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Insert Into " + this.tableName + " (Name, Description)" +
-					" values (?)";
+					" values (?, ?)";
 			
 			ps = connection.prepareStatement(query);
 			
@@ -154,7 +159,7 @@ public class AmenityDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to add amenity dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -175,8 +180,11 @@ public class AmenityDTO
 		
 		try 
 		{
+			logger.info("Update amenity dto");
+			
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "UPDATE " + this.tableName + " (Name = ?, Description = ?)" +
+			query = "UPDATE " + this.tableName + 
+					" SET (Name = ?, Description = ?)" +
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
@@ -190,7 +198,7 @@ public class AmenityDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to update amenities dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -203,7 +211,7 @@ public class AmenityDTO
     	return status;	
     }
     
-    public boolean deleteAmenity() throws Exception
+    public boolean deleteAmenity(int did) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -212,18 +220,19 @@ public class AmenityDTO
 		
 		try 
 		{
+			logger.info("delete amenity dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			query = "DELETE FROM " + this.tableName + " WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, did);
 			
 			ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to delete amenity: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 

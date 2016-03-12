@@ -6,6 +6,8 @@ import java.util.List;
 import modelObject.CreditCard;
 import modelObject.User;
 import org.apache.log4j.Logger;
+
+import utils.UserType;
 import dataTransferObjects.*;
 
 
@@ -25,7 +27,7 @@ public class UserDAO implements IUserDao {
 		userDto.setState(user.getState());
 		userDto.setStatus(user.getUserStatus());
 		userDto.setPostalCode(user.getPostalCode());
-		userDto.setType(user.getUserType());
+		userDto.setType(user.getUserType().getValue());
 		
 		return;
 	}
@@ -44,7 +46,12 @@ public class UserDAO implements IUserDao {
 		user.setState(userDto.getState());
 		user.setUserStatus(userDto.getStatus());
 		user.setPostalCode(userDto.getPostalCode());
-		user.setUserType(userDto.getType());
+		
+		//user type
+		int usertypeint = userDto.getType();
+		UserType userType = (usertypeint == UserType.Client.getValue())?
+				UserType.Client:UserType.Customer;
+		user.setUserType(userType);
 		
 		return;
 	}
@@ -396,7 +403,7 @@ public class UserDAO implements IUserDao {
 			// fetch user details
 			logger.info("add credit card");
 			creditCardDto.setUserId(user.getUserId());
-			creditCardDto.updateCreditCard(creditCard.getId());
+			creditCardDto.updateCreditCard();
 
 			status = true;
 		}

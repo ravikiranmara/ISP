@@ -58,20 +58,31 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.handleRequest(request, response);
+		try {
+			this.handleRequest(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.handleRequest(request, response);
+		try {
+			this.handleRequest(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
+	 * @throws Exception 
 	 * @see HttpServlet#handleRequest(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception 
 	{
 	    boolean status = true;
 		boolean auth = false;

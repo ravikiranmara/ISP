@@ -44,20 +44,31 @@ public class Registration extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    this.handleRequest(request, response);
+	    try {
+			this.handleRequest(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.handleRequest(request, response);
+		try {
+			this.handleRequest(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     * @throws Exception 
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         boolean status = true;
         PrintWriter out = response.getWriter();
         IAuthenticationService authService = null;
@@ -112,7 +123,7 @@ public class Registration extends HttpServlet {
         if(false != status)
         {
             out.println("New user\n");
-            user = new User(username, password, userTypeEnum);
+            user = new User();
         }
         
         // check if this is a valid user

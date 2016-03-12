@@ -18,15 +18,20 @@ public class HotelDTO
     String address; 
     boolean isInitialized;
     
-    static Logger logger = Logger.getLogger(UserDTO.class.getName());
+    static Logger logger = Logger.getLogger(HotelDTO.class.getName());
 	
-    
     public HotelDTO()
+    {
+    	this.initialize();
+    }
+
+    void initialize()
     {
     	id = -1;
     	name = city = state = description = address = "";
     	nearestPoints = "";
     	isInitialized = false;
+    	return;
     }
     
     public int addHotel() throws Exception
@@ -39,6 +44,7 @@ public class HotelDTO
 		
 		try 
 		{
+			logger.info("Insert hotel details");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Insert Into " + this.tableName + " (Name, City, " +
 					"State, OwnerUserId, Description, NearestPoints, Address)" +
@@ -82,6 +88,7 @@ public class HotelDTO
 		
 		try 
 		{
+			logger.info("get hotel by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "select Id, Name, City, State, " +
 					"OwnerUserId, Description, NearestPoints, Address" +
@@ -89,7 +96,7 @@ public class HotelDTO
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, hotelId);
 			rs = ps.executeQuery();
 			
 			while(rs.next())
@@ -108,7 +115,7 @@ public class HotelDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to get hotel by id dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -120,7 +127,7 @@ public class HotelDTO
     	return status;
     }
     
-    public boolean updateHotel(int id) throws Exception
+    public boolean updateHotel() throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -129,8 +136,10 @@ public class HotelDTO
 		
 		try 
 		{
+			logger.info("update hotel dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "Insert " + this.tableName + " (Name = ?, City= ?, " +
+			query = "UPDATE " + this.tableName + 
+					" SET (Name = ?, City= ?, " +
 					"State= ?, OwnerUserId= ?, Description= ?, NearestPoints= ?, Address= ?)" +
 					" WHERE Id = ?";
 			
@@ -143,14 +152,14 @@ public class HotelDTO
 			ps.setString(5, this.description);
 			ps.setString(6, this.nearestPoints);
 			ps.setString(7, this.address);
-			ps.setInt(8, id);
+			ps.setInt(8, this.id);
 			
 			this.id = ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to insert Hotel details : " + e.getMessage());
+			logger.fatal("Unable to update Hotel details dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -159,11 +168,10 @@ public class HotelDTO
 			ps.close();
 		}
 		
-    	
     	return status;
     }
     
-    public boolean deleteHotelById(int id) throws Exception
+    public boolean deleteHotelById(int did) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -172,19 +180,20 @@ public class HotelDTO
 		
 		try 
 		{
+			logger.info("Delete by hotel id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			query = "DELETE  FROM " + this.tableName +
+					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, id);
-			
 			
 			ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to delte hotel by id dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 

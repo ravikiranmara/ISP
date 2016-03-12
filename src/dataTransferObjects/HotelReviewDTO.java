@@ -21,7 +21,7 @@ public class HotelReviewDTO
     int hotelId;
     boolean isInitialized;
     
-    static Logger logger = Logger.getLogger(UserDTO.class.getName());
+    static Logger logger = Logger.getLogger(HotelReviewDTO.class.getName());
 	
     public HotelReviewDTO()
     {
@@ -50,11 +50,13 @@ public class HotelReviewDTO
 		
 		try 
 		{
+			logger.info("get hotel review list by hotelid dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "select Id" +
-					" from " + this.tableName + " HotelId = ?";
+					" from " + this.tableName +
+					" WHERE HotelId = ?";
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, hotelId);
 			
 			rs = ps.executeQuery();
 			
@@ -66,7 +68,7 @@ public class HotelReviewDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("unable to get hotel review list by hotelid dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -78,7 +80,7 @@ public class HotelReviewDTO
 		return tempList;
     }
     
-    public boolean getHotelReviewById(int id) throws Exception
+    public boolean getHotelReviewById(int hid) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -88,12 +90,14 @@ public class HotelReviewDTO
 		
 		try 
 		{
+			logger.info("get hotel reviews by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "select Id, ReviewerName, ReviewDate, Rating, " +
 					"Review, HotelId " +
-					" from " + this.tableName + " Id = ?";
+					" from " + this.tableName + 
+					" WHERE Id = ?";
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, hid);
 			
 			rs = ps.executeQuery();
 			
@@ -112,7 +116,7 @@ public class HotelReviewDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("unable to get hotel reviews by id dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -133,8 +137,10 @@ public class HotelReviewDTO
 		
 		try 
 		{
+			logger.info("Add hotel review dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "Insert Into " + this.tableName + " (ReviewerName, ReviewDate, " +
+			query = "Insert Into " + this.tableName + 
+					" (ReviewerName, ReviewDate, " +
 					"Rating, Review, HotelId)" +
 					" values (?, ?, " +
 					"?, ?, ?)";
@@ -153,7 +159,7 @@ public class HotelReviewDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to Add hotel review dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -174,8 +180,10 @@ public class HotelReviewDTO
 		
 		try 
 		{
+			logger.info("Update hotel review dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "Update " + this.tableName + " (ReviewerName = ?, ReviewDate = ?, " +
+			query = "Update " + this.tableName + "" +
+					" SET (ReviewerName = ?, ReviewDate = ?, " +
 					"Rating = ?, Review = ?, HotelId = ?)" +
 					" WHERE Id = ?";
 			
@@ -215,8 +223,10 @@ public class HotelReviewDTO
 		
 		try 
 		{
+			logger.info("delte hotel review by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			query = "DELETE FROM " + this.tableName +
+					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, hid);
@@ -226,7 +236,7 @@ public class HotelReviewDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to delte hotel review by id dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 

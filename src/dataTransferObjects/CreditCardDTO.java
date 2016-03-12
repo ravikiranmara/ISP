@@ -19,7 +19,7 @@ public class CreditCardDTO
     int userId;
     boolean isInitialized;
     
-    static Logger logger = Logger.getLogger(UserDTO.class.getName());
+    static Logger logger = Logger.getLogger(CreditCardDTO.class.getName());
 	
     private void initialize()
     {
@@ -55,10 +55,11 @@ public class CreditCardDTO
 		
 		try 
 		{
+			logger.info("get all creditcard numbers for user dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select CreditCardNumber " +
-					"FROM " + this.tableName +
-					"WHERE UserId = ?";
+			query = "SELECT CreditCardNumber " +
+					" FROM " + this.tableName +
+					" WHERE UserId = ?";
 			
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, userId);
@@ -96,11 +97,12 @@ public class CreditCardDTO
 		
 		try 
 		{
+			logger.info("Get credit card by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select Id, CardholderName, Balance, CardNickName, " +
-					"CreditCardNumber, UserId, CVV " +
-					"FROM " + this.tableName + 
-					"WHERE Id = ?";
+			query = "SELECT Id, CardholderName, Balance, CardNickName, " +
+					"CreditCardNumber, UserId, CVV" +
+					" FROM " + this.tableName + 
+					" WHERE Id = ?";
 					
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, id);
@@ -123,7 +125,7 @@ public class CreditCardDTO
 		}
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get CreditCard details : " + e.getMessage());
+			logger.fatal("Unable to get CreditCard details dto : " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -142,11 +144,12 @@ public class CreditCardDTO
 		
 		try 
 		{
+			logger.info("Get credit card by card number dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select Id, CardholderName, Balance, CardNickName, " +
+			query = "select Id, CardholderName, Balance, CardNickName," +
 					"CreditCardNumber, UserId, CVV " +
-					"FROM " + this.tableName + 
-					"WHERE CreditCardNumber = ?";
+					" FROM " + this.tableName + 
+					" WHERE CreditCardNumber = ?";
 					
 			ps = connection.prepareStatement(query);
 			ps.setString(1, cardNumber);
@@ -169,7 +172,7 @@ public class CreditCardDTO
 		}
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get CreditCard details : " + e.getMessage());
+			logger.fatal("Unable to get CreditCard by cardnumber dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -187,11 +190,12 @@ public class CreditCardDTO
 		
 		try 
 		{
+			logger.info("add credit card dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Insert Into " + this.tableName + " (CardholderName, CreditCardNumber, " +
 					"Balance, CardNickName, UserId, CVV" +
-					"Values (?, ?, " +
-					"?, ?, ?, ?, ?)";
+					" Values (?, ?, " +
+					"?, ?, ?, ?)";
 			
 			ps = connection.prepareStatement(query);
 			
@@ -207,7 +211,7 @@ public class CreditCardDTO
 		}
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to insert Credit card details : " + e.getMessage());
+			logger.fatal("Unable to add Credit card dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -219,7 +223,7 @@ public class CreditCardDTO
     	return insertId;
     }
     
-    public boolean updateCreditCard(int id) throws Exception
+    public boolean updateCreditCard() throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -228,10 +232,12 @@ public class CreditCardDTO
 		
 		try 
 		{
+			logger.info("update credit card dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "Update " + this.tableName + " (CardholderName = ?, CreditCardNumber = ?, " +
+			query = "Update " + this.tableName + 
+					" SET CardholderName = ?, CreditCardNumber = ?, " +
 					"Balance = ?, CardNickName = ?, UserId = ?, CVV = ?" +
-					"WHERE Id = ?";
+					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
 			
@@ -243,11 +249,12 @@ public class CreditCardDTO
 			ps.setString(6, this.cvv);
 			ps.setInt(7, id);
 			
+			this.id = ps.executeUpdate();
 			status = true;
 		}
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to Update Credit card details : " + e.getMessage());
+			logger.fatal("Unable to Update Credit card dto : " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -259,7 +266,7 @@ public class CreditCardDTO
     	return status;
     }
     
-    public boolean deleteCreditCard(int id) throws Exception
+    public boolean deleteCreditCard(int did) throws Exception
     {
     	boolean status = false;
     	
@@ -269,18 +276,20 @@ public class CreditCardDTO
 		
 		try 
 		{
+			logger.info("delete from credit card dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			query = "DELETE FROM " + this.tableName + 
+					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, did);
 			
 			ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to delete credit card details : " + e.getMessage());
+			logger.fatal("Unable to delete credit card details dto : " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -288,7 +297,6 @@ public class CreditCardDTO
 		{
 			ps.close();
 		}
-	
     	
     	return status;
     }

@@ -6,7 +6,7 @@ public class AuthenticationService implements IAuthenticationService
 {
 
     @Override
-    public boolean authenticateUser(String username, String password)
+    public boolean authenticateUser(String username, String password) throws Exception
     {
         boolean authenticated = true;
         
@@ -29,7 +29,7 @@ public class AuthenticationService implements IAuthenticationService
     }
 
     @Override
-    public boolean authenticateUser(User user)
+    public boolean authenticateUser(User user) throws Exception
     {
        return this.authenticateUser(user.getUsername(), user.getPassword());
     }

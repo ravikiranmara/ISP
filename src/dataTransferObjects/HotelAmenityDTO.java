@@ -15,7 +15,7 @@ public class HotelAmenityDTO
     short value;
     boolean isInitialized;
     
-    static Logger logger = Logger.getLogger(UserDTO.class.getName());
+    static Logger logger = Logger.getLogger(HotelAmenityDTO.class.getName());
 	
     public HotelAmenityDTO()
     {
@@ -43,9 +43,11 @@ public class HotelAmenityDTO
 		
 		try 
 		{
+			logger.info("get list of amenity for hotel by hotelid dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select Id" +
-					" from " + this.tableName + " HotelId = ?";
+			query = "SELECT Id" +
+					" FROM " + this.tableName +
+					" WHERE HotelId = ?";
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, hotelId);
 			
@@ -59,7 +61,7 @@ public class HotelAmenityDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.info("unable to get list of amenity for hotel by hotelid dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -72,7 +74,7 @@ public class HotelAmenityDTO
     }
     
     
-    public boolean getHotelAmenityById(int id) throws Exception
+    public boolean getHotelAmenityById(int hid) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -82,11 +84,13 @@ public class HotelAmenityDTO
 		
 		try 
 		{
+			logger.info("Get hotel amenity by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select Id, HotelId, AmenityId, Value" +
-					" from " + this.tableName + " Id = ?";
+			query = "SELECT Id, HotelId, AmenityId, Value" +
+					" FROM " + this.tableName +
+					" WHERE Id = ?";
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, hid);
 			
 			rs = ps.executeQuery();
 			
@@ -103,7 +107,7 @@ public class HotelAmenityDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("unable to Get hotel amenity by id dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -125,6 +129,7 @@ public class HotelAmenityDTO
 		
 		try 
 		{
+			logger.info("add hotel amenity");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Insert Into " + this.tableName + " (HotelId, AmenityId, Value)" +
 					" values (?, ?, ?)";
@@ -134,14 +139,14 @@ public class HotelAmenityDTO
 			// init
 			ps.setInt(1, this.hotelId);
 			ps.setInt(2, this.amenityId);
-			ps.setInt(3, this.value);
+			ps.setShort(3, this.value);
 			
 			this.id = ps.executeUpdate();
 			insertId = this.id;
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("unable to Add hotel amenity dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -162,8 +167,10 @@ public class HotelAmenityDTO
 		
 		try 
 		{
+			logger.info("Update hotel amenity");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "Update " + this.tableName + " (HotelId = ?, AmenityId = ?, Value = ?)" +
+			query = "Update " + this.tableName + 
+					" SET (HotelId = ?, AmenityId = ?, Value = ?)" +
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
@@ -179,7 +186,7 @@ public class HotelAmenityDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("unable to update hotel amenity dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -191,7 +198,7 @@ public class HotelAmenityDTO
     	return status;
     }
     
-    public boolean deleteHotelAmenity(int id) throws Exception
+    public boolean deleteHotelAmenity(int did) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -200,18 +207,20 @@ public class HotelAmenityDTO
 		
 		try 
 		{
+			logger.info("delete hotel amenity dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			query = "DELETE FROM " + this.tableName +
+					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, did);
 			
 			ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to delete hotel amenity dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 

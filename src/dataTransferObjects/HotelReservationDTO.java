@@ -20,16 +20,23 @@ public class HotelReservationDTO
     int roomTypeId;
     boolean isInitialized;
     
-    static Logger logger = Logger.getLogger(UserDTO.class.getName());
+    static Logger logger = Logger.getLogger(HotelReservationDTO.class.getName());
 	
     public HotelReservationDTO()
+    {
+    	this.initialize();
+    }
+
+    private void initialize()
     {
     	id = hotelId = numberOfRooms = userId = res_status = roomTypeId = -1;
     	reservationNumber = notes = "";
     	isInitialized = false;
+
+    	return;
     }
     
-    public boolean getHotelReservationById(int id) throws Exception
+    public boolean getHotelReservationById(int hid) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -39,13 +46,15 @@ public class HotelReservationDTO
 		
 		try 
 		{
+			logger.info("get hotel reservation by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select Id, HotelId, CheckInDate, CheckOutDate, " +
+			query = "SELECT Id, HotelId, CheckInDate, CheckOutDate, " +
 					"NumberOfRooms, ReservationNumber, UserId, Status, " +
 					"Notes, RoomTypeId" +
-					" from " + this.tableName + " WHERE Id = ?";
+					" FROM " + this.tableName +
+					" WHERE Id = ?";
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, hid);
 			rs = ps.executeQuery();
 			
 			while(rs.next())
@@ -55,17 +64,18 @@ public class HotelReservationDTO
 				this.checkInDate = rs.getDate("CheckInDate");
 				this.checkOutDate = rs.getDate("CheckOutDate");
 				this.numberOfRooms = rs.getInt("NumberOfRooms");
-				this.res_status = rs.getInt("ReservationStatus");
+				this.res_status = rs.getInt("Status");
 				this.userId = rs.getInt("UserId");
 				this.notes = rs.getString("Notes");
 				this.roomTypeId = rs.getInt("RoomTypeId");
-				this.reservationNumber = rs.getString("ReservationNumber");this.isInitialized = true;
+				this.reservationNumber = rs.getString("ReservationNumber");
+				this.isInitialized = true;
 				status = true;
 			}
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to get hotel reservation by id dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -86,6 +96,7 @@ public class HotelReservationDTO
 		
 		try 
 		{
+			logger.info("add hotel reservation dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Insert Into " + this.tableName + " (HotelId, CheckInDate, CheckOutDate, " +
 					"NumberOfRooms, ReservationNumber, UserId, Status, " +
@@ -111,7 +122,7 @@ public class HotelReservationDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to add hotel reservation dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -123,7 +134,7 @@ public class HotelReservationDTO
     	return insertId;
     }
     
-    public boolean updateHotelReservation(int id) throws Exception
+    public boolean updateHotelReservation() throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -132,8 +143,10 @@ public class HotelReservationDTO
 		
 		try 
 		{
+			logger.info("update hotel reservation dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "Update " + this.tableName + " (HotelId = ?, CheckInDate = ?, CheckOutDate = ?, " +
+			query = "Update " + this.tableName + 
+					" SET (HotelId = ?, CheckInDate = ?, CheckOutDate = ?, " +
 					"NumberOfRooms = ?, ReservationNumber = ?, UserId = ?, Status = ?, " +
 					"Notes = ?, RoomTypeId = ?)" +
 					" WHERE ID = ?";
@@ -157,7 +170,7 @@ public class HotelReservationDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to update hotel reservation dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -169,7 +182,7 @@ public class HotelReservationDTO
     	return status;
     }
     
-    public boolean deleteHotelReservation() throws Exception
+    public boolean deleteHotelReservation(int did) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;
@@ -178,19 +191,20 @@ public class HotelReservationDTO
 		
 		try 
 		{
+			logger.info("delete hotel reservation");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			query = "DELETE FROM " + this.tableName +
+					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
-			
+			ps.setInt(1, did);
 			
 			ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to delete hotel reservation: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 

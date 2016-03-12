@@ -14,7 +14,7 @@ public class HotelRoomTypeDTO
     String description;
     boolean isInitialized;
     
-    static Logger logger = Logger.getLogger(UserDTO.class.getName());
+    static Logger logger = Logger.getLogger(HotelRoomTypeDTO.class.getName());
 	
     public HotelRoomTypeDTO()
     {
@@ -29,7 +29,6 @@ public class HotelRoomTypeDTO
     	
     	return;
     }
-    		
     
     public void clear()
     {
@@ -53,9 +52,10 @@ public class HotelRoomTypeDTO
 		
 		try 
 		{
+			logger.info("get all hotel room type dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select Id, roomType, Description" +
-					" from " + this.tableName;
+			query = "SELECT Id, roomType, Description" +
+					" FROM " + this.tableName;
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
 			
@@ -73,7 +73,7 @@ public class HotelRoomTypeDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to get all hotel room type dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -95,9 +95,10 @@ public class HotelRoomTypeDTO
 		
 		try 
 		{
+			logger.info("get hotel type by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select Id, roomType, Description" +
-					" from " + this.tableName + 
+			query = "SELECT Id, roomType, Description" +
+					" FROM " + this.tableName + 
 					" WHERE Id = ?";
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, id);
@@ -115,7 +116,7 @@ public class HotelRoomTypeDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to get hotel type by id dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -136,8 +137,10 @@ public class HotelRoomTypeDTO
 		
 		try 
 		{
+			logger.info("add hotel room type dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "Insert Into " + this.tableName + " (RoomType, Description)" +
+			query = "Insert Into " + this.tableName + 
+					" (RoomType, Description)" +
 					" values (?, ?)";
 			
 			ps = connection.prepareStatement(query);
@@ -151,7 +154,7 @@ public class HotelRoomTypeDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to add hotel type dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -172,13 +175,14 @@ public class HotelRoomTypeDTO
 		
 		try 
 		{
+			logger.info("update hotel room type dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "UPDATE " + this.tableName + " (RoomType = ?, Description = ?)" +
+			query = "UPDATE " + this.tableName + 
+					" SET (RoomType = ?, Description = ?)" +
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
 			
-			// init
 			ps.setString(1, this.roomType);
 			ps.setString(2, this.description);
 			ps.setInt(3, this.id);
@@ -187,7 +191,7 @@ public class HotelRoomTypeDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to update hotel room type dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -208,19 +212,20 @@ public class HotelRoomTypeDTO
 		
 		try 
 		{
+			logger.info("delete hotel room type dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			query = "DELETE FROM " + this.tableName +
+					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, id);
-			
 			
 			ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to delete hotel room type dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 
@@ -251,5 +256,4 @@ public class HotelRoomTypeDTO
 	public void setDescription(String description) {
 		this.description = description;
 	}
-    
 }

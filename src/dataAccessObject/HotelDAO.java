@@ -20,7 +20,7 @@ import modelObject.User;
 
 public class HotelDAO implements IHotelDAO
 {
-	private void initializeReviewDtoFromReview(HotelReviewDTO reviewDto, Review review )
+	private void initializeReviewDtoFromReview(HotelReviewDTO reviewDto, Review review)
 	{
 		reviewDto.setHotelId(review.getHotelId());
 		reviewDto.setRating(review.getRating());
@@ -141,7 +141,7 @@ public class HotelDAO implements IHotelDAO
 		Amenity tempAmenity = null;
 		Room tempRoom = null;
 		Review tempReview = null;
-		
+
 		try
 		{
 			tempHotel = new Hotel();
@@ -358,7 +358,7 @@ public class HotelDAO implements IHotelDAO
 			logger.info("update hotel details");
 			hotelDto = new HotelDTO();
 			this.initializeDtoFromHotel(hotel, hotelDto);
-			hotelDto.updateHotel(hotel.getId());
+			hotelDto.updateHotel();
 		
 			// if we made it till here, then all went well
 			status = true;

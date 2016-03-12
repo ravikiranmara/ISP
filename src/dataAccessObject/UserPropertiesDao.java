@@ -1,5 +1,6 @@
 package dataAccessObject;
 
+import modelObject.CreditCard;
 import modelObject.User;
 
 import java.io.File;
@@ -78,7 +79,7 @@ public class UserPropertiesDao implements IUserDao
 	}
 	
 	@Override
-	public boolean putUser(User user) 
+	public boolean addUser(User user) 
 	{
 		boolean status = true;
 	
@@ -140,7 +141,7 @@ public class UserPropertiesDao implements IUserDao
 	    }
 		if(false != status)
 		{
-		    user = new User(username, password, userTypeEnum);
+		    user = new User();
 		}
 		
 		return user;
@@ -150,6 +151,39 @@ public class UserPropertiesDao implements IUserDao
 	public User getUserById(int id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean removeUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addCreditCard(User user, CreditCard creditCard)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeCreditCard(User user, CreditCard creditCard)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateCreditCard(User user, CreditCard creditCard)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

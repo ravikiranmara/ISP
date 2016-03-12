@@ -13,7 +13,7 @@ public class Amenity
 	{
 		amenityId = 1;
 		name = "";
-		amenityValue = false;
+		amenityValue = -1;
 	}
 	
 	// getter and setter

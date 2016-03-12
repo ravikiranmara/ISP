@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 import utils.UserType;
+import modelObject.CreditCard;
 import modelObject.User;
 
 public class UserPropertiesDao2 implements IUserDao
@@ -14,7 +15,7 @@ public class UserPropertiesDao2 implements IUserDao
     String userTypeFile = "usertype.properties";
     
     @Override
-    public boolean putUser(User user)
+    public boolean addUser(User user)
     {
         boolean status = true;
         
@@ -54,7 +55,7 @@ public class UserPropertiesDao2 implements IUserDao
             String password = prop.getProperty(username);
             if(null != password)
             {
-                user = new User(username, password, UserType.Client);
+                user = new User();
             }
         } 
         catch (Exception ex)
@@ -70,6 +71,39 @@ public class UserPropertiesDao2 implements IUserDao
 	public User getUserById(int id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean removeUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateUser(User user) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addCreditCard(User user, CreditCard creditCard)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeCreditCard(User user, CreditCard creditCard)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateCreditCard(User user, CreditCard creditCard)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
