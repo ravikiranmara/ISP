@@ -193,7 +193,7 @@ public class CreditCardDTO
 			logger.info("add credit card dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Insert Into " + this.tableName + " (CardholderName, CreditCardNumber, " +
-					"Balance, CardNickName, UserId, CVV" +
+					"Balance, CardNickName, UserId, CVV)" +
 					" Values (?, ?, " +
 					"?, ?, ?, ?)";
 			
@@ -289,7 +289,7 @@ public class CreditCardDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to delete credit card details dto : " + e.getMessage());
+			logger.fatal("Unable to delete credit card details dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 

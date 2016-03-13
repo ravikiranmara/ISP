@@ -198,7 +198,7 @@ public class UserDTO
 		return insertUid;
 	}
 	
-	public boolean updateUser(int id) throws Exception
+	public boolean updateUser() throws Exception
 	{
 		boolean status = false;
 		Connection connection = null;
@@ -208,10 +208,11 @@ public class UserDTO
 		try 
 		{
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "UPDATE " + this.tableName + " (FirstName = ?, LastName = ?, " +
+			query = "UPDATE " + this.tableName + 
+					" SET FirstName = ?, LastName = ?, " +
 					"AddressLine1 = ?, AddressLine2 = ?, City = ?, State = ?, PostalCode = ?, " +
-					"Status = ?, Type = ?, Username = ?, Password = ?)" +
-					"WHERE Id = ?";
+					"Status = ?, Type = ?, Username = ?, Password = ?" +
+					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
 			
@@ -227,7 +228,7 @@ public class UserDTO
 			ps.setInt(9, this.type);
 			ps.setString(10, username);
 			ps.setString(11, this.password);
-			ps.setInt(12, id);
+			ps.setInt(12, this.id);
 			
 			ps.executeUpdate();
 			status = true;
@@ -246,7 +247,7 @@ public class UserDTO
 		return status;
 	}
 	
-	public boolean deleteUserById(int id) throws Exception
+	public boolean deleteUserById(int did) throws Exception
 	{
 		boolean status = false;
 		Connection connection = null;
@@ -255,11 +256,12 @@ public class UserDTO
 		
 		try 
 		{
+			logger.info("delete user by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "DELETE " + this.tableName + " WHERE Id = ?";
+			query = "DELETE FROM " + this.tableName + " WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, id);
+			ps.setInt(1, did);
 			
 			
 			ps.executeUpdate();
@@ -267,7 +269,7 @@ public class UserDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to delete User dto: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 

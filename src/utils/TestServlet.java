@@ -31,7 +31,6 @@ public class TestServlet extends HttpServlet {
      */
     public TestServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -42,7 +41,6 @@ public class TestServlet extends HttpServlet {
 		try {
 			this.handleRequest(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -55,7 +53,6 @@ public class TestServlet extends HttpServlet {
 		try {
 			this.handleRequest(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -67,7 +64,7 @@ public class TestServlet extends HttpServlet {
 	    
 		out.println("begin");
 		
-		this.dumpUserDao(out);
+		this.insertDeleteUser(out);
 		
 	    out.println("end");
 	}
@@ -81,6 +78,85 @@ public class TestServlet extends HttpServlet {
 		out.println(userDto.getUsername());
 		out.println(userDto.getPassword());
 	    
+	}
+
+	private void insertDeleteUser(PrintWriter out) throws Exception
+	{
+		UserDTO userDto = new UserDTO();
+		UserDTO userDto2 = new UserDTO();
+		userDto.setFirstName("ttt");
+		userDto.setLastName("tll");
+		userDto.setAddressLine1("adr1");
+		userDto.setAddressLine2("adr2");
+		userDto.setUsername("ttt");
+		userDto.setPassword("ttt");
+		userDto.setType(0);
+		userDto.setCity("city");
+		userDto.setState("State");
+		userDto.setPostalCode("987654");
+		userDto.setStatus(0);
+		
+		userDto.addNewUser();
+		
+		userDto2.getUserByUsername("ttt");
+		//userDto.getUserById(1);
+		
+		int id = userDto2.getId();
+		out.println(userDto2.getId());
+		out.println(userDto2.getUsername());
+		out.println(userDto2.getPassword());
+		out.println(userDto2.getAddressLine1());
+
+		userDto2.setAddressLine1("addr11");
+		userDto2.updateUser();
+		
+		userDto2.getUserById(id);
+		out.println(userDto2.getAddressLine1());
+
+		// now insert credit card
+		CreditCardDTO ccd = new CreditCardDTO();
+		ccd.setBalance((float)100.0);
+		ccd.setCardHolderName(userDto2.getFirstName());
+		ccd.setCardNickName(userDto2.getUsername());
+		ccd.setCreditCardNumber("11223344");
+		ccd.setCvv("ttt");
+		ccd.setUserId(userDto2.getId());
+		ccd.addCreditCard();
+		
+		out.println(ccd.getCvv());
+		
+		ccd.setCvv("tvv");
+		int cid = ccd.getUserId();
+
+		ccd.getCreditCardById(cid);
+		out.println(ccd.getCvv());
+		
+		User user;
+		UserDAO ud = new UserDAO();
+		user = ud.getUserById(id);
+		user.setAddressLine1("addr1122333blah");
+		ud.updateUser(user);
+
+		ArrayList<CreditCard> ccdl = user.getCreditCard();
+		CreditCard creditCard = ccdl.get(0);;
+		creditCard.setCvv("aaa");
+		
+		ud.updateCreditCard(user, creditCard);
+	
+		user = ud.getUserById(id);
+		out.println(user.getAddressLine1());
+		ccdl = user.getCreditCard();
+		creditCard = ccdl.get(0);
+		out.println(creditCard.getCvv());
+		
+		
+		CreditCardDTO ccd2 = new CreditCardDTO();
+		// ccd2.getCreditCardByCreditCardNumber("113223344");
+		
+		//ccd2.deleteCreditCard(ccd2.getId());
+		//userDto.deleteUserById(userDto2.getId());
+	    
+		return;
 	}
 	
 	private void dumpCreditCard(PrintWriter out) throws Exception

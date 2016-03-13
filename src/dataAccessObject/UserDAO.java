@@ -303,7 +303,7 @@ public class UserDAO implements IUserDao {
 			// fetch user details
 			logger.info("update user details from to db");
 			this.initializeUserDtoFromUser(userDto, user);
-			status = userDto.updateUser(user.getUserId());			
+			status = userDto.updateUser();			
 		}
 		catch (Exception e)
 		{
