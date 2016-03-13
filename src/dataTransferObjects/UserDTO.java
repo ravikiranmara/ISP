@@ -52,9 +52,10 @@ public class UserDTO
 		
 		try 
 		{
+			logger.info("get user by id dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "select Id, FirstName, LastName, AddressLine1, AddressLine2, City, State, PostalCode, " +
-					"Status, Type, Username, Password" +
+					"Status, Type, UserName, Password" +
 					" from " + this.tableName + 
 					" WHERE Id = ?";
 			preparedStatement = connection.prepareStatement(query);
@@ -63,9 +64,10 @@ public class UserDTO
 			
 			while(resultSet.next())
 			{
+				System.out.println("got result");
 				this.id = resultSet.getInt("Id");
 				this.firstName = resultSet.getString("FirstName");
-				this.lastName = resultSet.getString("LasstName");
+				this.lastName = resultSet.getString("LastName");
 				this.addressLine1 = resultSet.getString("AddressLine1");
 				this.addressLine2 = resultSet.getString("AddressLine2");
 				this.city = resultSet.getString("City");
@@ -82,6 +84,7 @@ public class UserDTO
 		catch (Exception e) 
 		{
 			logger.fatal("Unable to get User details : " + e.getMessage());
+			System.out.println("exception");
 			e.printStackTrace();
 			throw e;
 		} 
@@ -103,10 +106,12 @@ public class UserDTO
 		
 		try 
 		{
+			logger.info("get user by username dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			query = "select Id, FirstName, LastName, AddressLine1, AddressLine2, City, State, PostalCode, " +
-					"Status, Type, Username, Password" +
-					" from " + this.tableName + " Username = ?";
+			query = "SELECT Id, FirstName, LastName, AddressLine1, AddressLine2, City, State, PostalCode, " +
+					"Status, Type, UserName, Password" +
+					" FROM " + this.tableName +
+					" WHERE UserName = ?";
 			
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, username);
@@ -117,7 +122,7 @@ public class UserDTO
 			{
 				this.id = resultSet.getInt("Id");
 				this.firstName = resultSet.getString("FirstName");
-				this.lastName = resultSet.getString("LasstName");
+				this.lastName = resultSet.getString("LastName");
 				this.addressLine1 = resultSet.getString("AddressLine1");
 				this.addressLine2 = resultSet.getString("AddressLine2");
 				this.city = resultSet.getString("City");
@@ -133,7 +138,7 @@ public class UserDTO
 		} 
 		catch (Exception e) 
 		{
-			logger.fatal("Unable to get User details : " + e.getMessage());
+			logger.fatal("Unable to get User details by username dto : " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} 

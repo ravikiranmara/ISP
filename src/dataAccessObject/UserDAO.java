@@ -224,6 +224,7 @@ public class UserDAO implements IUserDao {
 				// lets get the dto and initialize
 				creditCardDto.Clear();
 				temp = new CreditCard();
+				creditCardDto.getCreditCardByCreditCardNumber(number);
 				
 				this.initializeCreditCardFromDTO(temp, creditCardDto);
 				creditCard.add(temp);

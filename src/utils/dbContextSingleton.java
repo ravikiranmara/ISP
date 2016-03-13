@@ -33,15 +33,16 @@ public class dbContextSingleton
 			env = (Context)new InitialContext().lookup("java:comp/env");
 			String dbName = (String)env.lookup(globals.webConfig_dbname);
 			String dbDriver = (String)env.lookup(globals.webConfig_dbdriver);
+			String connStringBase = (String)env.lookup(globals.webConfig_connString);
 			String dbUsername = (String)env.lookup(globals.webConfig_username);
 			String dbPassword = (String)env.lookup(globals.webConfig_password);
-			String driverString = dbDriver + dbName;
+			String connString = connStringBase + dbName;
 			
-			logger.info("Loading DB Driver : " + driverString);
-			Class.forName(driverString);
+			logger.info("Loading DB Driver : " + dbDriver);
+			Class.forName(dbDriver);
 			
 			logger.info("Creating connection");
-			connection = DriverManager.getConnection(driverString, dbUsername, dbPassword);
+			connection = DriverManager.getConnection(connString, dbUsername, dbPassword);
 		} 
 		catch (NamingException e) 
 		{

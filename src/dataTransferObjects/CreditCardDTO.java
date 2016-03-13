@@ -44,7 +44,7 @@ public class CreditCardDTO
     	this.initialize();
     }
     
-    public ArrayList<String> getCreditCardNumbersForUser(int userid) throws Exception
+    public ArrayList<String> getCreditCardNumbersForUser(int userId) throws Exception
     {
     	ArrayList<String> cardNumberList = null;
     	

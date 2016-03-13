@@ -8,4 +8,5 @@ public class globals
 	static public String webConfig_dbdriver = "dbDriver";
 	static public String webConfig_username = "username";
 	static public String webConfig_password = "password";
+	static public String webConfig_connString = "connectionString";
 }

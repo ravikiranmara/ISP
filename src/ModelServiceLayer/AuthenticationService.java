@@ -35,7 +35,7 @@ public class AuthenticationService implements IAuthenticationService
     }
 
     @Override
-    public boolean IsUserDetailsForRegistrationValid(User user)
+    public boolean IsUserDetailsForRegistrationValid(User user) throws Exception
     {
         boolean status = true;
         
