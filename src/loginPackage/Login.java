@@ -96,7 +96,7 @@ public class Login extends HttpServlet {
 		if(username == null || password == null)
 		{
 		    status = false;
-			out.println("Parameters are invalid. Username - " + username + ", Password - " + password);
+			logger.info("Parameters are invalid. Username - " + username + ", Password - " + password);
 			// redirect to same page with error message 
 		}
 		
@@ -105,7 +105,7 @@ public class Login extends HttpServlet {
 		{
 		    IAuthenticationService authService = new AuthenticationService();
 		    auth = authService.authenticateUser(username, password);
-		    out.println("Username - " + username + ", Password - " + password + " status - " + (auth?"true":"false"));            
+		    logger.info("Username - " + username + ", Password - " + password + " status - " + (auth?"true":"false"));            
 		}
 		
 		// if no errors and valid user, get user  
@@ -114,11 +114,6 @@ public class Login extends HttpServlet {
 		if(false != status && true == auth)
 		{
 		    user = userService.getUserByUsername(username);
-	        if(null == user)
-	        {
-	            // this shouldn't happen
-	            status = false;
-	        }
 		}
 		
 		// now redirect them to page

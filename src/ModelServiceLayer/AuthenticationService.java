@@ -5,6 +5,7 @@ import modelObject.User;
 public class AuthenticationService implements IAuthenticationService
 {
 
+	// check if (user is valid) and (username password is valid)
     @Override
     public boolean authenticateUser(String username, String password) throws Exception
     {

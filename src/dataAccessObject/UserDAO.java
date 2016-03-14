@@ -2,6 +2,7 @@ package dataAccessObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import modelObject.CreditCard;
 import modelObject.User;
@@ -158,7 +159,10 @@ public class UserDAO implements IUserDao {
 			
 			// fetch user details
 			logger.info("Get user details from dto");
-			userDto.getUserByUsername(username);
+			if(false == userDto.getUserByUsername(username))
+			{
+				throw new NoSuchElementException();
+			}
 			this.initializeUserFromUserDTO(tempUser, userDto);
 			
 			logger.info("Getting list of credit Cards dto");
@@ -179,6 +183,11 @@ public class UserDAO implements IUserDao {
 			
 			// no exceptions so make final assignment
 			tempUser.setCreditCard(creditCard);
+		}
+		catch(NoSuchElementException e)
+		{
+			logger.info("No such user exists");
+			tempUser = null;
 		}
 		catch (Exception e)
 		{
@@ -211,7 +220,11 @@ public class UserDAO implements IUserDao {
 			
 			// fetch user details
 			logger.info("Get user details from dto");
-			userDto.getUserById(id);
+			if(false == userDto.getUserById(id))
+			{
+				throw new NoSuchElementException();
+			}
+			
 			this.initializeUserFromUserDTO(tempUser, userDto);
 			
 			logger.info("Getting list of credit Cards dto");
@@ -231,6 +244,11 @@ public class UserDAO implements IUserDao {
 			}
 			// no exceptions so make final assignment
 			tempUser.setCreditCard(creditCard);		
+		}
+		catch(NoSuchElementException e)
+		{
+			logger.info("No such user exists");
+			tempUser = null;
 		}
 		catch (Exception e)
 		{
