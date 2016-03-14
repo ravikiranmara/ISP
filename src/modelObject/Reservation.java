@@ -1,6 +1,6 @@
 package modelObject;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Reservation 
 {

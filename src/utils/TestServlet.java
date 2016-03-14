@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import modelObject.CreditCard;
+import modelObject.Reservation;
 import modelObject.User;
 
+import dataAccessObject.ReservationDAO;
 import dataAccessObject.UserDAO;
 import dataTransferObjects.AmenityDTO;
 import dataTransferObjects.CreditCardDTO;
@@ -66,9 +68,22 @@ public class TestServlet extends HttpServlet {
 	    
 		out.println("begin");
 		
-		this.dumpAmenity(out);
+		this.dumpReservation(out);
 		
 	    out.println("end");
+	}
+	
+	
+	
+	private void dumpReservation(PrintWriter out) throws Exception
+	{
+		ReservationDAO reservationDao = new ReservationDAO(); 
+		Reservation reservation = reservationDao.getReservationById(2);
+		
+		out.println(reservation.getId());
+		out.println(reservation.getTransactionId());
+		
+		return;
 	}
 
 	private void dumpAmenity(PrintWriter out) throws Exception

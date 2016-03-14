@@ -135,7 +135,8 @@ public class HotelReservationDTO
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, hid);
 			rs = ps.executeQuery();
-			
+			logger.info("hid:" + hid);
+
 			while(rs.next())
 			{
 				this.id = rs.getInt("Id");
@@ -149,6 +150,7 @@ public class HotelReservationDTO
 				this.roomTypeId = rs.getInt("RoomTypeId");
 				this.reservationNumber = rs.getString("ReservationNumber");
 				this.isInitialized = true;
+				
 				status = true;
 			}
 		} 

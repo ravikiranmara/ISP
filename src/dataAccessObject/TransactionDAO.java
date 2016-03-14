@@ -14,7 +14,7 @@ import dataTransferObjects.UserDTO;
 
 public class TransactionDAO 
 {
-	static Logger logger = Logger.getLogger(HotelReviewDTO.class.getName());
+	static Logger logger = Logger.getLogger(TransactionDAO.class.getName());
 	
 	private void initializeDTOFromTransaction(TransactionDTO trdto, Transaction tr)
 	{
@@ -67,7 +67,6 @@ public class TransactionDAO
 		}
 		finally
 		{
-			
 		}
 		
 		return status;
@@ -87,6 +86,7 @@ public class TransactionDAO
 			transactionDto.getTransactionById(tid);
 			transaction = new Transaction();
 			this.initializeTransactionFromDTO(transaction, transactionDto);
+			
 		}
 		catch (Exception e)
 		{
@@ -100,5 +100,32 @@ public class TransactionDAO
 		return transaction;
 	}
 
+	public boolean updateTransaction(Transaction transaction) throws Exception 
+	{
+		boolean status = false;
+		TransactionDTO transactionDto = null;
+		
+		try
+		{
+			transactionDto = new TransactionDTO();
+			
+			// fetch user details
+			logger.info("add transaction dao");
+			this.initializeDTOFromTransaction(transactionDto, transaction);
+			transactionDto.updateTransaction();
+			
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to update transaction: ");
+			throw e;
+		}
+		finally
+		{
+		}
+		
+		return status;
+	}
 	
 }
