@@ -4,6 +4,7 @@ import utils.dbContextSingleton;
 import java.sql.*;
 import org.apache.log4j.Logger;
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class HotelReservationDTO
 {
@@ -36,7 +37,85 @@ public class HotelReservationDTO
     	return;
     }
     
-    public boolean getHotelReservationById(int hid) throws Exception
+    public ArrayList<Integer> getHotelReservationByUserId(int uid) throws Exception
+    {
+    	ArrayList<Integer> templist = null;
+		Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			logger.info("get hotel reservation by id dto");
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "SELECT Id" +
+					" FROM " + this.tableName +
+					" WHERE UserId = ?";
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, uid);
+			rs = ps.executeQuery();
+	
+			templist = new ArrayList<Integer>();
+			while(rs.next())
+			{
+				templist.add(rs.getInt("Id"));
+			}
+		}
+		catch (Exception e) 
+		{
+			logger.fatal("unable to get reservations for user dto: " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
+		return templist;
+	}
+	
+    public ArrayList<Integer> getHotelReservationByHotelId(int hid) throws Exception
+    {
+    	ArrayList<Integer> templist = null;
+		Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try 
+		{
+			logger.info("get hotel reservation by id dto");
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "SELECT Id" +
+					" FROM " + this.tableName +
+					" WHERE HotelId = ?";
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, hid);
+			rs = ps.executeQuery();
+	
+			templist = new ArrayList<Integer>();
+			while(rs.next())
+			{
+				templist.add(rs.getInt("Id"));
+			}
+		}
+		catch (Exception e) 
+		{
+			logger.fatal("unable to get reservations for user dto: " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
+		return templist;
+	}
+	
+	public boolean getHotelReservationById(int hid) throws Exception
     {
     	boolean status = false;
     	Connection connection = null;

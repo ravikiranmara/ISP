@@ -51,13 +51,12 @@ public class AmenityDTO
 		String query = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		HashMap<Integer, String[]> tempAmenityHash = null;
 		
 		int tempId;
 		String tempName;
 		String tempDescription;
 		
-		HashMap<Integer, String[]> tempAmenityHash = new HashMap<Integer, String[]>();
-    	
 		try 
 		{
 			connection = dbContextSingleton.getSingletonObject().getConnection();
@@ -69,7 +68,8 @@ public class AmenityDTO
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
 			
-			while(rs.next())
+			tempAmenityHash = new HashMap<Integer, String[]>();
+	    	while(rs.next())
 			{
 				tempId = rs.getInt("Id");
 				tempName = rs.getString("Name");

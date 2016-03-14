@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import modelObject.CreditCard;
 import modelObject.User;
 
 import dataAccessObject.UserDAO;
+import dataTransferObjects.AmenityDTO;
 import dataTransferObjects.CreditCardDTO;
 import dataTransferObjects.UserDTO;
 
@@ -64,11 +66,25 @@ public class TestServlet extends HttpServlet {
 	    
 		out.println("begin");
 		
-		this.insertDeleteUser(out);
+		this.dumpAmenity(out);
 		
 	    out.println("end");
 	}
 
+	private void dumpAmenity(PrintWriter out) throws Exception
+	{
+		AmenityDTO amenityDto = new AmenityDTO();
+		
+		HashMap<Integer, String[]> list = amenityDto.getAllAmenity();
+		for(Integer i : list.keySet())
+		{
+			out.println(i);
+			String[] values = list.get(i);
+			out.println("name" + values[0]);
+			out.println("desc" + values[1]);
+		}
+	}
+	
 	private void dumpUserDto(PrintWriter out) throws Exception
 	{
 		UserDTO userDto = new UserDTO();

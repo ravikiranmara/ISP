@@ -13,6 +13,7 @@ public class Reservation
 	int numberOfRooms;
 	Date checkInDate;
 	Date checkOutDate;
+	int transactionId;
 	
 	public Reservation()
 	{
@@ -23,6 +24,12 @@ public class Reservation
 	}
 	
 	//  getters and setters
+	public int getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
+	}
 	public int getId() {
 		return id;
 	}

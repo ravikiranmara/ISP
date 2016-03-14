@@ -323,7 +323,6 @@ public class UserDAO implements IUserDao {
 	public boolean addCreditCard(User user, CreditCard creditCard) throws Exception 
 	{
 		boolean status = false;
-		UserDTO userDto = null;
 		CreditCardDTO creditCardDto = null;
 		
 		try

@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS `HotelReservations` (
   `NumberOfRooms` INT NULL,
   `ReservationNumber` CHAR(12) NULL DEFAULT '000000000000',
   `UserId` INT NULL,
+  `TransactionId` INT NULL,
   `Status` INT NULL,
   `Notes` LONGTEXT NULL,
   `RoomTypeId` INT NULL,
@@ -107,6 +108,11 @@ CREATE TABLE IF NOT EXISTS `HotelReservations` (
   CONSTRAINT `FK_HotelReservation_Users`
     FOREIGN KEY (`UserId`)
     REFERENCES `Users` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_HotelReservation_TransactionId`
+    FOREIGN KEY (`TransactionId`)
+    REFERENCES `Transactions` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -194,3 +200,40 @@ CREATE TABLE IF NOT EXISTS `HotelReviews` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `Transactions`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `Transactions` (
+  `Id` INT NOT NULL AUTO_INCREMENT, 
+  `CustomerUserId` INT NOT NULL, 
+  `OwnerUserId` INT NOT NULL, 
+  `CustomerCreditCardId` INT NOT NULL, 
+  `OwnerCreditCardId` INT NOT NULL,
+  `Amount` FLOAT NOT NULL, 
+  `Status` TINYINT(1), 
+  `CancelledReservation` TINYINT(1),
+  PRIMARY KEY (`Id`),
+  
+  CONSTRAINT `FK_CustomerUserId` 
+    FOREIGN KEY (`CustomerUserId`) 
+    REFERENCES `Users` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_OwnerUserId` 
+    FOREIGN KEY (`OwnerUserId`) 
+    REFERENCES `Users` (`Id`)
+    ON DELETE NO ACTION	
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_CustomerCreditCardId` 
+    FOREIGN KEY (`CustomerCreditCardId`) 
+    REFERENCES `CreditCards` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_OwnerCreditCardId` 
+    FOREIGN KEY (`OwnerCreditCardId`) 
+    REFERENCES `CreditCards` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
