@@ -2,6 +2,7 @@ package dataTransferObjects;
 
 import utils.dbContextSingleton;
 import java.sql.*;
+import java.sql.Connection;
 import org.apache.log4j.Logger;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class HotelReservationDTO
     String notes;
     String reservationNumber;
     int roomTypeId;
+    int transactionId;
     boolean isInitialized;
     
     static Logger logger = Logger.getLogger(HotelReservationDTO.class.getName());
@@ -52,7 +54,7 @@ public class HotelReservationDTO
 		
 		try 
 		{
-			logger.info("get hotel reservation by id dto");
+			logger.info("get hotel reservation by uid dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "SELECT Id" +
 					" FROM " + this.tableName +
@@ -130,18 +132,22 @@ public class HotelReservationDTO
 		
 		try 
 		{
-			logger.info("get hotel reservation by id dto");
+			logger.info("hid:" + hid);
+			logger.info("get hotel reservation by id dto : " + hid);
+			
 			connection = dbContextSingleton.getSingletonObject().getConnection();
+			logger.info("hid:" + hid);
+			
 			query = "SELECT Id, HotelId, CheckInDate, CheckOutDate, " +
 					"NumberOfRooms, ReservationNumber, UserId, Status, " +
-					"Notes, RoomTypeId" +
+					"Notes, RoomTypeId, TransactionId" +
 					" FROM " + this.tableName +
 					" WHERE Id = ?";
 			ps = connection.prepareStatement(query);
+			logger.info("hid2:" + hid);
 			ps.setInt(1, hid);
 			rs = ps.executeQuery();
-			logger.info("hid:" + hid);
-
+			
 			while(rs.next())
 			{
 				this.id = rs.getInt("Id");
@@ -154,6 +160,7 @@ public class HotelReservationDTO
 				this.notes = rs.getString("Notes");
 				this.roomTypeId = rs.getInt("RoomTypeId");
 				this.reservationNumber = rs.getString("ReservationNumber");
+				this.transactionId = rs.getInt("TransactionId");
 				this.isInitialized = true;
 				
 				status = true;
@@ -186,9 +193,9 @@ public class HotelReservationDTO
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Insert Into " + this.tableName + " (HotelId, CheckInDate, CheckOutDate, " +
 					"NumberOfRooms, ReservationNumber, UserId, Status, " +
-					"Notes, RoomTypeId)" +
+					"Notes, RoomTypeId, TransactionId)" +
 					" values (?, ?, ?, " +
-					"?, ?, ?, ?,  " +
+					"?, ?, ?, ?, ?, " +
 					"?, ?)";
 			ps = connection.prepareStatement(query);
 			
@@ -202,6 +209,7 @@ public class HotelReservationDTO
 			ps.setInt(7, this.res_status);
 			ps.setString(8, this.notes);
 			ps.setInt(9, this.roomTypeId);
+			ps.setInt(10, this.transactionId);
 
 			this.id = ps.executeUpdate();
 			insertId = this.id;
@@ -234,7 +242,7 @@ public class HotelReservationDTO
 			query = "Update " + this.tableName + 
 					" SET (HotelId = ?, CheckInDate = ?, CheckOutDate = ?, " +
 					"NumberOfRooms = ?, ReservationNumber = ?, UserId = ?, Status = ?, " +
-					"Notes = ?, RoomTypeId = ?)" +
+					"Notes = ?, RoomTypeId = ?, TransactionId = ?)" +
 					" WHERE ID = ?";
 			
 			ps = connection.prepareStatement(query);
@@ -249,7 +257,8 @@ public class HotelReservationDTO
 			ps.setInt(7, this.res_status);
 			ps.setString(8, this.notes);
 			ps.setInt(9, this.roomTypeId);
-			ps.setInt(10, id);
+			ps.setInt(10, this.transactionId);
+			ps.setInt(11, id);
 			
 			this.id = ps.executeUpdate();
 			status = true;
@@ -357,4 +366,17 @@ public class HotelReservationDTO
 	public void setRoomTypeId(int roomTypeId) {
 		this.roomTypeId = roomTypeId;
 	}
+	public int getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
+	}
+	public String getReservationNumber() {
+		return reservationNumber;
+	}
+	public void setReservationNumber(String reservationNumber) {
+		this.reservationNumber = reservationNumber;
+	}
+
 }

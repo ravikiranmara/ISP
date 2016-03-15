@@ -15,7 +15,7 @@ import dataTransferObjects.TransactionDTO;
 
 public class ReservationDAO 
 {
-static Logger logger = Logger.getLogger(TransactionDAO.class.getName());
+static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 	
 	private void initializeDTOFromReservation(HotelReservationDTO hrdto, Reservation r)
 	{
@@ -27,6 +27,8 @@ static Logger logger = Logger.getLogger(TransactionDAO.class.getName());
 		hrdto.setNumberOfRooms(r.getNumberOfRooms());
 		hrdto.setStatus(r.getReservationStatus());
 		hrdto.setUserId(r.getUserId());
+		hrdto.setReservationNumber(r.getReservationNumber());
+		hrdto.setTransactionId(r.getTransactionId());
 		
 		return;
 	}
@@ -41,6 +43,8 @@ static Logger logger = Logger.getLogger(TransactionDAO.class.getName());
 		r.setNumberOfRooms(hrdto.getNumberOfRooms());
 		r.setReservationStatus(hrdto.getStatus());
 		r.setUserId(hrdto.getUserId());
+		r.setTransactionId(hrdto.getTransactionId());
+		r.setReservationNumber(hrdto.getReservationNumber());
 		
 		return;
 	}
@@ -87,6 +91,7 @@ static Logger logger = Logger.getLogger(TransactionDAO.class.getName());
 			reservationDto.getHotelReservationById(tid);
 			reservation = new Reservation();
 			this.initializeReservationFromDTO(reservation, reservationDto);
+			logger.info("got reservation dao");
 		}
 		catch (Exception e)
 		{

@@ -14,6 +14,7 @@ public class Reservation
 	Date checkInDate;
 	Date checkOutDate;
 	int transactionId;
+	String reservationNumber;
 	
 	public Reservation()
 	{
@@ -83,5 +84,11 @@ public class Reservation
 	}
 	public void setCheckOutDate(Date checkOutDate) {
 		this.checkOutDate = checkOutDate;
+	}
+	public String getReservationNumber() {
+		return reservationNumber;
+	}
+	public void setReservationNumber(String reservationNumber) {
+		this.reservationNumber = reservationNumber;
 	}
 }

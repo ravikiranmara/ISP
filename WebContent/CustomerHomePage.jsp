@@ -23,7 +23,7 @@
     	</div>
    			<ul class="nav navbar-nav">
      			<li class="active"><a href="#">Home</a></li>
-    			<li><a href="ManageReservations.jsp">Manage Reservations</a></li>
+    			<li><a href="ManageReservationsCustomer">Manage Reservations</a></li>
      	 	</ul>
    		 	<ul class="nav navbar-nav navbar-right">
       			<li><a href="Login.jsp"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
