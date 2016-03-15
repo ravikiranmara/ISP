@@ -1,9 +1,14 @@
 package dataAccessObject;
 
+import java.util.ArrayList;
+
 import modelObject.Reservation;
 import modelObject.Transaction;
 
 import org.apache.log4j.Logger;
+
+import ModelServiceLayer.ITransactionService;
+import ModelServiceLayer.TransactionService;
 
 import dataTransferObjects.HotelReservationDTO;
 import dataTransferObjects.TransactionDTO;
@@ -94,6 +99,41 @@ static Logger logger = Logger.getLogger(TransactionDAO.class.getName());
 		
 		return reservation;
 	}
+	
+	public ArrayList<Reservation> getReservationsForUser(int uid) throws Exception
+	{
+		ArrayList<Reservation> rlist = null;
+		ArrayList<Integer> idlist = null;
+		HotelReservationDTO rdto = null;
+		Reservation tempres = null;
+		try
+		{
+			logger.info("All reservations for user");
+			rdto = new HotelReservationDTO();
+			idlist = rdto.getHotelReservationByUserId(uid);
+			
+			rlist = new ArrayList<Reservation>();
+			for(Integer id : idlist)
+			{
+				rdto.clear();
+				tempres = new Reservation();
+				rdto.getHotelReservationByHotelId(id);
+				this.initializeReservationFromDTO(tempres, rdto);
+				rlist.add(tempres);				
+			}
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get reservation: ");
+			throw e;
+		}
+		finally
+		{
+		}
+		
+		return rlist;
+	}
+	
 
 	public boolean updateReservation(Reservation reservation) throws Exception 
 	{
@@ -122,4 +162,31 @@ static Logger logger = Logger.getLogger(TransactionDAO.class.getName());
 		
 		return status;
 	}
+
+	public boolean deleteReservation(int rid) throws Exception 
+	{
+		boolean status = false;
+		HotelReservationDTO reservationDto = null;
+		
+		try
+		{
+			logger.info("delte reesrvation dao");
+
+			reservationDto = new HotelReservationDTO();
+			reservationDto.deleteHotelReservation(rid);
+			
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to delete reservation: ");
+			throw e;
+		}
+		finally
+		{
+		}
+		
+		return status;
+	}
+
 }

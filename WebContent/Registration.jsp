@@ -64,6 +64,78 @@
 			</div>
 	    </div>
     </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-firstName" class="center">First Name:</label>
+	      <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter First Name">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-lastName" class="center">Last Name:</label>
+	      <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Enter Last Name">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-Address1" class="center">Address Line 1:</label>
+	      <input type="text" class="form-control" id="address1" name="address1" placeholder="Enter Address 1">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-Address2" class="center">Address Line 2:</label>
+	      <input type="text" class="form-control" id="address2" name="address2" placeholder="Enter Address 2">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-city" class="center">City:</label>
+	      <input type="text" class="form-control" id="city" name="city" placeholder="Enter City">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-state" class="center">State:</label>
+	      <input type="text" class="form-control" id="state" name="state" placeholder="Enter State">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-postalCode" class="center">Postal Code:</label>
+	      <input type="text" class="form-control" id="postalCode" name="postalCode" placeholder="Enter Postal Code">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-creditCardNumber" class="center">Credit card number:</label>
+	      <input type="text" class="form-control" id="creditCardNumber" name="creditCardNumber" placeholder="Enter Credit Card Number">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-creditCardHolderName" class="center">Credit card Holder Name:</label>
+	      <input type="text" class="form-control" id="creditCardHolderName" name="creditCardHolderName" placeholder="Enter Credit Card Holder Name">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-creditCardNickName" class="center">Credit card Nick Name:</label>
+	      <input type="text" class="form-control" id="creditCardNickName" name="creditCardNickName" placeholder="Enter Credit Card Nick Name">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-creditCardCvv" class="center">Credit card CVV:</label>
+	      <input type="text" class="form-control" id="creditCardCvv" name="creditCardCvv" placeholder="Enter Credit Card Cvv">
+	    </div>
+    </div>
+    <div class="container-fluid">
+	    <div class="form-group">
+	      <label for="lbl-creditCardBalance" class="center">Credit card Balance:</label>
+	      <input type="text" class="form-control" id="creditCardBalance" name="creditCardBalance" placeholder="Enter Credit Card Balance">
+	    </div>
+    </div>
     
     <div class="container-fluid">
     	<div class="row form-group text-center">

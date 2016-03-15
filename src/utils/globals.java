@@ -9,4 +9,6 @@ public class globals
 	static public String webConfig_username = "username";
 	static public String webConfig_password = "password";
 	static public String webConfig_connString = "connectionString";
+	static public int valid = 0;
+	static public int invalid = 1;
 }

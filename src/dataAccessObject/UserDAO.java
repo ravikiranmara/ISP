@@ -111,6 +111,13 @@ public class UserDAO implements IUserDao {
 			
 			logger.info("Foreach card number get card info");
 			creditCard = user.getCreditCard();
+			
+			// hacky, don't want to put another exception
+			if(null == creditCard)
+			{
+				creditCard = new ArrayList<CreditCard>();
+			}
+			
 			creditCardDto = new CreditCardDTO();
 			for (CreditCard card : creditCard)
 			{

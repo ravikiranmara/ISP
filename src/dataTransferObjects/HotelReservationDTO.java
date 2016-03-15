@@ -27,6 +27,11 @@ public class HotelReservationDTO
     {
     	this.initialize();
     }
+    
+    public void clear()
+    {
+    	this.initialize();
+    }
 
     private void initialize()
     {

@@ -110,7 +110,7 @@ public class TransactionDAO
 			transactionDto = new TransactionDTO();
 			
 			// fetch user details
-			logger.info("add transaction dao");
+			logger.info("update transaction dao");
 			this.initializeDTOFromTransaction(transactionDto, transaction);
 			transactionDto.updateTransaction();
 			
@@ -119,6 +119,33 @@ public class TransactionDAO
 		catch (Exception e)
 		{
 			logger.fatal("Unable to update transaction: ");
+			throw e;
+		}
+		finally
+		{
+		}
+		
+		return status;
+	}
+	
+	public boolean deleteTransaction(int tid) throws Exception 
+	{
+		boolean status = false;
+		TransactionDTO transactionDto = null;
+		
+		try
+		{
+			transactionDto = new TransactionDTO();
+			
+			// fetch user details
+			logger.info("delete transaction dao");
+			transactionDto.deleteTransaction(tid);
+			
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to delete transaction: ");
 			throw e;
 		}
 		finally

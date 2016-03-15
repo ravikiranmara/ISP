@@ -15,9 +15,9 @@ public class AuthenticationService implements IAuthenticationService
         User user = userService.getUserByUsername(username);
         
         
+        // user not found in file. 
         if(null == user)
         {
-            // user not found in file. 
             authenticated = false;
         }
         
@@ -46,7 +46,6 @@ public class AuthenticationService implements IAuthenticationService
         // check if user already exists in the db
         if(null != dbuser)
         {
-            // log user already exists
             status = false;
         }
         
@@ -55,5 +54,4 @@ public class AuthenticationService implements IAuthenticationService
         
         return status;
     }
-
 }

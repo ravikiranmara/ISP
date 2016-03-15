@@ -11,8 +11,7 @@ import modelObject.User;
 
 public class UserService implements IUserService
 {
-
-	static Logger logger = Logger.getLogger(Login.class.getName());
+	static Logger logger = Logger.getLogger(UserService.class.getName());
     
     @Override
     public User getUserByUsername(String username) throws Exception
@@ -83,5 +82,4 @@ public class UserService implements IUserService
 		
 		return status;
 	}
-    
 }
