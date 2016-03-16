@@ -15,4 +15,5 @@ public interface IReservationService
 	
 	public ArrayList<Reservation> getReservationForUser(User user);
 	public ArrayList<Reservation> getReservationForUser(int userId);
+	ArrayList<Reservation> getReservationForHotel(int hotelId) throws Exception;
 }

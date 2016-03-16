@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import dataAccessObject.ReservationDAO;
 import dataTransferObjects.CreditCardDTO;
+import dataTransferObjects.HotelReservationDTO;
 
 import modelObject.Reservation;
 import modelObject.User;
@@ -113,10 +114,33 @@ public class ReservationService implements IReservationService
 		{
 			logger.info("get reservations for user");
 			reservationList = reservationDao.getReservationsForUser(userId);
+			HotelReservationDTO hdto = new HotelReservationDTO();
 		}
 		catch (Exception ex)
 		{
 			logger.fatal("Unable to get reservations for user");
+		}
+		finally
+		{}
+		
+		return reservationList;
+	}
+
+	@Override
+	public ArrayList<Reservation> getReservationForHotel(int hotelId) throws Exception
+	{
+		ArrayList<Reservation> reservationList = null;
+		ReservationDAO reservationDao = new ReservationDAO();
+		
+		try
+		{
+			logger.info("get reservations for hotel");
+			reservationList = reservationDao.getReservationsForHotel(hotelId);
+			HotelReservationDTO hdto = new HotelReservationDTO();
+		}
+		catch (Exception ex)
+		{
+			logger.fatal("Unable to get reservations for hotel");
 		}
 		finally
 		{}

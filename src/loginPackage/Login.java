@@ -16,6 +16,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import ModelServiceLayer.AuthenticationService;
 import ModelServiceLayer.IAuthenticationService;
 import ModelServiceLayer.IUserService;
@@ -120,6 +122,9 @@ public class Login extends HttpServlet {
 		if(false != status && true == auth)
 		{
 		    // there should be a better way than if else
+			logger.info("Creating session");
+			HttpSession session = request.getSession();
+			session.setAttribute("username", username);
 		    if(UserType.Client == user.getUserType())
 		    {
 		        response.sendRedirect("ClientHomePage.jsp");

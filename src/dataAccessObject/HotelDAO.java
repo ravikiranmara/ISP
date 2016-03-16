@@ -12,6 +12,7 @@ import dataTransferObjects.HotelRoomDTO;
 import dataTransferObjects.HotelRoomTypeDTO;
 import dataTransferObjects.UserDTO;
 import modelObject.Amenity;
+import modelObject.AmenityType;
 import modelObject.CreditCard;
 import modelObject.Hotel;
 import modelObject.Review;
@@ -775,6 +776,76 @@ public class HotelDAO implements IHotelDAO
 		}
 	
 		return rval;
+	}
+
+	@Override
+	public ArrayList<Hotel> getHotelForOwner(int ownerId)
+			throws Exception 
+	{
+		ArrayList<Hotel> hlist = null;
+		HotelDTO hdto = null;
+		ArrayList<Integer> hidlist = null;
+		Hotel temp = null;
+		
+		try
+		{
+			logger.info("Get hotel for owner");
+			hdto = new HotelDTO();
+			
+			hidlist = hdto.getHotelByOwnerId(ownerId);
+			
+			hlist = new ArrayList<Hotel>();
+			for(Integer id : hidlist)
+			{
+				temp = new Hotel();
+				hdto.clear();
+				
+				temp = this.getHotelById(id);
+				hlist.add(temp);
+			}
+		}
+		catch (Exception ex)
+		{
+			logger.fatal("Unable to get hotel for owner");
+			throw ex;
+		}
+		
+		return hlist;
+	}
+	
+	@Override
+	public ArrayList<Hotel> getAllHotel()
+			throws Exception 
+	{
+		ArrayList<Hotel> hlist = null;
+		HotelDTO hdto = null;
+		ArrayList<Integer> hidlist = null;
+		Hotel temp = null;
+		
+		try
+		{
+			logger.info("Get hotel for owner");
+			hdto = new HotelDTO();
+			
+			hidlist = hdto.getAllHotel();
+			
+			hlist = new ArrayList<Hotel>();
+			for(Integer id : hidlist)
+			{
+				temp = new Hotel();
+				hdto.clear();
+				
+				temp = this.getHotelById(id);
+				hlist.add(temp);
+			}
+		}
+		catch (Exception ex)
+		{
+			logger.fatal("Unable to get hotel for owner");
+			throw ex;
+		}
+		
+		return hlist;
 	}
 
 }

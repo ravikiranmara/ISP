@@ -1,5 +1,6 @@
 package dataAccessObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import modelObject.Amenity;
@@ -12,6 +13,7 @@ import org.apache.log4j.Logger;
 public interface IHotelDAO
 {
 	Hotel getHotelById(int id) throws Exception;
+	ArrayList<Hotel> getHotelForOwner(int ownerId) throws Exception;
 	
 	boolean addHotel(Hotel hotel) throws Exception;
 	boolean removeHotel(Hotel hotel) throws Exception;
@@ -37,4 +39,6 @@ public interface IHotelDAO
 	
 	// Logger
 	static Logger logger = Logger.getLogger(IUserDao.class.getName());
+
+	ArrayList<Hotel> getAllHotel() throws Exception;
 }

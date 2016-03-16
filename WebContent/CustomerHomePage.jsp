@@ -13,23 +13,10 @@
 
 <!-- Load Custom Scripts and Styles -->
 <link rel="stylesheet" type="text/css" href="css/custom_styles.css">
-
 </head>
-<body>
-<nav class="navbar navbar-inverse">
-	<div class="container-fluid">
-   		<div class="navbar-header">
-     		<a class="navbar-brand" href="#">Hotels.com</a>
-    	</div>
-   			<ul class="nav navbar-nav">
-     			<li class="active"><a href="#">Home</a></li>
-    			<li><a href="ManageReservationsCustomer">Manage Reservations</a></li>
-     	 	</ul>
-   		 	<ul class="nav navbar-nav navbar-right">
-      			<li><a href="Login.jsp"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-    		</ul>
-	</div>
-</nav>
+
+<jsp:include page="headerCustomer.jsp" />
+
 <form role="form" action= "ReservationSearchResults.jsp">
 	<div class="container ">
 		<div class="hotelSearchBox">
@@ -37,9 +24,17 @@
 			<div class="row">
 	  			<div class="col-xs-6">
 					<div class="form-group">
-				  		<label for="search">Search:</label>
-				  		<input type="text" class="form-control" id="search" placeholder="Hotel Name">
+				  		<label for="lbl-hotelName">Hotel Name</label>
+				  		<input type="text" class="form-control" id="hotelName" name="hotelNmae" placeholder="Hotel Name">
 					</div>
+					<div class="form-group">
+				  		<label for="lbl-city">City</label>
+				  		<input type="text" class="form-control" id="city" placeholder="City">
+					</div>
+					<div class="form-group">
+				  		<label for="lbl-state">State</label>
+				  		<input type="text" class="form-control" id="state" placeholder="State">
+					</div>					
 					<div class="row">
 						<div class="col-xs-6">
 							<div>
@@ -208,10 +203,6 @@
 							</div>
 						</div>	
 					</div><br>
-					<div class="form-group">
-	     				<label>Location city:</label>
-	     				<input type="text" class="form-control" name="city" id="city" placeholder="Location city">
-	    			</div>
 					<label>Guests:</label><br>
 					<div class="row">
 						<div class="col-xs-3">
@@ -334,39 +325,39 @@
 			<div class="row">
 				<div class="col-xs-3">
 					<div class="checkbox">
-		  				<label><input type="checkbox" value="">Bathtub in room</label>
+		  				<label><input type="checkbox" name="amenity" id="amenity" value="">Bathtub in room</label>
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<div class="checkbox">
-		  				<label><input type="checkbox" value="">Free breakfast</label>
+		  				<label><input type="checkbox" name="amenity" id="amenity" value="">Free breakfast</label>
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<div class="checkbox">
-		  				<label><input type="checkbox" value="">Free Wi-Fi</label>
+		  				<label><input type="checkbox" name="amenity" id="amenity" value="">Free Wi-Fi</label>
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<div class="checkbox">
-		  				<label><input type="checkbox" value="">Gym</label>
+		  				<label><input type="checkbox"  name="amenity" id="amenity" value="">Gym</label>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-3">
 					<div class="checkbox">
-		  				<label><input type="checkbox" value="">Paid Internet access</label>
+		  				<label><input type="checkbox" name="amenity" id="amenity" value="">Paid Internet access</label>
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<div class="checkbox">
-		  				<label><input type="checkbox" value="">Pool</label>
+		  				<label><input type="checkbox" name="amenity" id="amenity" value="">Pool</label>
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<div class="checkbox">
-		  				<label><input type="checkbox" value="">Pet friendly</label>
+		  				<label><input type="checkbox" name="amenity" id="amenity"  value="">Pet friendly</label>
 					</div>
 				</div>
 				<div class="col-xs-3"></div>

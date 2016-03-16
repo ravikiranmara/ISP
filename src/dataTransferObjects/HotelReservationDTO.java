@@ -132,19 +132,15 @@ public class HotelReservationDTO
 		
 		try 
 		{
-			logger.info("hid:" + hid);
 			logger.info("get hotel reservation by id dto : " + hid);
 			
 			connection = dbContextSingleton.getSingletonObject().getConnection();
-			logger.info("hid:" + hid);
-			
 			query = "SELECT Id, HotelId, CheckInDate, CheckOutDate, " +
 					"NumberOfRooms, ReservationNumber, UserId, Status, " +
 					"Notes, RoomTypeId, TransactionId" +
 					" FROM " + this.tableName +
 					" WHERE Id = ?";
 			ps = connection.prepareStatement(query);
-			logger.info("hid2:" + hid);
 			ps.setInt(1, hid);
 			rs = ps.executeQuery();
 			

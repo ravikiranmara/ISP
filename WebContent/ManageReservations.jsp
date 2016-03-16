@@ -13,20 +13,9 @@
 <title>Manage Reservations</title>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-	<div class="container-fluid">
-   		<div class="navbar-header">
-     		<a class="navbar-brand" href="CustomerHomePage.jsp">Hotels.com</a>
-    	</div>
-   			<ul class="nav navbar-nav">
-     			<li class="active"><a href="CustomerHomePage.jsp">Home</a></li>
-    			<li><a href="ManageReservations.jsp">Manage Reservations</a></li>
-     	 	</ul>
-   		 	<ul class="nav navbar-nav navbar-right">
-      			<li><a href="Login.jsp"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-    		</ul>
-	</div>
-</nav>
+
+<jsp:include page="headerClient.jsp" />
+
 <div class="container">
   <h2>Manage Your Reservations</h2>       
   <table class="table">

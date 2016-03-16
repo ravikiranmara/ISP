@@ -122,7 +122,40 @@ static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 			{
 				rdto.clear();
 				tempres = new Reservation();
-				rdto.getHotelReservationByHotelId(id);
+				rdto.getHotelReservationById(id);
+				this.initializeReservationFromDTO(tempres, rdto);
+				rlist.add(tempres);				
+			}
+		}
+		catch (Exception e)
+		{
+			logger.fatal("Unable to get reservation: ");
+			throw e;
+		}
+		finally
+		{
+		}
+		
+		return rlist;
+	}
+		public ArrayList<Reservation> getReservationsForHotel(int hid) throws Exception
+	{
+		ArrayList<Reservation> rlist = null;
+		ArrayList<Integer> idlist = null;
+		HotelReservationDTO rdto = null;
+		Reservation tempres = null;
+		try
+		{
+			logger.info("All reservations for hotel");
+			rdto = new HotelReservationDTO();
+			idlist = rdto.getHotelReservationByHotelId(hid);
+			
+			rlist = new ArrayList<Reservation>();
+			for(Integer id : idlist)
+			{
+				rdto.clear();
+				tempres = new Reservation();
+				rdto.getHotelReservationById(id);
 				this.initializeReservationFromDTO(tempres, rdto);
 				rlist.add(tempres);				
 			}
@@ -139,7 +172,6 @@ static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 		return rlist;
 	}
 	
-
 	public boolean updateReservation(Reservation reservation) throws Exception 
 	{
 		boolean status = false;
@@ -152,7 +184,7 @@ static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 			// fetch user details
 			logger.info("update reesrvation dao");
 			this.initializeDTOFromReservation(reservationDto, reservation);
-			reservationDto.addHotelReservation();
+			reservationDto.updateHotelReservation();
 			
 			status = true;
 		}

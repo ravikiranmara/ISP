@@ -2,6 +2,7 @@ package dataTransferObjects;
 
 import utils.dbContextSingleton;
 import java.sql.*;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +26,11 @@ public class HotelDTO
     	this.initialize();
     }
 
+    public void clear()
+    {
+    	this.initialize();
+    }
+    
     void initialize()
     {
     	id = -1;
@@ -126,6 +132,86 @@ public class HotelDTO
 		
     	return status;
     }
+    
+    public ArrayList<Integer> getHotelByOwnerId(int ownerId) throws Exception
+    {
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<Integer> hlist = null;
+		
+		try 
+		{
+			logger.info("get hotel by owner id dto");
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id" +
+					" from " + this.tableName + 
+					" WHERE OwnerId = ?";
+			
+			ps = connection.prepareStatement(query);
+			ps.setInt(1, ownerId);
+			rs = ps.executeQuery();
+			
+			hlist = new ArrayList<Integer>();
+			while(rs.next())
+			{
+				hlist.add(rs.getInt("Id"));
+			}
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get hotel by id dto: " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
+    	return hlist;
+    }
+    
+
+    public ArrayList<Integer> getAllHotel() throws Exception
+    {
+    	Connection connection = null;
+		String query = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		ArrayList<Integer> hlist = null;
+		
+		try 
+		{
+			logger.info("get hotel by owner id dto");
+			connection = dbContextSingleton.getSingletonObject().getConnection();
+			query = "select Id" +
+					" from " + this.tableName;
+			
+			ps = connection.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			hlist = new ArrayList<Integer>();
+			while(rs.next())
+			{
+				hlist.add(rs.getInt("Id"));
+			}
+		} 
+		catch (Exception e) 
+		{
+			logger.fatal("Unable to get hotel by id dto: " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} 
+		finally
+		{
+			ps.close();
+		}
+		
+    	return hlist;
+    }
+    
     
     public boolean updateHotel() throws Exception
     {

@@ -14,22 +14,9 @@
 <title>Client Reservation Transaction</title>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-	<div class="container-fluid">
-   		<div class="navbar-header">
-     		<a class="navbar-brand" href="ClientHomePage.jsp">Hotels.com</a>
-    	</div>
-   			<ul class="nav navbar-nav">
-     			<li class="active"><a href="ClientHomePage.jsp">Home</a></li>
-    			<li><a href="ManageHotels.jsp">Manage Hotels</a></li>
-    			<li><a href="ViewCurrentReservations.jsp">View Current Reservations</a></li>
-    			<li><a href="ClientCreateReservation.jsp">Client Create Reservation</a></li>
-     	 	</ul>
-   		 	<ul class="nav navbar-nav navbar-right">
-      			<li><a href="Login.jsp"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-    		</ul>
-	</div>
-</nav>
+
+<jsp:include page="headerClient.jsp" />
+
 <div class="container ">
 	<div class="row">
 		<div class="col-xs-2">
