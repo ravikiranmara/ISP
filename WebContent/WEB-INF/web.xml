@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" id="WebApp_ID" version="2.4">
-  <display-name>HotelManagementSystem</display-name>
+  <javaee:display-name>HotelManagementSystem</javaee:display-name>
   <servlet>
     <servlet-name>Login</servlet-name>
     <servlet-class>loginPackage.Login</servlet-class>
@@ -10,29 +10,29 @@
     <welcome-file>Login.htm</welcome-file>
     <welcome-file>Login.html</welcome-file>
   </welcome-file-list>
-  <env-entry>
-    <env-entry-name>dbDriver</env-entry-name>
-    <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>com.mysql.jdbc.Driver</env-entry-value>
-  </env-entry>
-  <env-entry>
-    <env-entry-name>connectionString</env-entry-name>
-    <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>jdbc:mysql://127.0.0.1:3308/</env-entry-value>
-  </env-entry>
-  <env-entry>
-    <env-entry-name>dbname</env-entry-name>
-    <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>HMS</env-entry-value>
-  </env-entry>
-  <env-entry>
-    <env-entry-name>username</env-entry-name>
-    <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>root</env-entry-value>
-  </env-entry>
-  <env-entry>
-    <env-entry-name>password</env-entry-name>
-    <env-entry-type>java.lang.String</env-entry-type>
-    <env-entry-value>password</env-entry-value>
-  </env-entry>
+  <javaee:env-entry>
+    <javaee:env-entry-name>dbDriver</javaee:env-entry-name>
+    <javaee:env-entry-type>java.lang.String</javaee:env-entry-type>
+    <javaee:env-entry-value>com.mysql.jdbc.Driver</javaee:env-entry-value>
+  </javaee:env-entry>
+  <javaee:env-entry>
+    <javaee:env-entry-name>connectionString</javaee:env-entry-name>
+    <javaee:env-entry-type>java.lang.String</javaee:env-entry-type>
+    <javaee:env-entry-value>jdbc:mysql://127.0.0.1:3308/</javaee:env-entry-value>
+  </javaee:env-entry>
+  <javaee:env-entry>
+    <javaee:env-entry-name>dbname</javaee:env-entry-name>
+    <javaee:env-entry-type>java.lang.String</javaee:env-entry-type>
+    <javaee:env-entry-value>HMS</javaee:env-entry-value>
+  </javaee:env-entry>
+  <javaee:env-entry>
+    <javaee:env-entry-name>username</javaee:env-entry-name>
+    <javaee:env-entry-type>java.lang.String</javaee:env-entry-type>
+    <javaee:env-entry-value>root</javaee:env-entry-value>
+  </javaee:env-entry>
+  <javaee:env-entry>
+    <javaee:env-entry-name>password</javaee:env-entry-name>
+    <javaee:env-entry-type>java.lang.String</javaee:env-entry-type>
+    <javaee:env-entry-value>password</javaee:env-entry-value>
+  </javaee:env-entry>
 </web-app>

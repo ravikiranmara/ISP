@@ -33,17 +33,11 @@ public class Registration extends HttpServlet
     
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public Registration() 
     {
         super();
     }
 
-    /**
-     * @see Servlet#init(ServletConfig)
-     */
     public void init(ServletConfig config) throws ServletException 
     {
         if(null == globals.webInfPath)
@@ -52,9 +46,6 @@ public class Registration extends HttpServlet
         }
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 	    try 
@@ -67,9 +58,6 @@ public class Registration extends HttpServlet
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		try 
