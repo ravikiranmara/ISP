@@ -7,6 +7,7 @@ import modelObject.Amenity;
 import modelObject.Hotel;
 import modelObject.Review;
 import modelObject.Room;
+import modelObject.SearchParameter;
 
 public interface IHotelServiceLayer 
 {
@@ -33,4 +34,6 @@ public interface IHotelServiceLayer
 	boolean addHotelRoomToHotel(Hotel hotel, Room room) throws Exception;
 	boolean updateRoomForHotel(Hotel hotel, Room room) throws Exception;
 	HashMap<Integer, String[]> getAllRoomTypes() throws Exception;
+	
+	ArrayList<Hotel> SearchForHotel(SearchParameter sp) throws Exception;
 }

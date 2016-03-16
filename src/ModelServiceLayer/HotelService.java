@@ -1,9 +1,12 @@
 package ModelServiceLayer;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+
+import utils.globals;
 
 import dataAccessObject.HotelDAO;
 
@@ -11,6 +14,7 @@ import modelObject.Amenity;
 import modelObject.Hotel;
 import modelObject.Review;
 import modelObject.Room;
+import modelObject.SearchParameter;
 
 public class HotelService implements IHotelServiceLayer 
 {
@@ -341,5 +345,168 @@ public class HotelService implements IHotelServiceLayer
 	public ArrayList<Hotel> serachForHotel(Hotel hotel) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public ArrayList<Hotel> SearchForHotel(SearchParameter sp) throws Exception 
+	{
+		ArrayList<Hotel> list = null;
+		ArrayList<Hotel> temp = null;
+		HotelDAO hotelDao = null;
+		
+		try
+		{
+			hotelDao = new HotelDAO();
+			list = new ArrayList<Hotel>();
+			
+			
+			list = hotelDao.getAllHotel();
+			
+			// search for name
+			String hotelName = sp.getHotelname();
+			if(false != hotelName.isEmpty())
+			{
+				temp = new ArrayList<Hotel>();
+				for (Hotel h : list)
+				{
+					if(h.getName().equalsIgnoreCase(hotelName))
+					{
+						temp.add(h);
+					}
+				}
+				
+				list = temp;
+			}
+			
+			// city
+			String city = sp.getCity();
+			if(false != city.isEmpty())
+			{
+				temp = new ArrayList<Hotel>();
+				for (Hotel h : list)
+				{
+					if(h.getCity().equalsIgnoreCase(city))
+					{
+						temp.add(h);
+					}
+				}
+				
+				list = temp;
+			}
+			
+			// state
+			String state = sp.getState();
+			if(false != state.isEmpty())
+			{
+				temp = new ArrayList<Hotel>();
+				for (Hotel h : list)
+				{
+					if(h.getState().equalsIgnoreCase(state))
+					{
+						temp.add(h);
+					}
+				}
+				
+				list = temp;
+			}
+			
+			// room type
+			String roomType = sp.getRoomType();
+			if(false != roomType.isEmpty())
+			{
+				temp = new ArrayList<Hotel>();
+				for (Hotel h : list)
+				{
+					ArrayList<Room> room = null;
+					ArrayList<Room> temproom = new ArrayList<Room>();
+					room = h.getRoom();
+					
+					for(Room r : room)
+					{
+						if(r.getRoomType().equalsIgnoreCase(roomType))
+						{
+							temproom.add(r);
+							break;
+						}						
+					}
+					
+					if(false == temproom.isEmpty())
+					{
+						h.setRoom(temproom);
+						temp.add(h);
+					}
+				}
+				
+				list = temp;
+			}
+			
+			// check in date
+			Date checkin = sp.getCheckinDate();
+			if(0 <= checkin.compareTo(globals.invalidDate))
+			{
+				temp = new ArrayList<Hotel>();
+				for (Hotel h : list)
+				{
+					ArrayList<Room> room = null;
+					ArrayList<Room> temproom = new ArrayList<Room>();
+					room = h.getRoom();
+					
+					for(Room r : room)
+					{
+						if(r.getStartDate().before(checkin) || r.getStartDate().equals(checkin))
+						{
+							temproom.add(r);
+						}						
+					}
+					
+					if(false == temproom.isEmpty())
+					{
+						h.setRoom(temproom);
+						temp.add(h);
+					}
+				}
+				
+				list = temp;
+			}
+
+			// check out date
+			Date checkout = sp.getCheckoutDate();
+			if(0 <= checkin.compareTo(globals.invalidDate))
+			{
+				temp = new ArrayList<Hotel>();
+				for (Hotel h : list)
+				{
+					ArrayList<Room> room = null;
+					ArrayList<Room> temproom = new ArrayList<Room>();
+					room = h.getRoom();
+					
+					for(Room r : room)
+					{
+						if(r.getEndDate().after(checkout) || r.getEndDate().equals(checkout))
+						{
+							temproom.add(r);
+						}						
+					}
+					
+					if(false == temproom.isEmpty())
+					{
+						h.setRoom(temproom);
+						temp.add(h);
+					}
+				}
+				
+				list = temp;
+			}
+		}
+		catch (Exception ex)
+		{
+			logger.info("unable to search");
+			throw ex;
+		}
+		finally
+		{
+		}
+		
+		return list;
 	}
 }

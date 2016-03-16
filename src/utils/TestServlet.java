@@ -20,6 +20,8 @@ import dataAccessObject.ReservationDAO;
 import dataAccessObject.UserDAO;
 import dataTransferObjects.AmenityDTO;
 import dataTransferObjects.CreditCardDTO;
+import dataTransferObjects.HotelDTO;
+import dataTransferObjects.HotelRoomDTO;
 import dataTransferObjects.UserDTO;
 
 
@@ -68,12 +70,42 @@ public class TestServlet extends HttpServlet {
 	    
 		out.println("begin");
 		
-		this.dumpReservation(out);
+		this.testdb(out);
 		
 	    out.println("end");
 	}
 	
-	
+	private void testdb(PrintWriter out) throws Exception
+	{
+		
+		HotelRoomDTO hotelroomdto = new HotelRoomDTO();
+		hotelroomdto.addHotelRoom();
+		out.println("loop");
+		hotelroomdto.setRoomTypeId(1);
+		hotelroomdto.setHotelId(3);
+		hotelroomdto.setAvailableNumber(15);
+		hotelroomdto.setPricePerNight(250);
+		hotelroomdto.setStartDate(null);
+		hotelroomdto.setEndDate(null);
+		
+		
+		//out.println(hotelroomdto.getAvailableNumber());
+		//out.println(hotelroomdto.getStartDate());
+		//out.println(hotelroomdto.getEndDate());
+				
+		
+		/*HashMap<Integer, String[]> list = amindto.getAllAmenity();
+		
+		for(Integer i : list.keySet())
+		{
+			out.println(i);
+			String[] values = list.get(i);
+			out.println("name" + values[0]);
+			out.println("desc" + values[1]);
+		}
+		*/
+		return;
+	}
 	
 	private void dumpReservation(PrintWriter out) throws Exception
 	{

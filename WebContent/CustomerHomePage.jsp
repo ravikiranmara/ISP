@@ -43,7 +43,7 @@
                      <label for="checkin">Check-in Date:</label>
                   </div>
                   <div class="input-group date" data-provide="datepicker">
-                     <input type="text" id="checkin-date" name="checkin-date" class="form-control">
+                     <input type="text" id="checkInDate" name="checkInDate" class="form-control">
                      <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                      </div>
@@ -53,7 +53,7 @@
                      <label for="checkin">Check-out Date:</label>
                   </div>
                   <div class="input-group date" data-provide="datepicker">
-                     <input type="text" id="checkin-date" name="checkin-date" class="form-control">
+                     <input type="text" id="checkOutDate" name="checkOutDate" class="form-control">
                      <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th"></span>
                      </div>
