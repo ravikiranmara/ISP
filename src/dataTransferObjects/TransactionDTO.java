@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+
+import com.mysql.jdbc.Statement;
+
 import utils.dbContextSingleton;
 
 public class TransactionDTO
@@ -150,7 +153,7 @@ public class TransactionDTO
 					" values (?, ?, " +
 					"?, ?, ?, ?, ?)";
 			
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			// init
 			ps.setInt(1, this.customerUserId);
@@ -161,8 +164,13 @@ public class TransactionDTO
 			ps.setShort(6, this.transactionStatus);
 			ps.setShort(7, this.cancelledReservations);
 			
-			this.id = ps.executeUpdate();
-			insertId = this.id;
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
+			this.id = insertId;
 		} 
 		catch (Exception e) 
 		{

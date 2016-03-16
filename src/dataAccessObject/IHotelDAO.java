@@ -38,7 +38,7 @@ public interface IHotelDAO
 	HashMap<Integer, String[]> getAllHotelRoomTypes() throws Exception;
 	
 	// Logger
-	static Logger logger = Logger.getLogger(IUserDao.class.getName());
+	static Logger logger = Logger.getLogger(IHotelDAO.class.getName());
 
 	ArrayList<Hotel> getAllHotel() throws Exception;
 }

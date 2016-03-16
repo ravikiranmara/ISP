@@ -148,13 +148,19 @@ public class AmenityDTO
 			query = "Insert Into " + this.tableName + " (Name, Description)" +
 					" values (?, ?)";
 			
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			// init
 			ps.setString(1, this.name);
 			ps.setString(2, this.description);
 			
-			this.id = ps.executeUpdate();
+			ps.executeUpdate();
+			
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
 			insertId = this.id;
 		} 
 		catch (Exception e) 
@@ -194,7 +200,7 @@ public class AmenityDTO
 			ps.setString(2, this.description);
 			ps.setInt(3, this.id);
 			
-			this.id = ps.executeUpdate();
+			ps.executeUpdate();
 		} 
 		catch (Exception e) 
 		{

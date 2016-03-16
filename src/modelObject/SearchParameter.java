@@ -1,6 +1,7 @@
 package modelObject;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import utils.globals;
 
@@ -13,6 +14,7 @@ public class SearchParameter
 	Date checkoutDate;
 	String roomType;
 	int numRooms;
+	ArrayList<String> amenityNames;
 	
 	public SearchParameter()
 	{
@@ -20,12 +22,20 @@ public class SearchParameter
 		checkinDate = checkoutDate = globals.invalidDate;
 		numRooms = -1;
 		roomType = "";
+		amenityNames = null;
 	}
 	
 	// getter and setter
 	public String getHotelname() {
 		return hotelname;
 	}
+	public ArrayList<String> getAmenityNames() {
+		return amenityNames;
+	}
+	public void setAmenityNames(ArrayList<String> amenityNames) {
+		this.amenityNames = amenityNames;
+	}
+
 	public void setHotelname(String hotelname) {
 		this.hotelname = hotelname;
 	}

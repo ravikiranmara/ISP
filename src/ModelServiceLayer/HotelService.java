@@ -18,7 +18,7 @@ import modelObject.SearchParameter;
 
 public class HotelService implements IHotelServiceLayer 
 {
-	static Logger logger = Logger.getLogger(PaymentService.class.getName());
+	static Logger logger = Logger.getLogger(HotelService.class.getName());
 
 	@Override
 	public Hotel getHotelById(int id) throws Exception 
@@ -356,20 +356,23 @@ public class HotelService implements IHotelServiceLayer
 		
 		try
 		{
+			logger.info("search for hotel");
 			hotelDao = new HotelDAO();
-			list = new ArrayList<Hotel>();
-			
-			
 			list = hotelDao.getAllHotel();
 			
-			// search for name
+			for(Hotel h : list)
+			{
+				logger.info("hotel namae : " + h.getName());
+			}
+			
+			logger.info("search for name");
 			String hotelName = sp.getHotelname();
-			if(false != hotelName.isEmpty())
+			if(false == hotelName.isEmpty())
 			{
 				temp = new ArrayList<Hotel>();
 				for (Hotel h : list)
 				{
-					if(h.getName().equalsIgnoreCase(hotelName))
+					if(true == h.getName().equalsIgnoreCase(hotelName))
 					{
 						temp.add(h);
 					}
@@ -378,9 +381,9 @@ public class HotelService implements IHotelServiceLayer
 				list = temp;
 			}
 			
-			// city
+			logger.info("search city");
 			String city = sp.getCity();
-			if(false != city.isEmpty())
+			if(false == city.isEmpty())
 			{
 				temp = new ArrayList<Hotel>();
 				for (Hotel h : list)
@@ -394,9 +397,9 @@ public class HotelService implements IHotelServiceLayer
 				list = temp;
 			}
 			
-			// state
+			logger.info("search state");
 			String state = sp.getState();
-			if(false != state.isEmpty())
+			if(false == state.isEmpty())
 			{
 				temp = new ArrayList<Hotel>();
 				for (Hotel h : list)
@@ -410,9 +413,9 @@ public class HotelService implements IHotelServiceLayer
 				list = temp;
 			}
 			
-			// room type
+			logger.info("room type");
 			String roomType = sp.getRoomType();
-			if(false != roomType.isEmpty())
+			if(false == roomType.isEmpty())
 			{
 				temp = new ArrayList<Hotel>();
 				for (Hotel h : list)
@@ -440,9 +443,9 @@ public class HotelService implements IHotelServiceLayer
 				list = temp;
 			}
 			
-			// check in date
+			logger.info("search check in date");
 			Date checkin = sp.getCheckinDate();
-			if(0 <= checkin.compareTo(globals.invalidDate))
+			if(0 != checkin.compareTo(globals.invalidDate))
 			{
 				temp = new ArrayList<Hotel>();
 				for (Hotel h : list)
@@ -469,9 +472,9 @@ public class HotelService implements IHotelServiceLayer
 				list = temp;
 			}
 
-			// check out date
+			logger.info("search check out date");
 			Date checkout = sp.getCheckoutDate();
-			if(0 <= checkin.compareTo(globals.invalidDate))
+			if(0 != checkin.compareTo(globals.invalidDate))
 			{
 				temp = new ArrayList<Hotel>();
 				for (Hotel h : list)
@@ -496,7 +499,7 @@ public class HotelService implements IHotelServiceLayer
 				}
 				
 				list = temp;
-			}
+			}			
 		}
 		catch (Exception ex)
 		{

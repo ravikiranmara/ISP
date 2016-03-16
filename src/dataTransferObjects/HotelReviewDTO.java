@@ -145,7 +145,7 @@ public class HotelReviewDTO
 					" values (?, ?, " +
 					"?, ?, ?)";
 			
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			// init
 			ps.setString(1, this.reviewerName);
@@ -154,8 +154,14 @@ public class HotelReviewDTO
 			ps.setString(4, this.review);
 			ps.setInt(5, this.hotelId);
 			
-			this.id = ps.executeUpdate();
-			insertId = this.id;
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
+			
+			this.id = insertId;
 		} 
 		catch (Exception e) 
 		{

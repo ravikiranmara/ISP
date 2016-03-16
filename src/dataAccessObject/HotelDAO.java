@@ -161,6 +161,11 @@ public class HotelDAO implements IHotelDAO
 			hotelAmenityDto = new HotelAmenityDTO();
 			listOfHotelAmenityId = hotelAmenityDto.getHotelAmenityByHotelId(tempHotel.getId());
 			
+			if(null == listOfHotelAmenityId)
+			{
+				listOfHotelAmenityId = new ArrayList<Integer>();
+			}
+			
 			logger.info("get list of amenities");
 			amenityList = new ArrayList<Amenity>();
 			for(Integer amenId : listOfHotelAmenityId)
@@ -180,8 +185,13 @@ public class HotelDAO implements IHotelDAO
 			
 			logger.info("Get list of hotel reviews Ids");
 			hotelReviewDto = new HotelReviewDTO();
-			ArrayList<Integer> hotelReviewIdList = new ArrayList<Integer>();
+			ArrayList<Integer> hotelReviewIdList = null;
 			hotelReviewIdList = hotelReviewDto.getHotelReviewsForHotel(id);
+			if(null == hotelReviewIdList)
+			{
+				hotelReviewIdList = new ArrayList<Integer>();
+			}
+			
 			reviewList = new ArrayList<Review>();
 			logger.info("For each id, get review from table");
 			for (Integer rid : hotelReviewIdList)
@@ -204,6 +214,10 @@ public class HotelDAO implements IHotelDAO
 			logger.info("Get Hotel Room list");
 			hotelRoomDto = new HotelRoomDTO();
 			listOfRoomId = hotelRoomDto.getHotelRoomIdByHotelId(id);
+			if(null == listOfRoomId)
+			{
+				listOfRoomId = new ArrayList<Integer>();
+			}
 			
 			logger.info("foreach room id, get room details");
 			roomList = new ArrayList<Room>();
@@ -213,6 +227,7 @@ public class HotelDAO implements IHotelDAO
 				tempRoom = new Room();
 				
 				hotelRoomDto.clear();
+				logger.fatal("rid:" + rid);
 				hotelRoomDto.getHotelRoomById(rid);
 				
 				tempRoomTypeDto.initialize(hotelRoomDto.getRoomTypeId(),

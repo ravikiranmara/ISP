@@ -57,7 +57,7 @@ public class HotelDTO
 					" values (?, ?, " +
 					"?, ?, ?, ?, ?)";
 			
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		
 			ps.setString(1, this.name);
 			ps.setString(2, this.city);
@@ -67,8 +67,13 @@ public class HotelDTO
 			ps.setString(6, this.nearestPoints);
 			ps.setString(7, this.address);
 
-			this.id = ps.executeUpdate();
-			insertHotelId = this.id;
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+				insertHotelId =rs.getInt(1);
+			}
+			this.id = insertHotelId;
 		} 
 		catch (Exception e) 
 		{
@@ -147,7 +152,7 @@ public class HotelDTO
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "select Id" +
 					" from " + this.tableName + 
-					" WHERE OwnerId = ?";
+					" WHERE OwnerUserId = ?";
 			
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, ownerId);
@@ -240,7 +245,7 @@ public class HotelDTO
 			ps.setString(7, this.address);
 			ps.setInt(8, this.id);
 			
-			this.id = ps.executeUpdate();
+			ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 

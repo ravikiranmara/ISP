@@ -143,14 +143,19 @@ public class HotelRoomTypeDTO
 					" (RoomType, Description)" +
 					" values (?, ?)";
 			
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			// init
 			ps.setString(1, this.roomType);
 			ps.setString(2, this.description);
 			
-			this.id = ps.executeUpdate();
-			insertId = this.id;
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
+			this.id = insertId;
 		} 
 		catch (Exception e) 
 		{
@@ -187,7 +192,8 @@ public class HotelRoomTypeDTO
 			ps.setString(2, this.description);
 			ps.setInt(3, this.id);
 			
-			this.id = ps.executeUpdate();
+			ps.executeUpdate();
+			status = true;
 		} 
 		catch (Exception e) 
 		{

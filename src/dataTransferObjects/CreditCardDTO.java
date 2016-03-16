@@ -197,7 +197,7 @@ public class CreditCardDTO
 					" Values (?, ?, " +
 					"?, ?, ?, ?)";
 			
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			ps.setString(1, this.cardHolderName);
 			ps.setString(2, this.creditCardNumber);
@@ -206,8 +206,14 @@ public class CreditCardDTO
 			ps.setInt(5, this.userId);
 			ps.setString(6, this.cvv);
 			
-			this.id = ps.executeUpdate();
-			insertId = this.id;
+			ps.executeUpdate();
+			
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
+			this.id = insertId;
 		}
 		catch (Exception e) 
 		{
@@ -249,7 +255,7 @@ public class CreditCardDTO
 			ps.setString(6, this.cvv);
 			ps.setInt(7, id);
 			
-			this.id = ps.executeUpdate();
+			ps.executeUpdate();
 			status = true;
 		}
 		catch (Exception e) 

@@ -193,7 +193,7 @@ public class HotelReservationDTO
 					" values (?, ?, ?, " +
 					"?, ?, ?, ?, ?, " +
 					"?, ?)";
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			// init
 			ps.setInt(1, this.hotelId);
@@ -207,8 +207,14 @@ public class HotelReservationDTO
 			ps.setInt(9, this.roomTypeId);
 			ps.setInt(10, this.transactionId);
 
-			this.id = ps.executeUpdate();
-			insertId = this.id;
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
+			
+			this.id = insertId;
 		} 
 		catch (Exception e) 
 		{

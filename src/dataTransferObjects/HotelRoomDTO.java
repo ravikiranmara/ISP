@@ -31,7 +31,7 @@ public class HotelRoomDTO
 
     public void clear()
     {
-    	this.clear();
+    	this.initialize();
     }
     
     private void initialize()
@@ -149,7 +149,7 @@ public class HotelRoomDTO
 					" values (?, ?, " +
 					"?, ?, ?, ?)";
 			
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			// init
 			ps.setInt(1, this.roomTypeId);
@@ -159,8 +159,14 @@ public class HotelRoomDTO
 			ps.setDate(5, this.startDate);
 			ps.setDate(6, this.endDate);
 			
-			this.id = ps.executeUpdate();
-			insertId = this.id;
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
+			this.id = insertId;
+			logger.info("insert id:" + insertId);
 		} 
 		catch (Exception e) 
 		{
@@ -203,7 +209,8 @@ public class HotelRoomDTO
 			ps.setDate(6, this.endDate);
 			ps.setInt(7, this.id);
 			
-			this.id = ps.executeUpdate();
+			ps.executeUpdate();
+			status = true;
 		} 
 		catch (Exception e) 
 		{

@@ -152,7 +152,7 @@ public class UserDTO
 	
 	public int addNewUser() throws Exception
 	{
-		int insertUid = -1;
+		int insertId = -1;
 		Connection connection = null;
 		String query = null;
 		PreparedStatement ps = null;
@@ -166,7 +166,7 @@ public class UserDTO
 					" values (?, ?, " +
 					"?, ?, ?, ?, ?, " +
 					"?, ?, ?, ?)";
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			// init
 			ps.setString(1, this.firstName);
@@ -181,8 +181,13 @@ public class UserDTO
 			ps.setString(10, username);
 			ps.setString(11, this.password);
 			
-			this.id = ps.executeUpdate();
-			insertUid = this.id;
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
+			this.id = insertId;
 		} 
 		catch (Exception e) 
 		{
@@ -195,7 +200,7 @@ public class UserDTO
 			ps.close();
 		}
 		
-		return insertUid;
+		return insertId;
 	}
 	
 	public boolean updateUser() throws Exception

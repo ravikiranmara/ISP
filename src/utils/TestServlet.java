@@ -12,10 +12,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ModelServiceLayer.HotelService;
+import ModelServiceLayer.IHotelServiceLayer;
+
+import modelObject.Amenity;
 import modelObject.CreditCard;
+import modelObject.Hotel;
 import modelObject.Reservation;
+import modelObject.Review;
+import modelObject.Room;
+import modelObject.SearchParameter;
 import modelObject.User;
 
+import dataAccessObject.HotelDAO;
 import dataAccessObject.ReservationDAO;
 import dataAccessObject.UserDAO;
 import dataTransferObjects.AmenityDTO;
@@ -70,24 +79,166 @@ public class TestServlet extends HttpServlet {
 	    
 		out.println("begin");
 		
-		this.testdb(out);
+		this.dumpSearch(out);
 		
 	    out.println("end");
 	}
 	
-	private void testdb(PrintWriter out) throws Exception
+	private void dumpSearch(PrintWriter out) throws Exception
+	{
+		IHotelServiceLayer hs = new HotelService();
+		SearchParameter sp = new SearchParameter();
+		ArrayList<Hotel> hl = null;
+		
+		sp.setHotelname("sss-towers");
+		sp.setCity("city");
+		
+		hl = hs.SearchForHotel(sp);
+		
+		for(Hotel h : hl)
+		{
+			out.println("----- hotel -----");
+			out.println(h.getId());
+			out.println(h.getName());
+		}
+		
+	}
+	
+	private void dumpgetHotelForOwner(PrintWriter out) throws Exception
+	{
+		HotelDAO hd = new HotelDAO();
+		ArrayList<Hotel> hotels = null;
+		
+		hotels = hd.getHotelForOwner(24);
+		for(Hotel h : hotels)
+		{
+			out.println("----- hotel -----");
+			out.println(h.getId());
+			out.println(h.getName());
+			
+			ArrayList<Review> reviews = null;
+			reviews = h.getReview();
+			
+			out.println("Review");
+			for(Review r : reviews)
+			{
+				out.println(r.getReview());
+				out.println(r.getId());
+			}
+		
+			out.println("amenities");
+			ArrayList<Amenity> amenities = null;
+			amenities = h.getAmenity();
+			for(Amenity a : amenities)
+			{
+				out.println(a.getName());
+				out.println(a.getDescription());
+				out.println(a.getValue());
+			}
+			
+			out.println("Hotel rooms");
+			ArrayList<Room> rooms = null;
+			rooms = h.getRoom();
+			for(Room r : rooms)
+			{
+				out.println(r.getId());
+				out.println(r.getRoomType());
+				out.println(r.getAvailableNumber());
+				out.println(r.getStartDate());
+				out.println(r.getEndDate());
+			}
+			
+		}
+		
+		return;
+	}
+	
+	private void dumpHotelDao(PrintWriter out) throws Exception
+	{
+		HotelDAO hd = new HotelDAO();
+		Hotel h = null;
+		
+		h = hd.getHotelById(1);
+		
+		out.println(h.getId());
+		out.println(h.getName());
+		
+		ArrayList<Review> reviews = null;
+		reviews = h.getReview();
+		
+		out.println("Review");
+		for(Review r : reviews)
+		{
+			out.println(r.getReview());
+			out.println(r.getId());
+		}
+		
+		out.println("Hotel rooms");
+		ArrayList<Room> rooms = null;
+		rooms = h.getRoom();
+		for(Room r : rooms)
+		{
+			out.println(r.getId());
+			out.println(r.getRoomType());
+			out.println(r.getAvailableNumber());
+			out.println(r.getStartDate());
+			out.println(r.getEndDate());
+		}
+	}
+	
+	private void dumpHotelByUserId(PrintWriter out) throws Exception
+	{
+		HotelDTO hd = new HotelDTO();
+		ArrayList<Integer> hl = new ArrayList<Integer>(); 
+		
+		hl = hd.getHotelByOwnerId(24);
+		
+		for(int i : hl)
+		{
+			out.println(i);
+		}
+	}
+	
+	private void dumpAllHotels(PrintWriter out) throws Exception
+	{
+		HotelDTO hd = new HotelDTO();
+		ArrayList<Integer> hl = new ArrayList<Integer>(); 
+		
+		hl = hd.getAllHotel();
+		
+		for(int i : hl)
+		{
+			out.println(i);
+		}
+	}
+	
+	private void dumpHotel(PrintWriter out) throws Exception
+	{
+		HotelDTO hd = new HotelDTO();
+		
+		hd.getHotelById(1);
+		
+		out.println(hd.getName());
+		out.println(hd.getOwnerUserId());
+	}
+	
+	private void hotelRoomDtotest(PrintWriter out) throws Exception
 	{
 		
 		HotelRoomDTO hotelroomdto = new HotelRoomDTO();
-		hotelroomdto.addHotelRoom();
-		out.println("loop");
-		hotelroomdto.setRoomTypeId(1);
+		
+		/*
+		hotelroomdto.setRoomTypeId(2);
 		hotelroomdto.setHotelId(3);
 		hotelroomdto.setAvailableNumber(15);
 		hotelroomdto.setPricePerNight(250);
-		hotelroomdto.setStartDate(null);
-		hotelroomdto.setEndDate(null);
+		hotelroomdto.setStartDate(java.sql.Date.valueOf( "2015-01-01"));
+		hotelroomdto.setEndDate(java.sql.Date.valueOf( "2017-01-01"));
 		
+		hotelroomdto.addHotelRoom();
+		
+		out.println("id : " + hotelroomdto.getId());
+		*/
 		
 		//out.println(hotelroomdto.getAvailableNumber());
 		//out.println(hotelroomdto.getStartDate());

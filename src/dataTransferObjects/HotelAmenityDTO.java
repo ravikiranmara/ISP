@@ -134,15 +134,20 @@ public class HotelAmenityDTO
 			query = "Insert Into " + this.tableName + " (HotelId, AmenityId, Value)" +
 					" values (?, ?, ?)";
 			
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			
 			// init
 			ps.setInt(1, this.hotelId);
 			ps.setInt(2, this.amenityId);
 			ps.setShort(3, this.value);
 			
-			this.id = ps.executeUpdate();
-			insertId = this.id;
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next())
+			{
+			    insertId=rs.getInt(1);
+			}
+			this.id = insertId;
 		} 
 		catch (Exception e) 
 		{
@@ -181,7 +186,7 @@ public class HotelAmenityDTO
 			ps.setShort(3, this.value);
 			ps.setInt(4, this.id);
 			
-			this.id = ps.executeUpdate();
+			ps.executeUpdate();
 			status = true;
 		} 
 		catch (Exception e) 
