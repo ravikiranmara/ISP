@@ -16,6 +16,7 @@ public interface IHotelServiceLayer
 	ArrayList<Hotel> getAllHotel() throws Exception;
 	
 	ArrayList<Hotel> serachForHotel(Hotel hotel) throws Exception;
+	boolean updateHotelComplete(Hotel hotel) throws Exception;
 	
 	boolean addHotel(Hotel hotel) throws Exception;
 	boolean updateHotel(Hotel hotel)  throws Exception;
@@ -27,6 +28,7 @@ public interface IHotelServiceLayer
 	
 	boolean addAmenityToHotel(Hotel hotel, Amenity amenity) throws Exception;
 	boolean deleteAmenitFromHotel(Hotel hotel, Amenity amenity) throws Exception;
+	boolean updateAmenityToHotel(Hotel hotel, Amenity amenity) throws Exception;
 	
 	boolean addReviewForHotel(Hotel hotel, Review review) throws Exception;
 	boolean deleteReviewForHotel(Hotel hotel, Review review) throws Exception;

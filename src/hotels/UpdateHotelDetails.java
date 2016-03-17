@@ -17,6 +17,7 @@ import utils.globals;
 
 import modelObject.Hotel;
 import modelObject.Room;
+import ModelServiceLayer.HotelService;
 import ModelServiceLayer.IHotelServiceLayer;
 
 /**
@@ -33,15 +34,25 @@ public class UpdateHotelDetails extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		this.handleRequest(request, response);
+		try {
+			this.handleRequest(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		this.handleRequest(request, response);
+		try {
+			this.handleRequest(request, response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private void getAndUpdateHotel(HttpServletRequest request, Hotel hotel)
+	private void getAndUpdateHotel(HttpServletRequest request, Hotel hotel) throws Exception
 	{
 		String hotelname = request.getParameter("hotelname");
 		String description = request.getParameter("description");
@@ -61,13 +72,18 @@ public class UpdateHotelDetails extends HttpServlet {
 		
 		try
 		{
+			/*
+			 * || null == bathtub ||
+					null == breakfast || null == wifi ||
+					null == wifi || null == gym || null == internet || 
+					null == pool || null == pet
+			 */
 			logger.info("update values");
+			logger.info(hotelname + "|" + description + "|" + city + "|" + state + "|" + 
+			roomtype + "|" + numrooms + "|" + price + "|" + id);
 			if(null == hotelname || null == description || null == city || 
 					null == state || null == roomtype || null == numrooms ||
-					null == price || null == id || null == bathtub ||
-					null == breakfast || null == breakfast || null == wifi ||
-					null == wifi || null == gym || null == internet || 
-					null == pool || null == pet)
+					null == price || null == id )
 			{
 				throw new Exception("some of the parameter is null");
 			}
@@ -90,7 +106,6 @@ public class UpdateHotelDetails extends HttpServlet {
 			}
 			if(false == price.isEmpty() || false == numrooms.isEmpty())
 			{
-				Room room = null;
 				ArrayList<Room> roomlist = hotel.getRoom();
 				String roomname = null;
 				int rid = Integer.parseInt(roomtype);
@@ -107,28 +122,31 @@ public class UpdateHotelDetails extends HttpServlet {
 					roomname = "suite";
 				}
 				
-				for(Room r : roomlist)
+				for(int i=0; i<roomlist.size(); i++)
 				{
-					if(r.getRoomType().equalsIgnoreCase(roomname))
+					if(roomlist.get(i).getRoomType().equalsIgnoreCase(roomname))
 					{
-						room = r;
-						break;
+						if(false == price.isEmpty())
+						{
+							roomlist.get(i).setPricePerNight(Float.valueOf(price));
+						}
+						if(false == numrooms.isEmpty())
+						{
+							roomlist.get(i).setAvailableNumber(Integer.valueOf(numrooms));
+						}			
 					}
 				}
 				
-				if(false == price.isEmpty())
-				{
-					room.setPricePerNight(Float.valueOf(price));
-				}
-				if(false == numrooms.isEmpty())
-				{
-					room.setAvailableNumber(Integer.valueOf(numrooms));
-				}
+				hotel.setRoom(roomlist);
 			}
+			
+			// not oding amenities as of now
+			
 		}
 		catch (Exception ex)
 		{
 			logger.fatal("unable to udate hotel object:" + ex.getMessage());
+			throw ex;
 		}
 		finally
 		{ }
@@ -136,7 +154,7 @@ public class UpdateHotelDetails extends HttpServlet {
 		return;
 	}
 
-	protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception 
 	{
 		PrintWriter out = response.getWriter();
 		IHotelServiceLayer hotelService = null;
@@ -153,6 +171,13 @@ public class UpdateHotelDetails extends HttpServlet {
 			
 			this.getAndUpdateHotel(request, hotel);
 			
+			logger.info("update hotel");
+			logger.info(hotel.getDescription());
+			hotelService = new HotelService();
+			hotelService.updateHotelComplete(hotel);
+			
+			logger.info("redirect");
+			response.sendRedirect("ManageHotels");
 		}
 		catch (Exception ex)
 		{

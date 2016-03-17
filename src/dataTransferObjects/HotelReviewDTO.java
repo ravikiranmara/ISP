@@ -189,8 +189,8 @@ public class HotelReviewDTO
 			logger.info("Update hotel review dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Update " + this.tableName + "" +
-					" SET (ReviewerName = ?, ReviewDate = ?, " +
-					"Rating = ?, Review = ?, HotelId = ?)" +
+					" SET ReviewerName = ?, ReviewDate = ?, " +
+					"Rating = ?, Review = ?, HotelId = ?" +
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);

@@ -175,7 +175,7 @@ public class HotelAmenityDTO
 			logger.info("Update hotel amenity");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Update " + this.tableName + 
-					" SET (HotelId = ?, AmenityId = ?, Value = ?)" +
+					" SET HotelId = ?, AmenityId = ?, Value = ?" +
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);

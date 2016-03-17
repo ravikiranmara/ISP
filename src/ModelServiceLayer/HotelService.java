@@ -512,4 +512,66 @@ public class HotelService implements IHotelServiceLayer
 		
 		return list;
 	}
+
+	@Override
+	public boolean updateHotelComplete(Hotel hotel) throws Exception 
+	{
+		boolean status = false;
+		ArrayList<Room> rooms = null;
+		ArrayList<Amenity> amenitylist = null;
+		
+		try
+		{
+			logger.info("update basic hotel");
+			this.updateHotel(hotel);
+			
+			logger.info("update all rooms");
+			rooms = hotel.getRoom();
+			for (Room r : rooms)
+			{
+				 this.updateRoomForHotel(hotel, r);
+			}
+			
+			/*
+			logger.info("update all amenities");
+			amenitylist = hotel.getAmenity();
+			for(Amenity a : amenitylist)
+			{
+				this.updateAmenityToHotel(hotel, a);
+			}
+			*/
+
+			// we are not doing review. 
+		}
+		catch(Exception ex)
+		{
+			
+		}
+		
+		return status;
+	}
+
+	@Override
+	public boolean updateAmenityToHotel(Hotel hotel, Amenity amenity)
+			throws Exception 
+	{
+		boolean status = false;
+		HotelDAO hdao = null;
+		
+		try
+		{
+			logger.info("add hotel amenity");
+			hdao = new HotelDAO();
+			hdao.updateHotelAmenity(hotel, amenity);
+			status = true;
+		}
+		catch (Exception e)
+		{
+			logger.fatal("unable to add hotel amenity");
+			throw e;
+		}
+		
+		return status;
+		
+	}
 }

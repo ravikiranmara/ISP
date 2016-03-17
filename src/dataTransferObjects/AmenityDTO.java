@@ -190,7 +190,7 @@ public class AmenityDTO
 			
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "UPDATE " + this.tableName + 
-					" SET (Name = ?, Description = ?)" +
+					" SET Name = ?, Description = ?" +
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);

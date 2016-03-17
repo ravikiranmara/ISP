@@ -183,7 +183,7 @@ public class HotelRoomTypeDTO
 			logger.info("update hotel room type dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "UPDATE " + this.tableName + 
-					" SET (RoomType = ?, Description = ?)" +
+					" SET RoomType = ?, Description = ?" +
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);

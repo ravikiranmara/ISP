@@ -198,8 +198,8 @@ public class TransactionDTO
 			logger.info("update transaction dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Update " + this.tableName + 
-					" SET (CustomerUserId = ?, OwnerUserId = ?, " +
-					"CustomerCreditCardId = ?, OwnerCreditCardId = ?, Amount = ?, Status = ?, CancelledReservation = ?)" +
+					" SET CustomerUserId = ?, OwnerUserId = ?, " +
+					"CustomerCreditCardId = ?, OwnerCreditCardId = ?, Amount = ?, Status = ?, CancelledReservation = ?" +
 					" WHERE Id = ?";
 					
 			ps = connection.prepareStatement(query);

@@ -242,9 +242,9 @@ public class HotelReservationDTO
 			logger.info("update hotel reservation dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "Update " + this.tableName + 
-					" SET (HotelId = ?, CheckInDate = ?, CheckOutDate = ?, " +
+					" SET HotelId = ?, CheckInDate = ?, CheckOutDate = ?, " +
 					"NumberOfRooms = ?, ReservationNumber = ?, UserId = ?, Status = ?, " +
-					"Notes = ?, RoomTypeId = ?, TransactionId = ?)" +
+					"Notes = ?, RoomTypeId = ?, TransactionId = ?" +
 					" WHERE ID = ?";
 			
 			ps = connection.prepareStatement(query);

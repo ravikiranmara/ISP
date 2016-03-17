@@ -39,7 +39,7 @@ import="utils.globals"
 			<h5><label>Hotel Name:</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" name="name" id="hotelname" placeholder="Name" value=<%=h.getName() %>>
+			<input type="text" class="form-control" name="hotelname" id="hotelname" placeholder="Name" value=<%=h.getName() %>>
 		</div>
 		<div class="col-xs-3"></div>
 	</div>
@@ -101,39 +101,39 @@ import="utils.globals"
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" name="bathtub" value="">Bathtub in room</label>
+  				<label><input type="checkbox" name="bathtub" value="1">Bathtub in room</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" name="breakfast" value="">Free breakfast</label>
+  				<label><input type="checkbox" name="breakfast" value="2">Free breakfast</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" name="wifi" value="">Free Wi-Fi</label>
+  				<label><input type="checkbox" name="wifi" value="3">Free Wi-Fi</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" name="gym" value="">Gym</label>
+  				<label><input type="checkbox" name="gym" value="4">Gym</label>
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" name="internet" value="">Paid Internet access</label>
+  				<label><input type="checkbox" name="internet" value="5">Paid Internet access</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" name="pool" value="">Pool</label>
+  				<label><input type="checkbox" name="pool" value="6">Pool</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" name="pet" value="">Pet friendly</label>
+  				<label><input type="checkbox" name="pet" value="7">Pet friendly</label>
 			</div>
 		</div>
 		<div class="col-xs-3"></div>

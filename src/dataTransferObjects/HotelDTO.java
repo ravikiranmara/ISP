@@ -230,8 +230,8 @@ public class HotelDTO
 			logger.info("update hotel dto");
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "UPDATE " + this.tableName + 
-					" SET (Name = ?, City= ?, " +
-					"State= ?, OwnerUserId= ?, Description= ?, NearestPoints= ?, Address= ?)" +
+					" SET Name = ?, City= ?, " +
+					"State= ?, OwnerUserId= ?, Description= ?, NearestPoints= ?, Address= ?" +
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);

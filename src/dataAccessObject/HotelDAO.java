@@ -113,7 +113,7 @@ public class HotelDAO implements IHotelDAO
 		hotelDto.setCity(hotel.getCity());
 		hotelDto.setState(hotel.getState());
 		hotelDto.setOwnerUserId(hotel.getOwnerUserId());
-		hotelDto.setDescription(hotelDto.getDescription());
+		hotelDto.setDescription(hotel.getDescription());
 		hotelDto.setNearestPoints(hotel.getNearestPoints());
 		hotelDto.setAddress(hotel.getAddress());
 		
@@ -374,6 +374,9 @@ public class HotelDAO implements IHotelDAO
 			logger.info("update hotel details");
 			hotelDto = new HotelDTO();
 			this.initializeDtoFromHotel(hotel, hotelDto);
+			logger.info(hotel.getDescription());
+			logger.info(hotelDto.getDescription());
+			
 			hotelDto.updateHotel();
 		
 			// if we made it till here, then all went well
