@@ -66,10 +66,12 @@ public class HotelSearchServlet extends HttpServlet
 			String hotelName = request.getParameter("hotelName");
 			String city = request.getParameter("city");
 			String state = request.getParameter("state");
-			String checkinDateString = request.getParameter("checkInDate");
-			String checkoutDateString = request.getParameter("checkOutDate");
+			String checkinDateString = request.getParameter("checkIn");
+			String checkoutDateString = request.getParameter("checkOut");
 			String numRoom = request.getParameter("numroom");
 			String roomType = request.getParameter("roomtype");
+			
+			
 			
 			if(hotelName == null || city == null || null == state || 
 					checkinDateString == null || checkoutDateString == null || numRoom == null ||
@@ -77,6 +79,9 @@ public class HotelSearchServlet extends HttpServlet
 			{
 				throw new InvalidParameterException("Some parameter is missing in serach page");
 			}
+			
+			logger.info("checkin " + checkinDateString);
+			
 		}
 		catch (InvalidParameterException ex)
 		{
@@ -169,10 +174,10 @@ public class HotelSearchServlet extends HttpServlet
 	        this.IsRequestParametersValid(request);
 	        
 	        // get search parameter
-	        this.loadSearchParameters(request);
+	        //this.loadSearchParameters(request);
 	        
 	        // now send it off to 
-	        hs = new HotelService();
+	        //hs = new HotelService();
 	        
         }
         catch(Exception ex)
@@ -181,6 +186,7 @@ public class HotelSearchServlet extends HttpServlet
 			throw ex;
 		}
 		
+        response.sendRedirect("ReservationSearchResults.jsp");
 		return;
 	}
 }

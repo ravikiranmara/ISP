@@ -5,16 +5,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
    <head>
+     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script> 
       <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" media="all" />
       <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
       <title>Customer Home Page</title>
       <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
       <!-- Load Custom Scripts and Styles -->
-      <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
       <link rel="stylesheet" type="text/css" href="css/custom_styles.css">
+      
+		<script type="text/javascript">
+			$(function() {
+			    $( "#datepicker1" ).datepicker();
+			    $( "#datepicker2" ).datepicker();
+			});
+		</script>
+		
    </head>
    <jsp:include page="headerCustomer.jsp" />
    <form role="form" action= "ReservationSearchResults.jsp">
@@ -42,53 +54,32 @@
                   <div>
                      <label for="checkin">Check-in Date:</label>
                   </div>
-                  <div class="input-group date" data-provide="datepicker">
-                     <input type="text" id="checkInDate" name="checkInDate" class="form-control">
-                     <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                     </div>
-                  </div>
+                  	<input type="text" id="datepicker1" name="checkIn" />
                   <br>
                   <div>
                      <label for="checkin">Check-out Date:</label>
                   </div>
-                  <div class="input-group date" data-provide="datepicker">
-                     <input type="text" id="checkOutDate" name="checkOutDate" class="form-control">
-                     <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                     </div>
-                  </div>
+                  	<input type="text" id="datepicker2" name="checkOut" />
                   <label> Number of: </label><br>
                   <div class="row">
                      <div class="col-xs-3">
-                        <div class="dropdown">
-                           <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" name="numroom" id="numroom">Rooms
-                           <span class="caret"></span></button>
-                           <ul class="dropdown-menu">
-                              <li><a href="#">1</a></li>
-                              <li><a href="#">2</a></li>
-                              <li><a href="#">3</a></li>
-                              <li><a href="#">4</a></li>
-                              <li><a href="#">5</a></li>
-                              <li><a href="#">6</a></li>
-                              <li><a href="#">7</a></li>
-                              <li><a href="#">8</a></li>
-                              <li><a href="#">9</a></li>
-                              <li><a href="#">10</a></li>
-                           </ul>
+                        <div class="dropdown" name="numrooms" id="numrooms">
+                           <select>
+                           		<option>1</option>
+                           		<option>2</option>
+                           		<option>3</option>
+                           		<option>4</option>
+                           		<option>5</option>
+                           </select>
                         </div>
                      </div>
-                     <div class="col-xs-3">
-                        <div class="dropdown">
-                           <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" name="roomtype" id="roomtype">Type
-                           <span class="caret"></span></button>
-                           <ul class="dropdown-menu">
-                              <li><a href="#">Standard</a></li>
-                              <li><a href="#">Family</a></li>
-                              <li><a href="#">Suite</a></li>
-                           </ul>
+                        <div class="dropdown  col-sm-6">
+                        	<select name="roomtype" class="form-control"> 
+                        		<option value=1>Standard</option>
+                        		<option value=2>Family</option>
+                        		<option value=3>Suite</option>
+                        	</select>
                         </div>
-                     </div>
                      <div class="col-xs-3"></div>
                      <div class="col-xs-3"></div>
                   </div>
