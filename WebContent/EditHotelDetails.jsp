@@ -30,8 +30,9 @@ import="utils.globals"
 	Hotel h = (Hotel)session.getAttribute(globals.session_editHotelObject);
 %>
 
-
-<div class="container ">
+<form action="UpdateHotelDetails" method="post">
+	
+	<div class="container ">
 	<br>
 	<div class="row">
 		<div class="col-xs-3">
@@ -100,43 +101,46 @@ import="utils.globals"
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" value="">Bathtub in room</label>
+  				<label><input type="checkbox" name="bathtub" value="">Bathtub in room</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" value="">Free breakfast</label>
+  				<label><input type="checkbox" name="breakfast" value="">Free breakfast</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" value="">Free Wi-Fi</label>
+  				<label><input type="checkbox" name="wifi" value="">Free Wi-Fi</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" value="">Gym</label>
+  				<label><input type="checkbox" name="gym" value="">Gym</label>
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" value="">Paid Internet access</label>
+  				<label><input type="checkbox" name="internet" value="">Paid Internet access</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" value="">Pool</label>
+  				<label><input type="checkbox" name="pool" value="">Pool</label>
 			</div>
 		</div>
 		<div class="col-xs-3">
 			<div class="checkbox">
-  				<label><input type="checkbox" value="">Pet friendly</label>
+  				<label><input type="checkbox" name="pet" value="">Pet friendly</label>
 			</div>
 		</div>
 		<div class="col-xs-3"></div>
 	</div>
+	<div>
+		<input type="hidden" name="id" value=<%= h.getId()%>>
+		</div>
 	<div class="row">
 		<div class="col-xs-3"></div>
 		<div class="col-xs-3"></div>
@@ -144,7 +148,7 @@ import="utils.globals"
 	<div class="row">
 		<div class="col-xs-3"></div>
 		<div class="col-xs-1">
-			<a href="ManageHotels.jsp"><button type="submit" class="btn btn-primary btn-sm">Save</button></a>
+			<a href="UpdateHotelDetails"><button type="submit" class="btn btn-primary btn-sm">Save</button></a>
 		</div>
 		<div class="col-xs-1">
 			<a href="ManageHotels.jsp"><button type="submit" class="btn btn-primary btn-sm">Cancel</button></a>
@@ -152,5 +156,6 @@ import="utils.globals"
 		<div class="col-xs-7"></div>
 	</div><br>
 </div>
+</form>
 </body>
 </html>
