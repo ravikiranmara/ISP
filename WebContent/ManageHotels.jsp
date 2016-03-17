@@ -17,52 +17,42 @@
 
 <jsp:include page="headerClient.jsp" />
 
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.Hotel"
+import="utils.globals"
+%>
+
+<%
+
+	ArrayList<Hotel> hotelList = (ArrayList<Hotel>)session.getAttribute(globals.session_hotelsByOwner);
+%>
+
+
 <div class="container">
   <h2>Search Results</h2>
+  
+
+
   <table class="table">
     <thead>
       <tr>
         <th>Hotel name</th>
         <th>Hotel address</th>
         <th>Description</th>
-        <th>Room type</th>
-        <th>Price per night</th>
-        <th>Reserved rooms</th>
-        <th>Unreserved rooms</th>
-        <th>Edit</th>
+        <th> Edit </th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Trump</td>
-        <td>Las Vegas</td>
-        <td>The luxurious and exclusive Trump International Hotel & Tower New York is set in the heart of Manhattan, on the Upper West Side, at the junction of Central Park West and Broadway. Central Park is just across the street</td>
-        <td>Standard</td>
-        <td>$35</td>
-        <td>30</td>
-        <td>40</td>
-        <td><a href="EditHotelDetails.jsp"><button type="submit" class="btn btn-primary btn-sm">Edit</button></a></td>
-      </tr>
-      <tr>
-        <td>Excalibur</td>
-        <td>New York</td>
-        <td>The luxurious and exclusive Trump International Hotel & Tower New York is set in the heart of Manhattan, on the Upper West Side, at the junction of Central Park West and Broadway. Central Park is just across the street</td>
-        <td>Family</td>
-        <td>$45</td>
-        <td>30</td>
-        <td>40</td>
-       	<td><a href="EditHotelDetails.jsp"><button type="submit" class="btn btn-primary btn-sm">Edit</button></a></td>
-      </tr>
-      <tr>
-        <td>Bellagio</td>
-        <td>Las Vegas</td>
-        <td>The luxurious and exclusive Trump International Hotel & Tower New York is set in the heart of Manhattan, on the Upper West Side, at the junction of Central Park West and Broadway. Central Park is just across the street</td>
-        <td>Suite</td>
-        <td>$60</td>
-        <td>30</td>
-        <td>40</td>
-        <td><a href="EditHotelDetails.jsp"><button type="submit" class="btn btn-primary btn-sm">Edit</button></a></td>
-      </tr>
+		<% for(Hotel h : hotelList) {%>
+			<tr>
+				<td> <%= h.getName() %></td> 
+				<td> <%= h.getAddress() %></td> 
+				<td> <%= h.getDescription() %></td>
+				<td> <a href="EditHotels?id=<%= h.getId() %>">Edit</a> </td>
+			</tr> 			
+		<% } %>
+
     </tbody>
   </table>
 </div>

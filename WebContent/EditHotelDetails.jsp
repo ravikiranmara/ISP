@@ -18,6 +18,19 @@
 
 <jsp:include page="headerClient.jsp" />
 
+
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.Hotel"
+import="utils.globals"
+%>
+
+<%
+
+	Hotel h = (Hotel)session.getAttribute(globals.session_editHotelObject);
+%>
+
+
 <div class="container ">
 	<br>
 	<div class="row">
@@ -25,32 +38,65 @@
 			<h5><label>Hotel Name:</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" id="hotelname" placeholder="Name">
+			<input type="text" class="form-control" name="name" id="hotelname" placeholder="Name" value=<%=h.getName() %>>
 		</div>
-		<div class="col-xs-6"></div>
+		<div class="col-xs-3"></div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
 			<h5><label>Description:</label></h5>
 		</div>
 		<div class="col-xs-9">
-			<input type="text" class="form-control" id="Description" placeholder="Description">
+			<input type="text" class="form-control" name="description" id="Description" placeholder="Description" value=<%= h.getDescription() %>>
 		</div>
 	</div>
+	<br>
+	<div class="row">
+	
+	<div class="col-xs-3">
+			<label>Location city:</label>
+		</div>
+		<div class="col-xs-3">
+			<input type="text" class="form-control" name="city" id="city" placeholder="Location city" value=<%= h.getCity() %>>
+	</div>
+	<div class="row">	
+		<div class="col-xs-3">
+			<label>Location State:</label>
+		</div>
+		<div class="col-xs-3">
+			<input type="text" class="form-control" name="state" id="state" placeholder="State" value=<%= h.getState() %>>
+		</div>
+	</div>
+	</div>
+	
+	<div class="col-xs-3">
+			<h5><label>Room Type </label></h5>
+		</div>
+	<div class="dropdown  col-sm-3">
+        <select name="roomtype" class="form-control"> 
+        	<option value=1>Standard</option>
+        	<option value=2>Family</option>
+        	<option value=3>Suite</option>
+		</select>
+    </div>
+    <br>
 	<div class="row">
 		<div class="col-xs-3">
 			<h5><label>Total no. of rooms:</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" id="Description" placeholder="Number">
-		</div>
-		<div class="col-xs-2">
-			<h5><label>rooms Types:</label></h5>
-		</div>
-		<div class="col-xs-4">
-			<input type="text" class="form-control" id="Description" placeholder="Type">
+			<input type="text" class="form-control" name="numrooms" id="numrooms" placeholder="Number">
 		</div>
 	</div>
+	<div class="row">	
+		<div class="col-xs-3">
+			<label>Price:</label>
+		</div>
+		<div class="col-xs-3">
+			<input type="text" class="form-control" name="price" id="price" placeholder="price" >
+		</div>
+	</div>
+	
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="checkbox">
@@ -92,22 +138,6 @@
 		<div class="col-xs-3"></div>
 	</div>
 	<div class="row">
-		<div class="col-xs-3">
-			<label>Location city:</label>
-		</div>
-		<div class="col-xs-3">
-			<input type="text" class="form-control" name="city" id="city" placeholder="Location city">
-		</div>
-		<div class="col-xs-3"></div>
-		<div class="col-xs-3"></div>
-	</div><br>
-	<div class="row">
-		<div class="col-xs-3">
-			<label>Price per day:</label>
-		</div>
-		<div class="col-xs-3">
-			<input type="text" class="form-control" name="city" id="price" placeholder="Price per day">
-		</div>
 		<div class="col-xs-3"></div>
 		<div class="col-xs-3"></div>
 	</div><br>

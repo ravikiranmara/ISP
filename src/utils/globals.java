@@ -14,4 +14,7 @@ public class globals
 	static public int valid = 0;
 	static public int invalid = 1;
 	static public Date invalidDate =  java.sql.Date.valueOf( "1970-01-01" );
+	static public String session_username = "username";
+	static public String session_hotelsByOwner = "hotelsByOwner";
+	static public String session_editHotelObject = "editHotelObject";
 }

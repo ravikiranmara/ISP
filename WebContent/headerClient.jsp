@@ -14,8 +14,8 @@
     	</div>
    			<ul class="nav navbar-nav">
      			<li class="active"><a href="ClientHomePage.jsp">Home</a></li>
-    			<li><a href="ManageHotels.jsp">Manage Hotels</a></li>
-    			<li><a href="ViewCurrentReservations.jsp">View Current Reservations</a></li>
+    			<li><a href="ManageHotels">Manage Hotels</a></li>
+    			<li><a href="ClientCurrentReservation">View Current Reservations</a></li>
     			<li><a href="ClientCreateReservation.jsp">Client Create Reservation</a></li>
      	 	</ul>
      	 	<ul class="nav navbar-nav navbar-right">

@@ -124,7 +124,7 @@ public class Login extends HttpServlet {
 		    // there should be a better way than if else
 			logger.info("Creating session");
 			HttpSession session = request.getSession();
-			session.setAttribute("username", username);
+			session.setAttribute(globals.session_username, username);
 		    if(UserType.Client == user.getUserType())
 		    {
 		        response.sendRedirect("ClientHomePage.jsp");
