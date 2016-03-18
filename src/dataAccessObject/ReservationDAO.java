@@ -29,6 +29,7 @@ static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 		hrdto.setUserId(r.getUserId());
 		hrdto.setReservationNumber(r.getReservationNumber());
 		hrdto.setTransactionId(r.getTransactionId());
+		hrdto.setRoomTypeId(r.getRoomTypeId());
 		
 		return;
 	}
@@ -45,6 +46,7 @@ static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 		r.setUserId(hrdto.getUserId());
 		r.setTransactionId(hrdto.getTransactionId());
 		r.setReservationNumber(hrdto.getReservationNumber());
+		r.setRoomTypeId(hrdto.getRoomTypeId());
 		
 		return;
 	}
@@ -92,7 +94,7 @@ static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 			reservationDto.getHotelReservationById(tid);
 			reservation = new Reservation();
 			this.initializeReservationFromDTO(reservation, reservationDto);
-			logger.info("got reservation dao");
+			logger.info("rrr : " + reservation.getRoomTypeId() + "|" + reservationDto.getRoomTypeId());
 		}
 		catch (Exception e)
 		{
@@ -139,7 +141,8 @@ static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 		
 		return rlist;
 	}
-		public ArrayList<Reservation> getReservationsForHotel(int hid) throws Exception
+	
+	public ArrayList<Reservation> getReservationsForHotel(int hid) throws Exception
 	{
 		ArrayList<Reservation> rlist = null;
 		ArrayList<Integer> idlist = null;

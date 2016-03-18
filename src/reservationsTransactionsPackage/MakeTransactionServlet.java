@@ -126,13 +126,14 @@ public class MakeTransactionServlet extends HttpServlet {
 			transactionService.addTransaction(transaction);
 			
 			logger.info("add reservatition");
+			room = (Room)session.getAttribute(globals.session_clientResRoom);
 			reservationService = new ReservationService();
 			reservation.setTransactionId(transaction.getId());
 			reservation.setReservationNumber(String.valueOf(transaction.getId()));
+			reservation.setRoomTypeId(room.getRoomTypeId());
 			reservationService.addReservation(reservation);
 			
 			logger.info("Update available room");
-			room = (Room)session.getAttribute(globals.session_clientResRoom);
 			hotelService = new HotelService();
 			hotel = hotelService.getHotelById(reservation.getHotelId());
 			int available = room.getAvailableNumber();

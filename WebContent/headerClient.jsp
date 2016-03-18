@@ -16,7 +16,7 @@
      			<li class="active"><a href="ClientHomePage.jsp">Home</a></li>
     			<li><a href="ManageHotels">Manage Hotels</a></li>
     			<li><a href="ClientCurrentReservation">View Current Reservations</a></li>
-    			<li><a href="ClientCreateReservation.jsp">Client Create Reservation</a></li>
+    			<li><a href="ClientReservationServlet">Client Create Reservation</a></li>
      	 	</ul>
      	 	<ul class="nav navbar-nav navbar-right">
      			<li class="active"><a href="#">Hello <%= username %></a></li>

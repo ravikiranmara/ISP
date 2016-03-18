@@ -22,13 +22,13 @@
 	<center>
 		<div class="row">
 			<div class="col-xs-4">
-				<a href="ManageHotels.jsp"><button type="submit" class="btn btn-primary btn-sm">Manage Hotels</button></a>
+				<a href="ManageHotels"><button type="submit" class="btn btn-primary btn-sm">Manage Hotels</button></a>
 			</div>
 			<div class="col-xs-4">
-				<a href="ViewCurrentReservations.jsp"><button type="submit" class="btn btn-primary btn-sm">View Current Reservations</button></a>
+				<a href="ClientCurrentReservation"><button type="submit" class="btn btn-primary btn-sm">View Current Reservations</button></a>
 			</div>
 			<div class="col-xs-4">
-				<a href="ClientCreateReservation.jsp"><button type="submit" class="btn btn-primary btn-sm">Client Create Reservation</button></a>
+				<a href="ClientReservationServlet"><button type="submit" class="btn btn-primary btn-sm">Client Create Reservation</button></a>
 			</div>
 		</div><br>
 	</center>

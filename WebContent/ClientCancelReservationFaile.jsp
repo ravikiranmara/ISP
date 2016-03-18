@@ -25,7 +25,7 @@
 
 	<div class="row">
 		<div class="col-xs-12">
-			<center><h3><label>Your reservation has been Failed. Please try again</label></h3></center>
+			<center><h3><label>Your reservation could not be cancelled. Please try again</label></h3></center>
 		</div>
 	</div>
 </div>

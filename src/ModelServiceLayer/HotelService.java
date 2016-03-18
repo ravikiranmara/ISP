@@ -336,9 +336,24 @@ public class HotelService implements IHotelServiceLayer
 	}
 
 	@Override
-	public HashMap<Integer, String[]> getAllRoomTypes() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public HashMap<Integer, String[]> getAllRoomTypes() throws Exception 
+	{
+		HashMap<Integer, String[]> roomtype = null;
+		HotelDAO hdao = null;
+		
+		try
+		{
+			logger.info("get hotel room type");
+			hdao = new HotelDAO();
+			roomtype = hdao.getAllHotelRoomTypes();
+		}
+		catch (Exception e)
+		{
+			logger.fatal("unable to get hotel room type");
+			throw e;
+		}
+		
+		return roomtype;
 	}
 
 	@Override

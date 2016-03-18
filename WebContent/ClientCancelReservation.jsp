@@ -10,11 +10,12 @@
 <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <!-- Load Custom Scripts and Styles -->
 <link rel="stylesheet" type="text/css" href="css/custom_styles.css">
-<title>Confirm Cancellation</title>
+<title>Cancel Reservations</title>
 </head>
 <body>
 
-<jsp:include page="headerCustomer.jsp" />
+<jsp:include page="headerClient.jsp" />
+
 
 <%@ page 
 import="java.util.ArrayList"
@@ -27,7 +28,7 @@ import="ModelServiceLayer.IHotelServiceLayer"
 
 
 <%
-	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_custCancelBean);
+	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_clientCancelBean);
 %>
 
 
@@ -50,11 +51,23 @@ import="ModelServiceLayer.IHotelServiceLayer"
 		</div>
 	</div>
 	<div class="row">
+		<div class="col-xs-3"></div>
 		<div class="col-xs-3">
-			<h5><label>A payment of <%= rbean.getTransaction().getAmount() %>is credited to: 
-			<%= rbean.getUser().getFirstName() %></label></h5>
+			<h5><label>Reservation Number: <%= rbean.getReservation().getReservationNumber() %></label></h5>
+		</div>
+		<div class="col-xs-3">
+			<h5><label>Amount to refund: <%= rbean.getTransaction().getAmount() %></label></h5>
 		</div>
 	</div>
+	<div class="row">
+				<div class="col-xs-2">
+					<a href="ClientCancelReservationAndRefund"><button type="submit" class="btn btn-primary btn-sm">Confirm Cancellation</button></a>
+				</div>
+				<div class="col-xs-2">
+					<a href="ClientHomePage.jsp"><button type="submit" class="btn btn-primary btn-sm">Cancel</button></a>
+				</div>
+				<div class="col-xs-8"></div>
+	</div><br>
 </div>
 </body>
 </html>

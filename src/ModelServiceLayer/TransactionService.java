@@ -2,6 +2,8 @@ package ModelServiceLayer;
 
 import org.apache.log4j.Logger;
 
+import utils.globals;
+
 import dataAccessObject.TransactionDAO;
 import modelObject.Transaction;
 
@@ -58,16 +60,42 @@ public class TransactionService implements ITransactionService
 	@Override
 	public Transaction getTransactionById(int tid) throws Exception 
 	{
-		Transaction tempTransaction = null;
+		Transaction tr = null;
+		TransactionDAO tdao = null;
 		
+		try
+		{
+			logger.info("get transaction by id");
+			tdao = new TransactionDAO();
+			tr = tdao.getTransactionById(tid);
+		}
+		catch (Exception ex)
+		{
+			logger.fatal("Unable to delete transaction");
+			throw ex;
+		}
 		
-		return tempTransaction;
+		return tr;
 	}
 
 	@Override
 	public boolean updateTransaction(Transaction transaction) throws Exception 
 	{
-		boolean status = true;
+		boolean status = false;
+		Transaction tr = null;
+		TransactionDAO tdao = null;
+		
+		try
+		{
+			logger.info("get transaction by id");
+			tdao = new TransactionDAO();
+			status = tdao.updateTransaction(transaction);
+		}
+		catch (Exception ex)
+		{
+			logger.fatal("Unable to delete transaction");
+			throw ex;
+		}
 		
 		return status;
 	}
@@ -99,6 +127,29 @@ public class TransactionService implements ITransactionService
 		catch (Exception ex)
 		{
 			logger.fatal("unable to add transaction");
+			throw ex;
+		}
+		
+		return status;
+	}
+	@Override
+	public boolean cancelTransaction(Transaction transaction) throws Exception 
+	{
+		boolean status = false;
+		Transaction tr = null;
+		TransactionDAO tdao = null;
+		
+		try
+		{
+			logger.info("get transaction by id");
+			tdao = new TransactionDAO();
+			transaction.setTransactionStatus(globals.transaction_cancelTrue);
+			transaction.setCancelledReservation(globals.transaction_reservationFalse);
+			status = tdao.updateTransaction(transaction);
+		}
+		catch (Exception ex)
+		{
+			logger.fatal("Unable to delete transaction");
 			throw ex;
 		}
 		

@@ -21,7 +21,7 @@ import="utils.globals"
 
 <%
 
-	ArrayList<Hotel> hotelList = (ArrayList<Hotel>)session.getAttribute(globals.session_hotelsByOwner);
+	ArrayList<Hotel> hotelList = (ArrayList<Hotel>)session.getAttribute(globals.session_CreateReshotelsByOwner);
 %>
 </head>
 <body>

@@ -15,7 +15,22 @@
 </head>
 <body>
 
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.Reservation"
+import="utils.globals"
+import="modelObject.ReservationsBean"
+import="ModelServiceLayer.HotelService"
+import="ModelServiceLayer.IHotelServiceLayer"
+%>
+
+
 <jsp:include page="headerClient.jsp" />
+
+<%
+	ArrayList<ReservationsBean> rlist = (ArrayList<ReservationsBean>)session.getAttribute(globals.session_clientCurrResList);
+%>
+
 
 <div class="container">
   <h2>Search Results</h2>
@@ -23,47 +38,30 @@
     <thead>
       <tr>
         <th>Hotel name</th>
-        <th>Hotel address</th>
+        <th>Customer Name</th>
         <th>Room type</th>
-        <th>Price per night</th>
-        <th>#rooms</th>
-        <th>Name</th>
-        <th>Chkin Date</th>
-        <th>Chkout Date</th>
+        <th>Total rooms</th>
+        <th>Total price</th>
+        <th>CheckIn Date</th>
+        <th>CheckOut Date</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Trump</td>
-        <td>Las Vegas</td>
-        <td>Standard</td>
-        <td>$35</td>
-        <td>1</td>
-        <td>First Nmae, Last Name</td>
-        <td>Day, Month, Year</td>
-        <td>Day, Month, Year</td>
-      </tr>
-      <tr>
-        <td>Excalibur</td>
-        <td>New York</td>
-        <td>Family</td>
-        <td>$45</td>
-        <td>1</td>
-        <td>First Nmae, Last Name</td>
-        <td>Day, Month, Year</td>
-        <td>Day, Month, Year</td>
-      </tr>
-      <tr>
-        <td>Bellagio</td>
-        <td>Las Vegas</td>
-        <td>Suite</td>
-        <td>$60</td>
-        <td>1</td>
-        <td>First Nmae, Last Name</td>
-        <td>Day, Month, Year</td>
-        <td>Day, Month, Year</td>
-      </tr>
-    </tbody>
+
+		<% for(ReservationsBean r : rlist) {%>
+			<tr>
+				<td> <%= r.getHotelName() %> </td>
+				<td> <%= r.getUser().getFirstName() %></td>
+				<td> <%= r.getRoomType() %></td>
+				<td> <%= r.getReservation().getNumberOfRooms() %></td>
+				<td> <%= r.getTransaction().getAmount() %></td>
+				<td> <%= r.getReservation().getCheckInDate() %> </td>
+				<td> <%= r.getReservation().getCheckOutDate() %> </td>
+				<td> <a href="ClientCancelReservationServlet?id=<%= r.getReservation().getId() %>">cancel</a> </td>
+			</tr> 			
+		<% } %>
+		
+	</tbody>
   </table>
 </div>
 </body>

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import utils.globals;
+
 import dataAccessObject.ReservationDAO;
 import dataTransferObjects.CreditCardDTO;
 import dataTransferObjects.HotelReservationDTO;
@@ -63,29 +65,14 @@ public class ReservationService implements IReservationService
 	public Reservation getReservationById(int id) 
 	{
 		Reservation reservation = null;
-		
-		return reservation;
-	}
-
-	@Override
-	public boolean cancelReservation(Reservation reservation) 
-	{
-		return this.cancelReservation(reservation.getId());
-	}
-
-	@Override
-	public boolean cancelReservation(int reservationId) 
-	{
 		boolean status = false;
 		ReservationDAO rdao = null;
 		
 		try
 		{
-			logger.info("cancel reservation");
-			
-			// remove transaction and remt money
+			logger.info("update reservation");
 			rdao = new ReservationDAO(); 
-			rdao.deleteReservation(reservationId);
+			reservation = rdao.getReservationById(id);
 		}
 		catch (Exception e)
 		{
@@ -94,6 +81,28 @@ public class ReservationService implements IReservationService
 		finally
 		{}
 		
+		return reservation;
+	}
+
+	@Override
+	public boolean cancelReservation(Reservation reservation) 
+	{
+		ReservationDAO reservationDao = new ReservationDAO();
+		boolean status = false;
+		
+		try
+		{
+			logger.info("get reservations for user");
+			reservation.setReservationStatus(globals.reservation_cancelTrue);
+			reservationDao.updateReservation(reservation);
+			status = true;
+		}
+		catch (Exception ex)
+		{
+			logger.fatal("Unable to get reservations for user");
+		}
+		finally
+		{}
 		
 		return status;
 	}
@@ -114,7 +123,6 @@ public class ReservationService implements IReservationService
 		{
 			logger.info("get reservations for user");
 			reservationList = reservationDao.getReservationsForUser(userId);
-			HotelReservationDTO hdto = new HotelReservationDTO();
 		}
 		catch (Exception ex)
 		{
@@ -130,13 +138,14 @@ public class ReservationService implements IReservationService
 	public ArrayList<Reservation> getReservationForHotel(int hotelId) throws Exception
 	{
 		ArrayList<Reservation> reservationList = null;
+		ArrayList<Reservation> templist = null;
 		ReservationDAO reservationDao = new ReservationDAO();
+		
 		
 		try
 		{
 			logger.info("get reservations for hotel");
 			reservationList = reservationDao.getReservationsForHotel(hotelId);
-			HotelReservationDTO hdto = new HotelReservationDTO();
 		}
 		catch (Exception ex)
 		{
@@ -148,4 +157,26 @@ public class ReservationService implements IReservationService
 		return reservationList;
 	}
 
+	@Override
+	public boolean cancelReservation(int reservationId) 
+	{
+		boolean status = false;
+		Reservation reservation = null;
+		ReservationDAO reservationDao = new ReservationDAO();
+		
+		try
+		{			
+			logger.info("cancel reservations by id");
+			reservation = reservationDao.getReservationById(reservationId);
+			status = this.cancelReservation(reservation);
+		}
+		catch (Exception ex)
+		{
+			logger.fatal("Unable to get reservations for hotel");
+		}
+		finally
+		{}
+		
+		return status;
+	}
 }

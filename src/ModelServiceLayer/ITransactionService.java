@@ -9,4 +9,5 @@ public interface ITransactionService
 	public boolean deleteTransaction(Transaction transaction) throws Exception;
 	public Transaction getTransactionById(int tid) throws Exception;
 	public boolean updateTransaction(Transaction transaction) throws Exception;
+	boolean cancelTransaction(Transaction transaction) throws Exception;
 }

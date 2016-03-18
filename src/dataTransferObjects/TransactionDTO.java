@@ -100,7 +100,7 @@ public class TransactionDTO
 			connection = dbContextSingleton.getSingletonObject().getConnection();
 			query = "SELECT Id, CustomerUserId, OwnerUserId, " +
 					"CustomerCreditCardId, OwnerCreditCardId, Amount, " +
-					" CancelledReservation, Status, " + 
+					" CancelledReservation, Status " + 
 					" FROM " + this.tableName + 
 					" WHERE Id = ?";
 			ps = connection.prepareStatement(query);
@@ -117,7 +117,7 @@ public class TransactionDTO
 				this.ownerCreditCardId = rs.getInt("OwnerCreditCardId");
 				this.transactionStatus = rs.getShort("Status");
 				this.amount = rs.getFloat("Amount");
-				this.cancelledReservations = rs.getShort("CancelledReservations");
+				this.cancelledReservations = rs.getShort("CancelledReservation");
 				
 				this.isInitialized = true;
 				status = true;

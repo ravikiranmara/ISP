@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<jsp:include page="headerCustomer.jsp" />
+<jsp:include page="headerClient.jsp" />
 
 <%@ page 
 import="java.util.ArrayList"
@@ -27,7 +27,7 @@ import="ModelServiceLayer.IHotelServiceLayer"
 
 
 <%
-	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_custCancelBean);
+	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_clientCancelBean);
 %>
 
 
