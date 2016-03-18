@@ -12,11 +12,22 @@
 <!-- Load Custom Scripts and Styles -->
 <link rel="stylesheet" type="text/css" href="css/custom_styles.css">
 <title>Client Create Reservation</title>
+
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.Hotel"
+import="utils.globals"
+%>
+
+<%
+
+	ArrayList<Hotel> hotelList = (ArrayList<Hotel>)session.getAttribute(globals.session_hotelsByOwner);
+%>
 </head>
 <body>
 
 <jsp:include page="headerClient.jsp" />
-
+<form action="ClientCreateReservation" method="post">
 <div class="container ">
 	<br>
 	<div class="row">
@@ -25,13 +36,13 @@
 		</div>
 		<div class="col-xs-3">
 			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="hotel">Select
-				<span class="caret"></span></button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Standard</a></li>
-				    <li><a href="#">Family</a></li>
-				    <li><a href="#">Suite</a></li>
-				</ul>
+		
+				<select name="HotelName" class="form-control">
+				<% for(Hotel h : hotelList) {%>
+					<option value="<%= h.getId()%>"><%= h.getName() %></option>
+				<% } %>
+				</select>
+		
 			</div>		
 		</div>
 		<div class="col-xs-3">
@@ -39,243 +50,72 @@
 		</div>
 		<div class="col-xs-3">
 			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="rooms">Select
-				<span class="caret"></span></button>
-					<ul class="dropdown-menu">
-						<li><a href="#">1</a></li>
-					    <li><a href="#">2</a></li>
-					    <li><a href="#">3</a></li>
-					    <li><a href="#">4</a></li>
-					    <li><a href="#">5</a></li>
-					    <li><a href="#">6</a></li>
-					    <li><a href="#">7</a></li>
-					    <li><a href="#">8</a></li>
-					    <li><a href="#">9</a></li>
-					    <li><a href="#">10</a></li>
-					    <li><a href="#">11</a></li>
-					    <li><a href="#">12</a></li>
-					    <li><a href="#">13</a></li>
-					    <li><a href="#">14</a></li>
-					    <li><a href="#">15</a></li>
-					    <li><a href="#">16</a></li>
-					    <li><a href="#">17</a></li>
-					    <li><a href="#">18</a></li>
-					    <li><a href="#">19</a></li>
-					    <li><a href="#">20</a></li>
-					    <li><a href="#">21</a></li>
-					    <li><a href="#">22</a></li>
-					    <li><a href="#">23</a></li>
-					    <li><a href="#">24</a></li>
-					    <li><a href="#">25</a></li>
-					    <li><a href="#">26</a></li>
-					    <li><a href="#">27</a></li>
-					    <li><a href="#">28</a></li>
-					    <li><a href="#">29</a></li>
-					    <li><a href="#">30</a></li>
-					    <li><a href="#">31</a></li>
-					</ul>
+				<select name="rooms" class="form-control">
+						<option value=1>1</option>
+					    <option value=2>2</option>
+					    <option value=3>3</option>
+					    <option value=4>4</option>
+					    <option value=5>5</option>
+				</select>
 			</div>
 		</div>
 	</div><br>
 	<div class="row">
-		<div class="col-xs-2">
-			<h5><label>Check-in day:</label></h5>
-		</div>
-		<div class="col-xs-1">
-			<div class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="checkin_day">day
-				<span class="caret"></span></button>
-			<ul class="dropdown-menu">
-				<li><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li><a href="#">6</a></li>
-			    <li><a href="#">7</a></li>
-			    <li><a href="#">8</a></li>
-			    <li><a href="#">9</a></li>
-			    <li><a href="#">10</a></li>
-			    <li><a href="#">11</a></li>
-			    <li><a href="#">12</a></li>
-			    <li><a href="#">13</a></li>
-			    <li><a href="#">14</a></li>
-			    <li><a href="#">15</a></li>
-			    <li><a href="#">16</a></li>
-			    <li><a href="#">17</a></li>
-			    <li><a href="#">18</a></li>
-			    <li><a href="#">19</a></li>
-			    <li><a href="#">20</a></li>
-			    <li><a href="#">21</a></li>
-			    <li><a href="#">22</a></li>
-			    <li><a href="#">23</a></li>
-			    <li><a href="#">24</a></li>
-			    <li><a href="#">25</a></li>
-			    <li><a href="#">26</a></li>
-			    <li><a href="#">27</a></li>
-			    <li><a href="#">28</a></li>
-			    <li><a href="#">29</a></li>
-			    <li><a href="#">30</a></li>
-			    <li><a href="#">31</a></li>
-			</ul>
-			</div>		
-		</div>
-		<div class="col-xs-1">
-			<div class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="checkin_month">month
-				<span class="caret"></span></button>
-			<ul class="dropdown-menu">
-				<li><a href="#">JAN</a></li>
-			    <li><a href="#">FEB</a></li>
-			    <li><a href="#">MAR</a></li>
-			    <li><a href="#">APR</a></li>
-			    <li><a href="#">MAY</a></li>
-			    <li><a href="#">JUN</a></li>
-			    <li><a href="#">JUL</a></li>
-			    <li><a href="#">AUG</a></li>
-			    <li><a href="#">SEP</a></li>
-			    <li><a href="#">OCT</a></li>
-			    <li><a href="#">NOV</a></li>
-			    <li><a href="#">DEC</a></li>
-			</ul>
-			</div>		
-		</div>
-		<div class="col-xs-1">
-			<div class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="checkin_year">year
-				<span class="caret"></span></button>
-			<ul class="dropdown-menu">
-				<li><a href="#">2016</a></li>
-			    <li><a href="#">2017</a></li>
-			    <li><a href="#">2018</a></li>
-			    <li><a href="#">2019</a></li>
-			    <li><a href="#">2020</a></li>
-			    <li><a href="#">2021</a></li>
-			    <li><a href="#">2022</a></li>
-			    <li><a href="#">2023</a></li>
-			    <li><a href="#">2024</a></li>
-			    <li><a href="#">2025</a></li>
-			</ul>
-			</div>		
-		</div>
-		<div class="col-xs-1"></div>
-		<div class="col-xs-2">
-			<h5><label>Check-out day:</label></h5>
-		</div>
-		<div class="col-xs-1">
-			<div class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="checkout_day">day
-				<span class="caret"></span></button>
-			<ul class="dropdown-menu">
-				<li><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li><a href="#">6</a></li>
-			    <li><a href="#">7</a></li>
-			    <li><a href="#">8</a></li>
-			    <li><a href="#">9</a></li>
-			    <li><a href="#">10</a></li>
-			    <li><a href="#">11</a></li>
-			    <li><a href="#">12</a></li>
-			    <li><a href="#">13</a></li>
-			    <li><a href="#">14</a></li>
-			    <li><a href="#">15</a></li>
-			    <li><a href="#">16</a></li>
-			    <li><a href="#">17</a></li>
-			    <li><a href="#">18</a></li>
-			    <li><a href="#">19</a></li>
-			    <li><a href="#">20</a></li>
-			    <li><a href="#">21</a></li>
-			    <li><a href="#">22</a></li>
-			    <li><a href="#">23</a></li>
-			    <li><a href="#">24</a></li>
-			    <li><a href="#">25</a></li>
-			    <li><a href="#">26</a></li>
-			    <li><a href="#">27</a></li>
-			    <li><a href="#">28</a></li>
-			    <li><a href="#">29</a></li>
-			    <li><a href="#">30</a></li>
-			    <li><a href="#">31</a></li>
-			</ul>
-			</div>		
-		</div>
-		<div class="col-xs-1">
-			<div class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="checkout_month">month
-				<span class="caret"></span></button>
-			<ul class="dropdown-menu">
-				<li><a href="#">JAN</a></li>
-			    <li><a href="#">FEB</a></li>
-			    <li><a href="#">MAR</a></li>
-			    <li><a href="#">APR</a></li>
-			    <li><a href="#">MAY</a></li>
-			    <li><a href="#">JUN</a></li>
-			    <li><a href="#">JUL</a></li>
-			    <li><a href="#">AUG</a></li>
-			    <li><a href="#">SEP</a></li>
-			    <li><a href="#">OCT</a></li>
-			    <li><a href="#">NOV</a></li>
-			    <li><a href="#">DEC</a></li>
-			</ul>
-			</div>		
-		</div>
-		<div class="col-xs-1">
-			<div class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="checkout_year">year
-				<span class="caret"></span></button>
-			<ul class="dropdown-menu">
-				<li><a href="#">2016</a></li>
-			    <li><a href="#">2017</a></li>
-			    <li><a href="#">2018</a></li>
-			    <li><a href="#">2019</a></li>
-			    <li><a href="#">2020</a></li>
-			    <li><a href="#">2021</a></li>
-			    <li><a href="#">2022</a></li>
-			    <li><a href="#">2023</a></li>
-			    <li><a href="#">2024</a></li>
-			    <li><a href="#">2025</a></li>
-			</ul>
-			</div>		
-		</div>
-		<div class="col-xs-1"></div>
+		<div class="col-xs-3">
+			<label for="checkin">Check-in Date(YYYY-MM-DD):</label>
+        </div>
+        <div class="col-xs-3">
+          	<input type="text" id="datepicker1" name="checkIn" placeholder="yyyy-mm-dd"/>
+        </div>
+        <div class="col-xs-3">
+            <label for="checkin">Check-out Date(YYYY-MM-DD):</label>
+        </div>
+        <div class="col-xs-3">
+           	<input type="text" id="datepicker2" name="checkOut" placeholder="yyyy-mm-dd"/>
+        </div>
 	</div><br>
 	<div class="row">
 		<div class="col-xs-2">
 			<h5><label>Room type:</label></h5>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-xs-3">
 			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="hotel">Select
-				<span class="caret"></span></button>
-				<ul class="dropdown-menu">
-					<li><a href="#">Standard</a></li>
-				    <li><a href="#">Family</a></li>
-				    <li><a href="#">Suite</a></li>
-				</ul>
+				<select name="roomType" class="form-control">
+						<option value=1>Standard</option>
+					    <option value =2>Family</option>
+					    <option value=3>Suite</option>
+				</select>
 			</div>
 		</div>
-		<div class="col-xs-8"></div>
 	</div><br>	
 	<div class="row">
 		<div class="col-xs-2">
 			<label>Name:</label>
 		</div>
 		<div class="col-xs-4">
-			<input type="text" class="form-control" name="city" id="city" placeholder="First Nmae">
+			<input type="text" class="form-control" name="firstname" id="firstname" placeholder="First Name">
 		</div>
 		<div class="col-xs-4">
-			<input type="text" class="form-control" name="city" id="city" placeholder="Last Nmae">
+			<input type="text" class="form-control" name="lastname" id="lastname" placeholder="Last Name">
+		</div>
+		<br>		
+	</div><br>
+	<div class = "row">
+		<div class="col-xs-2">
+			<label>Customer Username:</label>
 		</div>
 		<div class="col-xs-2"></div>
-	</div><br>
+			<div class="col-xs-2">
+			<input type="text" id="username" name="username" placeholder="username"/>
+		</div>
+	
+	</div>
 	<div class="row">
 		<div class="col-xs-2">
 			<label>Phone No.</label>
 		</div>
 		<div class="col-xs-2">
-			<input type="text" class="form-control" name="city" id="city" placeholder="Phone No.">
+			<input type="text" class="form-control" name="phoneno" id="city" placeholder="Phone No.">
 		</div>
 		<div class="col-xs-8"></div>
 	</div><br>	
@@ -284,13 +124,14 @@
 			<label>Email:</label>
 		</div>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" name="city" id="city" placeholder="Email">
+			<input type="text" class="form-control" name="email" id="city" placeholder="Email">
 		</div>
 		<div class="col-xs-7"></div>
 	</div><br>
 	<div class="row">
-		<center><a href="ClientReservationTransaction.jsp"><button type="submit" class="btn btn-primary btn-md">Submit</button></a></center>
+		<center><button type="submit" class="btn btn-primary btn-md">Submit</button></center>
 	</div><br>
 </div>
+</form>
 </body>
 </html>

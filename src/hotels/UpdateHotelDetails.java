@@ -122,19 +122,27 @@ public class UpdateHotelDetails extends HttpServlet {
 					roomname = "suite";
 				}
 				
+				logger.info("Search for room");
 				for(int i=0; i<roomlist.size(); i++)
 				{
 					if(roomlist.get(i).getRoomType().equalsIgnoreCase(roomname))
 					{
 						if(false == price.isEmpty())
 						{
+							logger.info("set price");
 							roomlist.get(i).setPricePerNight(Float.valueOf(price));
 						}
 						if(false == numrooms.isEmpty())
 						{
+							logger.info("set room");
 							roomlist.get(i).setAvailableNumber(Integer.valueOf(numrooms));
 						}			
 					}
+				}
+				
+				for(Room r : roomlist)
+				{
+					logger.info(r.getRoomTypeId() + ":" + r.getRoomType());
 				}
 				
 				hotel.setRoom(roomlist);

@@ -39,7 +39,7 @@ import="utils.globals"
 			<h5><label>Hotel Name:</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" name="hotelname" id="hotelname" placeholder="Name" value=<%=h.getName() %>>
+			<input type="text" class="form-control" name="hotelname" id="hotelname" placeholder="Name" value="<%=h.getName() %>">
 		</div>
 		<div class="col-xs-3"></div>
 	</div>
@@ -48,7 +48,7 @@ import="utils.globals"
 			<h5><label>Description:</label></h5>
 		</div>
 		<div class="col-xs-9">
-			<input type="text" class="form-control" name="description" id="Description" placeholder="Description" value=<%= h.getDescription() %>>
+			<input type="text" class="form-control" name="description" id="Description" placeholder="Description" value="<%= h.getDescription() %>">
 		</div>
 	</div>
 	<br>

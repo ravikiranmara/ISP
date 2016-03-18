@@ -43,11 +43,11 @@
             </div>
             <div class="form-group">
                <label for="lbl-city">City</label>
-               <input type="text" class="form-control" id="city" placeholder="City">
+               <input type="text" class="form-control" name="city" id="city" placeholder="City">
             </div>
             <div class="form-group">
                <label for="lbl-state">State</label>
-               <input type="text" class="form-control" id="state" placeholder="State">
+               <input type="text" class="form-control" name="state" id="state" placeholder="State">
             </div>
             <div class="row">
                <div class="col-xs-6">

@@ -14,22 +14,13 @@ public class TransactionService implements ITransactionService
 	{
 		boolean status = false;
 		TransactionDAO tdao = null;
-		IPaymentService paymentService = null;
 		
 		try
 		{
 			tdao = new TransactionDAO();
-			paymentService = new PaymentService();
-			
-			status = paymentService.makePayment(transaction.getCustomerUserId(), transaction.getCustomerCreditCardId(),
-					transaction.getOwnerUserId(), transaction.getOwnerCreditCardId(), transaction.getAmount());
-			
-			if(false == status)
-			{
-				throw new Exception ("Payment not successful. cancelling transaction");
-			}
 			
 			tdao.addTransaction(transaction);
+			logger.info("tranid " + transaction.getId());
 			status = true;
 		}
 		catch (Exception ex)

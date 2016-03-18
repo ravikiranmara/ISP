@@ -199,6 +199,7 @@ public class HotelRoomDTO
 					" WHERE Id = ?";
 			
 			ps = connection.prepareStatement(query);
+			logger.info("update rrr : " + this.pricePerNight + ":" + this.availableNumber + ":" + this.id + ":" + this.roomTypeId);
 			
 			// init
 			ps.setInt(1, this.roomTypeId);

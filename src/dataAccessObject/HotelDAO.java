@@ -28,6 +28,7 @@ public class HotelDAO implements IHotelDAO
 		reviewDto.setReview(review.getReview());
 		reviewDto.setReviewDate(review.getDate());
 		reviewDto.setReviewerName(review.getReviewerName());
+		reviewDto.setId(review.getId());
 		
 		return;
 	}
@@ -39,6 +40,7 @@ public class HotelDAO implements IHotelDAO
 		review.setReview(reviewDto.getReview());
 		review.setDate(reviewDto.getReviewDate());
 		review.setReviewerName(reviewDto.getReviewerName());
+		review.setId(reviewDto.getId());
 		
 		return;
 	}
@@ -53,6 +55,7 @@ public class HotelDAO implements IHotelDAO
 		room.setStartDate(roomDto.getStartDate());
 		room.setEndDate(roomDto.getEndDate());
 		room.setRoomTypeId(roomTypeDto.getId());
+		room.setId(roomDto.getId());
 		
 		return;
 	}
@@ -67,6 +70,8 @@ public class HotelDAO implements IHotelDAO
 		roomDto.setStartDate(room.getStartDate());
 		roomDto.setEndDate(room.getEndDate());
 		roomTypeDto.setId(room.getRoomTypeId());
+		roomDto.setRoomTypeId(room.getRoomTypeId());
+		roomDto.setId(room.getId());
 		
 		return;
 	}
@@ -269,6 +274,7 @@ public class HotelDAO implements IHotelDAO
 			hotelDto = new HotelDTO();
 			this.initializeDtoFromHotel(hotel, hotelDto);
 			hotelDto.addHotel();
+			hotel.setId(hotelDto.getId());
 			
 			logger.info("insert amenities in case it does not exist");
 			amenityList = hotel.getAmenity();
@@ -409,8 +415,8 @@ public class HotelDAO implements IHotelDAO
 			amenityDto = new AmenityDTO();
 			
 			this.initializeDTOFromAmenity(amenity, hotelAmenityDto, amenityDto);
-			int id = hotelAmenityDto.addHotelAmenity();
-			amenity.setLinkId(id);
+			hotelAmenityDto.addHotelAmenity();
+			amenity.setLinkId(hotelAmenityDto.getId());
 			
 			// we are assuming that amenity already exists. 
 			// if we made it till here, then all went well
@@ -509,8 +515,8 @@ public class HotelDAO implements IHotelDAO
 			
 			logger.info("add hotel room ");
 			this.initializeDTOFromHotelRoom(hotelRoomDto, hotelRoomTypeDto, room);
-			int id = hotelRoomDto.addHotelRoom();
-			room.setId(id);
+			hotelRoomDto.addHotelRoom();
+			room.setId(hotelRoomDto.getId());
 			
 			// we are assuming that amenity already exists. 
 			// if we made it till here, then all went well
@@ -604,8 +610,8 @@ public class HotelDAO implements IHotelDAO
 			
 			logger.info("add hotel review ");
 			this.initializeReviewDtoFromReview(hotelReviewDto, review);
-			int id = hotelReviewDto.addHotelReview();
-			review.setId(id);
+			hotelReviewDto.addHotelReview();
+			review.setId(hotelReviewDto.getId());
 			
 			// we are assuming that amenity already exists. 
 			// if we made it till here, then all went well

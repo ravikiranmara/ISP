@@ -214,7 +214,7 @@ public class TransactionDTO
 			ps.setShort(7, this.cancelledReservations);
 			ps.setInt(8, this.getId());
 			
-			this.id = ps.executeUpdate();
+			ps.executeUpdate();
 			insertId = this.id;
 		} 
 		catch (Exception e) 

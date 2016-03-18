@@ -62,6 +62,7 @@ static Logger logger = Logger.getLogger(ReservationDAO.class.getName());
 			logger.info("add reesrvation dao");
 			this.initializeDTOFromReservation(reservationDto, reservation);
 			reservationDto.addHotelReservation();
+			reservation.setId(reservationDto.getId());
 			
 			status = true;
 		}

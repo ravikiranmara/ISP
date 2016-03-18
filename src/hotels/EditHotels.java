@@ -87,6 +87,7 @@ public class EditHotels extends HttpServlet {
 			{
 				throw new Exception("Hotel not found");
 			}
+			logger.info("Hotel name = " + hotel.getName());
 			
 			logger.info("attach it to session");
 			session.setAttribute(globals.session_editHotelObject, hotel);

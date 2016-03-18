@@ -17,4 +17,17 @@ public class globals
 	static public String session_username = "username";
 	static public String session_hotelsByOwner = "hotelsByOwner";
 	static public String session_editHotelObject = "editHotelObject";
+	static public String session_userid = "session_userid";
+	static public String session_clientres = "session_clientRes";
+	static public String session_clientResTrans = "session_clientResTrans";
+	static public String session_clientResCust = "session_clientResCust";
+	static public String session_clientResCli = "session_clientResCli";
+	static public String session_clientResHotelname = "session_clientResHotelname";
+	static public String session_clientResRoomType = "session_clientResRoomType";
+	static public String session_clientResRoom = "session_clientResRoom";
+	static public String session_clientResCustCC = "session_clientResCustCC";
+	static public short transaction_cancelFalse = 0;
+	static public short transaction_cancelTrue = 1;
+	static public short transaction_reservationTrue = 0;
+	static public short transaction_reservationFalse = 1;
 }

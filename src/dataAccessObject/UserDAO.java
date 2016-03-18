@@ -426,15 +426,17 @@ public class UserDAO implements IUserDao {
 			creditCardDto = new CreditCardDTO();
 			
 			// fetch user details
-			logger.info("add credit card");
+			logger.info("update credit card");
+			this.initializeDTOFromCreditCard(creditCardDto, creditCard);
 			creditCardDto.setUserId(user.getUserId());
 			creditCardDto.updateCreditCard();
-
+			logger.info("Update credit card : " + creditCard.getBalance());
+			
 			status = true;
 		}
 		catch (Exception e)
 		{
-			logger.fatal("Unable to get User : ");
+			logger.fatal("Unable to update User credit card: ");
 			throw e;
 		}
 		finally

@@ -15,9 +15,34 @@
 </head>
 <body>
 
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.Reservation"
+import="modelObject.Transaction"
+import="modelObject.User"
+import="modelObject.Hotel"
+import="modelObject.CreditCard"
+import="utils.globals"
+%>
+
+<%
+
+	Transaction transaction = (Transaction)session.getAttribute(globals.session_clientResTrans);
+	Reservation reservation = (Reservation)session.getAttribute(globals.session_clientres);
+	User customer = (User)session.getAttribute(globals.session_clientResCust);
+	User owner = (User)session.getAttribute(globals.session_clientResCli);
+	Hotel hotel = (Hotel)session.getAttribute(globals.session_clientResHotelname);
+	String roomType = (String)session.getAttribute(globals.session_clientResRoomType); 
+	ArrayList<CreditCard> cclist = customer.getCreditCard();
+	ArrayList<CreditCard> oclist = owner.getCreditCard();
+%>
+
+
 <jsp:include page="headerClient.jsp" />
 
-<div class="container ">
+<form action="MakeTransactionServlet" method="post">
+
+	<div class="container ">
 	<div class="row">
 		<div class="col-xs-2">
 			<img src="images/room1.jpg" class="img-rounded" alt="Cinque Terre">
@@ -37,13 +62,13 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-3">
-					<h5><label>Hotel: Excalibur</label></h5>
+					<h5><label>"<%= hotel.getName() %>"</label></h5>
 				</div>
 				<div class="col-xs-3">
-					<h5><label>Room type: Family</label></h5>
+					<h5><label>"<%= roomType %>"</label></h5>
 				</div>
 				<div class="col-xs-3">
-					<h5><label>cost per day: $45</label></h5>
+					<h5><label>total cost: "<%= transaction.getAmount() %>"</label></h5>
 				</div>
 				<div class="col-xs-3"></div>
 			</div>
@@ -53,6 +78,35 @@
 				</div>
 				<div class="col-xs-6"></div>
 			</div>
+			<div class="row">
+			<div class="col-xs-3">
+				Select Customer Credit Card
+			</div>
+			<div class="col-xs-3">
+			<div class="dropdown">
+				<select name="customercreditcard" class="form-control">
+				<% for(CreditCard c : cclist) {%>
+					<option value="<%= c.getId()%>"><%= c.getNickName()%></option>
+				<% } %>
+				</select>
+			</div>		
+		</div>
+			</div>
+			<div class="row">
+			<div class="col-xs-3">
+				Select Owner Credit Card
+			</div>
+			<div class="col-xs-3">
+			<div class="dropdown">
+				<select name="ownercreditcard" class="form-control">
+				<% for(CreditCard o : oclist) {%>
+					<option value="<%= o.getId()%>"><%= o.getNickName()%></option>
+				<% } %>
+				</select>
+			</div>		
+		</div>
+			</div>
+			
 			<div class="row">
 				<div class="col-xs-3">
 					<h5><label>A/C Holders Name:</label></h5>
@@ -68,7 +122,6 @@
 			<div class="row">
 				<div class="col-xs-3">
 					<h5><label>Card Type:</label></h5>
-				</div>
 				<div class="col-xs-3">
 					<div class="dropdown">
  						<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="cardtype">Card Type
@@ -176,5 +229,7 @@
 		</div>
 	</div>
 </div>
+</div>
+</form>
 </body>
 </html>

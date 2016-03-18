@@ -57,6 +57,7 @@ public class TransactionDAO
 			logger.info("add transaction dao");
 			this.initializeDTOFromTransaction(transactionDto, transaction);
 			transactionDto.addTransaction();
+			transaction.setId(transactionDto.getId());
 			
 			status = true;
 		}
