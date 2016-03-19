@@ -27,9 +27,28 @@
 			});
 		</script>
 		 -->
+		 
+	<script type="text/javascript">
+	function validate(){
+		var a = document.getElementById("datepicker1").value;
+		var b = document.getElementById("datepicker2").value;
+		if(a && b){
+			document.getElementById("search-form").action = "HotelSearchServlet";
+			document.forms[0].submit;
+			
+			return true;
+		}
+		else
+		{
+			alert("Enter Checkin and checkout dates");
+			return false;
+		}
+	}  
+</script>
+	
    </head>
    <jsp:include page="headerCustomer.jsp" />
-   <form role="form" action= "HotelSearchServlet" method="post">
+   <form role="search-form" action= "HotelSearchServlet" method="post">
       <div class="container ">
       <div class="hotelSearchBox">
       <h1>
@@ -132,7 +151,7 @@
       </div>
       <div>
          <br>
-         <center><button type="submit" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-search"></span>Search</button></center>
+         <center><button onclick="return validate();" type="submit" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-search"></span>Search</button></center>
       </div>
    </div>
    </div>

@@ -26,6 +26,25 @@ import="utils.globals"
 </head>
 <body>
 
+	 
+	<script type="text/javascript">
+	function validate(){
+		var a = document.getElementById("datepicker1").value;
+		var b = document.getElementById("datepicker2").value;
+		if(a && b){
+			document.getElementById("search-form").action = "ClientCreateReservation";
+			document.forms[0].submit;
+			
+			return true;
+		}
+		else
+		{
+			alert("Enter Checkin and checkout dates");
+			return false;
+		}
+	}  
+</script>
+
 <jsp:include page="headerClient.jsp" />
 <form action="ClientCreateReservation" method="post">
 <div class="container ">
@@ -129,7 +148,7 @@ import="utils.globals"
 		<div class="col-xs-7"></div>
 	</div><br>
 	<div class="row">
-		<center><button type="submit" class="btn btn-primary btn-md">Submit</button></center>
+		<center><button onclick="return validate();"  type="submit" class="btn btn-primary btn-md">Submit</button></center>
 	</div><br>
 </div>
 </form>

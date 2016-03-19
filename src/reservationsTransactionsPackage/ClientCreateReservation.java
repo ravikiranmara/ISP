@@ -221,6 +221,7 @@ public class ClientCreateReservation extends HttpServlet
 		}
 		catch (Exception ex)
 		{
+			response.sendRedirect("ClientGenericError.jsp?errstr=" + ex.getMessage());
 			logger.fatal("unable to udate hotel object:" + ex.getMessage());
 			throw ex;
 		}

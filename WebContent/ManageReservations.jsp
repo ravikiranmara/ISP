@@ -43,6 +43,7 @@ import="ModelServiceLayer.IHotelServiceLayer"
         <th>Total price</th>
         <th>CheckIn Date</th>
         <th>CheckOut Date</th>
+        <th> Status (1-cancelled, 0-active)</th>
       </tr>
     </thead>
     <tbody>
@@ -56,6 +57,7 @@ import="ModelServiceLayer.IHotelServiceLayer"
 				<td> <%= r.getTransaction().getAmount() %></td>
 				<td> <%= r.getReservation().getCheckInDate() %> </td>
 				<td> <%= r.getReservation().getCheckOutDate() %> </td>
+				<td> <%= r.getReservation().getReservationStatus() %></td>
 				<td> <a href="CustomerCancelReservationServlet?id=<%= r.getReservation().getId() %>">cancel</a> </td>
 			</tr> 			
 		<% } %>
