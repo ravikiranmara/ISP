@@ -96,7 +96,6 @@ public class ClientCreateReservation extends HttpServlet
 		String Roomtype = request.getParameter("roomType");
 		String Username	=	request.getParameter("username");
 		
-		
 		try
 		{
 			logger.info("create reservation");

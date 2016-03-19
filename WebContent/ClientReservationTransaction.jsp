@@ -222,7 +222,7 @@ import="utils.globals"
 					<a href="ClientReservationTransactionConfirmation.jsp"><button type="submit" class="btn btn-primary btn-xs">Create Reservation</button></a>
 				</div>
 				<div class="col-xs-3">
-					<a href="ClientCreateReservation.jsp"><button type="submit" class="btn btn-primary btn-xs">Cancel</button></a>
+					<a href="ClientCreateReservation.jsp">Cancel</a>
 				</div>
 				<div class="col-xs-6"></div>
 			</div>

@@ -31,6 +31,12 @@ public class globals
 	static public String session_CreateReshotelsByOwner = "session_CreateReshotelsByOwner";
 	static public String session_customerReservationsList = "session_customerReservationsList";
 	static public String session_customerCancelBean = "session_customerCancelBean";
+	static public String session_customerSearchHotelList = "session_customerSearchHotelList";
+	static public String session_customerReservationObject = "session_customerReservationObject";
+	static public String session_customerReservationBean = "session_customerReservationBean";
+	static public String session_customerSelectBean = "session_customerSelectBean";
+	static public String session_customerReserveTransUser = "session_customerReserveTransUser";
+	static public String session_customerResCustCC = "session_customerResCustCC";
 	static public short transaction_cancelFalse = 0;
 	static public short transaction_cancelTrue = 1;
 	static public short transaction_reservationTrue = 0;

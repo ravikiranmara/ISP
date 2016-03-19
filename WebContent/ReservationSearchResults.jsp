@@ -17,6 +17,21 @@
 
 <jsp:include page="headerCustomer.jsp" />
 
+
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.Hotel"
+import="modelObject.CustomerHotelSearchBean"
+import="modelObject.Room"
+import="utils.globals"
+%>
+
+<%
+
+	ArrayList<CustomerHotelSearchBean> results = (ArrayList<CustomerHotelSearchBean>)session.getAttribute(globals.session_customerSearchHotelList);
+%>
+
+
 <div class="container">
   <h2>Search Results</h2>
   <table class="table">
@@ -26,43 +41,24 @@
         <th>Hotel address</th>
         <th>Hotel description</th>
         <th>Room type</th>
-        <th>Hotel rating</th>
         <th>Price per night</th>
-        <th>Amenities available</th>
         <th>View/Book</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Trump</td>
-        <td>Las Vegas</td>
-        <td>The luxurious and exclusive Trump International Hotel & Tower New York is set in the heart of Manhattan, on the Upper West Side, at the junction of Central Park West and Broadway. Central Park is just across the street</td>
-        <td>Standard</td>
-        <td>3</td>
-        <td>$35</td>
-        <td>Free WI-Fi, Pool, Pet Friendly</td>
-        <td><a href="View_BookReservations.jsp"><button type="submit" class="btn btn-primary btn-sm">View and Book</button></a></td>
-      </tr>
-      <tr>
-        <td>Excalibur</td>
-        <td>New York</td>
-        <td>The luxurious and exclusive Trump International Hotel & Tower New York is set in the heart of Manhattan, on the Upper West Side, at the junction of Central Park West and Broadway. Central Park is just across the street</td>
-        <td>Family</td>
-        <td>4</td>
-        <td>$45</td>
-        <td>Free Breakfast, Free Wi-Fi, Gym</td>
-        <td><a href="View_BookReservations.jsp"><button type="submit" class="btn btn-primary btn-sm">View and Book</button></a></td>
-      </tr>
-      <tr>
-        <td>Bellagio</td>
-        <td>Las Vegas</td>
-        <td>The luxurious and exclusive Trump International Hotel & Tower New York is set in the heart of Manhattan, on the Upper West Side, at the junction of Central Park West and Broadway. Central Park is just across the street</td>
-        <td>Suite</td>
-        <td>5</td>
-        <td>$60</td>
-        <td>Free Breakfast, Free Wi-Fi, Gym, Free WI-Fi, Pool, Pet Friendly</td>
-        <td><a href="View_BookReservations.jsp"><button type="submit" class="btn btn-primary btn-sm">View and Book</button></a></td>
-      </tr>
+    
+    	<% for(CustomerHotelSearchBean r : results) {%>
+			<tr>
+				<td><%= r.getHotel().getName()	%> </td>
+				<td><%= r.getHotel().getAddress() %></td>
+				<td><%= r.getHotel().getDescription() %></td>
+				<td><%= r.getRoom().getRoomType() %></td>
+				<td><%= r.getRoom().getPricePerNight() %></td>
+				
+				<td> <a href="View_BookReservations.jsp?id=<%= r.getHotel().getId() %>">View And Book</a> </td>
+			</tr> 			
+		<% } %>
+		
     </tbody>
   </table>
 </div>

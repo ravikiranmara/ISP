@@ -22,18 +22,23 @@ import="modelObject.User"
 import="modelObject.Hotel"
 import="modelObject.CreditCard"
 import="utils.globals"
+import="modelObject.ReservationsBean"
+import="modelObject.CustomerHotelSearchBean"
 import="modelObject.Room"
 %>
 
 <%
 
-	Transaction transaction = (Transaction)session.getAttribute(globals.session_clientResTrans);
-	Reservation reservation = (Reservation)session.getAttribute(globals.session_clientres);
-	User customer = (User)session.getAttribute(globals.session_clientResCust);
-	User owner = (User)session.getAttribute(globals.session_clientResCli);
-	Hotel hotel = (Hotel)session.getAttribute(globals.session_clientResHotelname);
-	Room room = (Room)session.getAttribute(globals.session_clientResRoom);
-	CreditCard cc = (CreditCard)session.getAttribute(globals.session_clientResCustCC);
+	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_customerReservationBean);
+	CustomerHotelSearchBean selectbean = (CustomerHotelSearchBean)session.getAttribute(globals.session_customerSelectBean);
+
+
+	Transaction transaction = rbean.getTransaction();
+	Reservation reservation = rbean.getReservation();
+	User customer = rbean.getUser();
+	Hotel hotel = selectbean.getHotel();
+	Room room = selectbean.getRoom();
+	CreditCard cc = (CreditCard)session.getAttribute(globals.session_customerResCustCC);
 	
 %>
 

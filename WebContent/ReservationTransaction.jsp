@@ -18,10 +18,39 @@
 
 <jsp:include page="headerCustomer.jsp" />
 
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.ReservationsBean"
+import="modelObject.CustomerHotelSearchBean"
+import="modelObject.Reservation"
+import="modelObject.Transaction"
+import="modelObject.User"
+import="modelObject.Hotel"
+import="modelObject.CreditCard"
+import="utils.globals"
+%>
+
+<%
+
+	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_customerReservationBean);
+	CustomerHotelSearchBean selectbean = (CustomerHotelSearchBean)session.getAttribute(globals.session_customerSelectBean);
+
+	User customer = (User)session.getAttribute(globals.session_customerReserveTransUser);
+	Transaction transaction = rbean.getTransaction();
+	Reservation reservation = rbean.getReservation();
+	Hotel hotel = (Hotel)selectbean.getHotel();
+	
+	ArrayList<CreditCard> cclist = customer.getCreditCard();
+	
+%>
+
+<form action="CustomerMakeTransaction" method="post">
 <div class="container ">
+	<div class="container ">
 	<div class="row">
 		<div class="col-xs-2">
 			<img src="images/room1.jpg" class="img-rounded" alt="Cinque Terre">
+		</div>
 		</div>
 		<div class="col-xs-2">
 			<img src="images/room2.jpg" class="img-rounded" alt="Cinque Terre">
@@ -38,16 +67,35 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-3">
-					<h5><label>Hotel: Excalibur</label></h5>
+					<h5><label>"<%= hotel.getName() %>"</label></h5>
 				</div>
 				<div class="col-xs-3">
-					<h5><label>Room type: Family</label></h5>
+					<h5><label>"<%= selectbean.getRoom().getRoomType() %>"</label></h5>
 				</div>
 				<div class="col-xs-3">
-					<h5><label>cost per day: $45</label></h5>
+					<h5><label>total cost: "<%= transaction.getAmount() %>"</label></h5>
 				</div>
 				<div class="col-xs-3"></div>
 			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<h4><label>Credit Card Information:</label></h4>
+				</div>
+				<div class="col-xs-6"></div>
+			</div>
+			<div class="row">
+			<div class="col-xs-3">
+				Select Customer Credit Card
+			</div>
+			<div class="col-xs-3">
+			<div class="dropdown">
+				<select name="customercreditcard" class="form-control">
+				<% for(CreditCard c : cclist) {%>
+					<option value="<%= c.getId()%>"><%= c.getNickName()%></option>
+				<% } %>
+				</select>
+			</div>		
+		</div>
 			<div class="row">
 				<div class="col-xs-6">
 					<h4><label>Credit Card Information:</label></h4>
@@ -167,16 +215,18 @@
 			</div><br>
 			<div class="row">
 				<div class="col-xs-3">
-					<a href="ReservationTransactionConfirmation.jsp"><button type="submit" class="btn btn-primary btn-xs">Confirm Reservation</button></a>
+					<button type="submit" class="btn btn-primary btn-xs">Confirm Reservation</button>S
 				</div>
 				<div class="col-xs-3">
-					<a href="ReservationSearchResults.jsp"><button type="submit" class="btn btn-primary btn-xs">Cancel</button></a>
+					<a href="ReservationSearchResults.jsp">Cancel</a>
 				</div>
 				<div class="col-xs-6"></div>
 			</div>
 		</div>
+		</div>
 	</div>
 </div>
+</form>
 </body>
 </html>
 

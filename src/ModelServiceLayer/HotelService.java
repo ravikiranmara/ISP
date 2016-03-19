@@ -382,15 +382,6 @@ public class HotelService implements IHotelServiceLayer
 				 this.updateRoomForHotel(hotel, r);
 			}
 			
-			/*
-			logger.info("update all amenities");
-			amenitylist = hotel.getAmenity();
-			for(Amenity a : amenitylist)
-			{
-				this.updateAmenityToHotel(hotel, a);
-			}
-			*/
-
 			// we are not doing review. 
 		}
 		catch(Exception ex)
@@ -597,6 +588,76 @@ public class HotelService implements IHotelServiceLayer
 		catch (Exception ex)
 		{
 			logger.info("unable to search");
+			throw ex;
+		}
+		finally
+		{
+		}
+		
+		return temp;
+	}
+
+	@Override
+	public Room getHotelRoomOfRoomType(Hotel hotel, int roomTypeId)
+			throws Exception 
+	{
+		HotelDAO hotelDao = null;
+		ArrayList<Room> rooms = null;
+		Room temp = null;
+		
+		try
+		{
+			logger.info("get room of roomtype");
+			hotelDao = new HotelDAO();
+			rooms = hotel.getRoom();
+			
+			for(Room r : rooms)
+			{
+				if(r.getRoomTypeId() == roomTypeId)
+				{
+					temp = r;
+					break;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			logger.info("get room of roomtype");
+			throw ex;
+		}
+		finally
+		{
+		}
+		
+		return temp;
+	}
+
+	@Override
+	public Room getHotelRoomOfRoomType(Hotel hotel, String roomType)
+			throws Exception 
+	{
+		HotelDAO hotelDao = null;
+		ArrayList<Room> rooms = null;
+		Room temp = null;
+		
+		try
+		{
+			logger.info("get room of roomtype");
+			hotelDao = new HotelDAO();
+			rooms = hotel.getRoom();
+			
+			for(Room r : rooms)
+			{
+				if(roomType.equalsIgnoreCase(r.getRoomType()))
+				{
+					temp = r;
+					break;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			logger.info("get room of roomtype");
 			throw ex;
 		}
 		finally

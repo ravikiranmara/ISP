@@ -16,63 +16,91 @@
 
 <jsp:include page="headerCustomer.jsp" />
 
-<div class="container">
-	<h3>Holel: Excalibur</h3>
-	<h3>Place: New York</h3>
-	<h3>Description: The luxurious and exclusive Trump International Hotel & Tower New York is set in the heart of Manhattan, on the Upper West Side, at the junction of Central Park West and Broadway. Central Park is just across the street</h3>        
-	<h3>Room type: Family</h3>        
-	<h3>Rating: 4 Star</h3>
-	<h3>Price per day: $45</h3>
-	<h3>Amenities: Free Breakfast, Free Wi-Fi, Gym</h3>
-	<h3>Distance from port:	10 miles</h3>
-</div>
-<div class="row"><br>
-	<div class="col-xs-1"></div>
-	<div class="col-xs-1"></div>
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.Hotel"
+import="modelObject.CustomerHotelSearchBean"
+import="modelObject.Room"
+import="modelObject.Review"
+import="utils.globals"
+%>
+
+<%
+
+	ArrayList<CustomerHotelSearchBean> results = (ArrayList<CustomerHotelSearchBean>)session.getAttribute(globals.session_customerSearchHotelList);
+	CustomerHotelSearchBean bean = null;
+	ArrayList<Review> revlist = null;
+	
+	int id = Integer.valueOf(request.getParameter("id"));
+	for(CustomerHotelSearchBean c : results)
+	{
+		if(c.getHotel().getId() == id)
+		{
+			bean = c;
+		}
+	}
+	
+	revlist = bean.getHotel().getReview();
+%>
+
+
+	<div class="container">
+	<div class="row"><br>
+	<div> Number of rooms:</div>
 	<div class="col-xs-1">
-		<div class="dropdown">
-			<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" id="rooms"> #rooms
-			<span class="caret"></span></button>
-			<ul class="dropdown-menu">
-				<li><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li><a href="#">6</a></li>
-			    <li><a href="#">7</a></li>
-			    <li><a href="#">8</a></li>
-			    <li><a href="#">9</a></li>
-			    <li><a href="#">10</a></li>
-			    <li><a href="#">11</a></li>
-			    <li><a href="#">12</a></li>
-			    <li><a href="#">13</a></li>
-			    <li><a href="#">14</a></li>
-			    <li><a href="#">15</a></li>
-			    <li><a href="#">16</a></li>
-			    <li><a href="#">17</a></li>
-			    <li><a href="#">18</a></li>
-			    <li><a href="#">19</a></li>
-			    <li><a href="#">20</a></li>
-			    <li><a href="#">21</a></li>
-			    <li><a href="#">22</a></li>
-			    <li><a href="#">23</a></li>
-			    <li><a href="#">24</a></li>
-			    <li><a href="#">25</a></li>
-			    <li><a href="#">26</a></li>
-			    <li><a href="#">27</a></li>
-			    <li><a href="#">28</a></li>
-			    <li><a href="#">29</a></li>
-			    <li><a href="#">30</a></li>
-			</ul>
-		</div>		
+			<div class="dropdown">
+				<select name="rooms" class="form-control">
+						<option value=1>1</option>
+					    <option value=2>2</option>
+					    <option value=3>3</option>
+					    <option value=4>4</option>
+					    <option value=5>5</option>
+				</select>
+			</div>
+		</div>
 	</div>
 	<div class="col-xs-1">
-		<a href="ReservationTransaction.jsp"><button type="submit" class="btn btn-primary btn-md">Book</button></a>
+		<a href="CustomerCreateHotelReservation?id=<%= id%>"><button type="submit" class="btn btn-primary btn-md">Book</button></a>
 	</div>
 	<div class="col-xs-1">
 		<a href="ReservationSearchResults.jsp"><button type="submit" class="btn btn-primary btn-md">Back</button></a>
 	</div>
+<br>
+<br>
+
+
+	<h3>Hotel: <%= bean.getHotel().getName() %></h3>
+	<h3>City: <%= bean.getHotel().getCity() %></h3>
+	<h3>Description: <%= bean.getHotel().getDescription() %></h3>        
+	<h3>Room type: <%= bean.getRoom().getRoomType() %></h3>        
+	<h3>Price per day: <%= bean.getRoom().getPricePerNight() %></h3>
+	<h3>Amenities: </h3>
+	<h3>Nearest Point:	<%= bean.getHotel().getNearestPoints() %></h3>
+
+
+<h2>Review List</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Rating</th>
+        <th>Reviewer Name</th>
+        <th>Date </th>
+        <th>Review </th>
+      </tr>
+    </thead>
+    <tbody>
+    
+    	<% for(Review r : revlist) {%>
+			<tr>
+				<td><%= r.getRating() %> </td>
+				<td><%= r.getReview() %></td>
+				<td><%= r.getDate() %></td>
+				<td><%= r.getReview() %></td>
+			</tr> 			
+		<% } %>
+		
+    </tbody>
+  </table>
 	<div class="col-xs-1"></div>
 	<div class="col-xs-1"></div>
 	<div class="col-xs-1"></div>
@@ -80,6 +108,7 @@
 	<div class="col-xs-1"></div>
 	<div class="col-xs-1"></div>
 	<div class="col-xs-1"></div>
+	
 </div>
 </body>
 </html>

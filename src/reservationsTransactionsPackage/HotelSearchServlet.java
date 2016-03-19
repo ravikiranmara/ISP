@@ -12,12 +12,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
+import utils.globals;
+
 import loginPackage.Registration;
 import modelObject.CreditCard;
+import modelObject.CustomerHotelSearchBean;
 import modelObject.Hotel;
+import modelObject.Reservation;
 import modelObject.SearchParameter;
 import modelObject.User;
 import ModelServiceLayer.HotelService;
@@ -181,45 +186,61 @@ public class HotelSearchServlet extends HttpServlet
         ArrayList<Hotel> hlist = null;
         IHotelServiceLayer hs = null;
         SearchParameter sp = null;
+        HttpSession session = null;
+        Reservation reservation = null;
         
         try
         {
+        	session = request.getSession();
 	        logger.info("validate input");
 	        this.IsRequestParametersValid(request);
 	        
 	        logger.info("get search parameter");
 	        sp = this.loadSearchParameters(request);
 	        
-	        // now send it off to 
-	        //hs = new HotelService();
-	        
-	        /*
-	        out.println(sp.getHotelname());
-	        out.println(sp.getNumRooms());
-	        out.println(sp.getRoomType());
-	        out.println(sp.getCity());
-	        out.println(sp.getState());
-	        out.println(sp.getCheckinDate());
-	        out.println(sp.getCheckoutDate());
-	    	*/
-	        
+	        logger.info("get list of hotels");
 	        hs = new HotelService();
 	        hlist = hs.SearchForHotel(sp);
 	        
+	        ArrayList<CustomerHotelSearchBean> beanlist = new ArrayList<CustomerHotelSearchBean>();  
+	        CustomerHotelSearchBean tempbean = null;
 	        for(Hotel h : hlist)
 	        {
-	        	out.println("   res : " + h.getName());	        	
+	        	tempbean = new CustomerHotelSearchBean();
+	        	tempbean.setHotel(h);
+	        	tempbean.setRoom(hs.getHotelRoomOfRoomType(h, sp.getRoomType()));
+	        	
+	        	beanlist.add(tempbean);
 	        }
 	        
+	        logger.info("update reservation object");
+	        reservation = new Reservation();
+	        reservation.setCheckInDate(sp.getCheckinDate());
+	        reservation.setCheckOutDate(sp.getCheckoutDate());
+	        reservation.setNumberOfRooms(sp.getNumRooms());
+	        reservation.setUserId((int)session.getAttribute(globals.session_userid));
+	        if(0 != beanlist.size())
+	        {
+	        	reservation.setRoomTypeId(beanlist.get(0).getRoom().getRoomTypeId());
+	        }
+	        
+	        logger.info("add reservation to session");
+	        session.setAttribute(globals.session_customerReservationObject, reservation);
+	        
+	        logger.info("Push list to session");
+	        session.setAttribute(globals.session_customerSearchHotelList, beanlist);
+	        
 	        logger.info("redirect");
-	      //response.sendRedirect("ReservationSearchResults.jsp");
-			
+	        response.sendRedirect("ReservationSearchResults.jsp");			
         }
         catch(Exception ex)
 		{
 			logger.fatal("unable to validate parameters");
 			throw ex;
 		}
+        finally
+        {
+        }
 		
         return;
 	}

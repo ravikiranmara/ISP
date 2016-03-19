@@ -35,6 +35,8 @@ public interface IHotelServiceLayer
 	
 	boolean addHotelRoomToHotel(Hotel hotel, Room room) throws Exception;
 	boolean updateRoomForHotel(Hotel hotel, Room room) throws Exception;
+	Room getHotelRoomOfRoomType(Hotel hotel, int roomTypeId) throws Exception;
+	Room getHotelRoomOfRoomType(Hotel hotel, String roomType) throws Exception;
 	HashMap<Integer, String[]> getAllRoomTypes() throws Exception;
 	
 	ArrayList<Hotel> SearchForHotel(SearchParameter sp) throws Exception;

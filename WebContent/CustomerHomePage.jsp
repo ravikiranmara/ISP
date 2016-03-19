@@ -52,12 +52,12 @@
             <div class="row">
                <div class="col-xs-6">
                   <div>
-                     <label for="checkin">Check-in Date:</label>
+                     <label for="checkin">Check-in Date (yyyy-mm-dd):</label>
                   </div>
                   	<input type="text" id="datepicker1" name="checkIn" />
                   <br>
                   <div>
-                     <label for="checkin">Check-out Date:</label>
+                     <label for="checkin">Check-out Date(yyyy-mm-dd):</label>
                   </div>
                   	<input type="text" id="datepicker2" name="checkOut" />
                   <label> Number of Rooms: </label><br>
