@@ -3,6 +3,7 @@ package ModelServiceLayer;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 
@@ -363,172 +364,6 @@ public class HotelService implements IHotelServiceLayer
 	}
 
 	@Override
-	public ArrayList<Hotel> SearchForHotel(SearchParameter sp) throws Exception 
-	{
-		ArrayList<Hotel> list = null;
-		ArrayList<Hotel> temp = null;
-		HotelDAO hotelDao = null;
-		
-		try
-		{
-			logger.info("search for hotel");
-			hotelDao = new HotelDAO();
-			list = hotelDao.getAllHotel();
-			
-			for(Hotel h : list)
-			{
-				logger.info("hotel namae : " + h.getName());
-			}
-			
-			logger.info("search for name");
-			String hotelName = sp.getHotelname();
-			if(false == hotelName.isEmpty())
-			{
-				temp = new ArrayList<Hotel>();
-				for (Hotel h : list)
-				{
-					if(true == h.getName().equalsIgnoreCase(hotelName))
-					{
-						temp.add(h);
-					}
-				}
-				
-				list = temp;
-			}
-			
-			logger.info("search city");
-			String city = sp.getCity();
-			if(false == city.isEmpty())
-			{
-				temp = new ArrayList<Hotel>();
-				for (Hotel h : list)
-				{
-					if(h.getCity().equalsIgnoreCase(city))
-					{
-						temp.add(h);
-					}
-				}
-				
-				list = temp;
-			}
-			
-			logger.info("search state");
-			String state = sp.getState();
-			if(false == state.isEmpty())
-			{
-				temp = new ArrayList<Hotel>();
-				for (Hotel h : list)
-				{
-					if(h.getState().equalsIgnoreCase(state))
-					{
-						temp.add(h);
-					}
-				}
-				
-				list = temp;
-			}
-			
-			logger.info("room type");
-			String roomType = sp.getRoomType();
-			if(false == roomType.isEmpty())
-			{
-				temp = new ArrayList<Hotel>();
-				for (Hotel h : list)
-				{
-					ArrayList<Room> room = null;
-					ArrayList<Room> temproom = new ArrayList<Room>();
-					room = h.getRoom();
-					
-					for(Room r : room)
-					{
-						if(r.getRoomType().equalsIgnoreCase(roomType))
-						{
-							temproom.add(r);
-							break;
-						}						
-					}
-					
-					if(false == temproom.isEmpty())
-					{
-						h.setRoom(temproom);
-						temp.add(h);
-					}
-				}
-				
-				list = temp;
-			}
-			
-			logger.info("search check in date");
-			Date checkin = sp.getCheckinDate();
-			if(0 != checkin.compareTo(globals.invalidDate))
-			{
-				temp = new ArrayList<Hotel>();
-				for (Hotel h : list)
-				{
-					ArrayList<Room> room = null;
-					ArrayList<Room> temproom = new ArrayList<Room>();
-					room = h.getRoom();
-					
-					for(Room r : room)
-					{
-						if(r.getStartDate().before(checkin) || r.getStartDate().equals(checkin))
-						{
-							temproom.add(r);
-						}						
-					}
-					
-					if(false == temproom.isEmpty())
-					{
-						h.setRoom(temproom);
-						temp.add(h);
-					}
-				}
-				
-				list = temp;
-			}
-
-			logger.info("search check out date");
-			Date checkout = sp.getCheckoutDate();
-			if(0 != checkin.compareTo(globals.invalidDate))
-			{
-				temp = new ArrayList<Hotel>();
-				for (Hotel h : list)
-				{
-					ArrayList<Room> room = null;
-					ArrayList<Room> temproom = new ArrayList<Room>();
-					room = h.getRoom();
-					
-					for(Room r : room)
-					{
-						if(r.getEndDate().after(checkout) || r.getEndDate().equals(checkout))
-						{
-							temproom.add(r);
-						}						
-					}
-					
-					if(false == temproom.isEmpty())
-					{
-						h.setRoom(temproom);
-						temp.add(h);
-					}
-				}
-				
-				list = temp;
-			}			
-		}
-		catch (Exception ex)
-		{
-			logger.info("unable to search");
-			throw ex;
-		}
-		finally
-		{
-		}
-		
-		return list;
-	}
-
-	@Override
 	public boolean updateHotelComplete(Hotel hotel) throws Exception 
 	{
 		boolean status = false;
@@ -589,4 +424,186 @@ public class HotelService implements IHotelServiceLayer
 		return status;
 		
 	}
+
+	@Override
+	public boolean isHotelMatchSearch (Hotel hotel, SearchParameter sp) throws Exception 
+	{
+		boolean status = false;
+		HotelDAO hdao = null;
+		
+		try
+		{
+			logger.info("Check if hotel matches search criteria");
+			
+			logger.info("search for name : " + hotel.getName());
+			String hotelName = sp.getHotelname();
+			if(false == hotelName.isEmpty())
+			{
+				if(false == hotelName.equalsIgnoreCase(hotel.getName()))
+				{
+					throw new NoSuchElementException("name");
+				}
+			}
+			
+			logger.info("search city : " + hotel.getCity());
+			String city = sp.getCity();
+			if(false == city.isEmpty())
+			{
+				if(false == city.equalsIgnoreCase(hotel.getCity()))
+				{
+					throw new NoSuchElementException("city");
+				}
+			}
+			
+			logger.info("search state: " + hotel.getState());
+			String state = sp.getState();
+			if(false == state.isEmpty())
+			{
+				if(false == state.equalsIgnoreCase(hotel.getCity()))
+				{
+					throw new NoSuchElementException("state");
+				}
+			}
+			
+			logger.info("room type - " + sp.getRoomType());
+			String roomType = sp.getRoomType();
+			ArrayList<Room> roomlist = hotel.getRoom();
+			ArrayList<Room> filterlist = new ArrayList<Room>();
+			
+			
+			if(false == roomType.isEmpty())
+			{
+				for(Room r : roomlist)
+				{
+					if(true == roomType.equalsIgnoreCase(r.getRoomType()))
+					{
+						logger.info("found room type - " + r.getRoomType());
+						if(r.getAvailableNumber() >= sp.getNumRooms())
+						{
+							filterlist.add(r);
+						}
+					}
+				}
+			}
+			else
+			{
+				filterlist = roomlist;
+			}
+			
+			if(0 == filterlist.size())
+			{
+				throw new NoSuchElementException("roomtype and available :" + filterlist.size());
+			}
+			
+			roomlist = new ArrayList(filterlist);
+			logger.info("roomtype and available :" + roomlist.size());
+			filterlist = new ArrayList<Room>();
+			Date checkin = sp.getCheckinDate();
+			logger.info("Checkin checkout date - " + sp.getCheckinDate());
+			if(false == checkin.equals(globals.invalidDate))
+			{
+				for(Room r : roomlist)
+				{
+					if(r.getStartDate().after(checkin) || r.getStartDate().equals(checkin)) 
+					{
+						filterlist.add(r);
+					}
+				}
+			}
+			else
+			{
+				filterlist = new ArrayList<Room>(roomlist);
+			}
+			
+			logger.info("roomtype and available :" + filterlist.size());
+			
+			if(0 == filterlist.size())
+			{
+				throw new NoSuchElementException("checkin");
+			}
+			
+			roomlist = new ArrayList<Room>(filterlist);
+			filterlist.clear();
+			logger.info("checkout date");
+			Date checkout = sp.getCheckoutDate();
+			if(false == checkout.equals(globals.invalidDate))
+			{
+				logger.info("at checkout");
+				for(Room r : roomlist)
+				{
+					logger.info(r.getEndDate());
+					if(r.getEndDate().after(checkout) || r.getEndDate().equals(checkout)) 
+					{
+						logger.info("add");
+						filterlist.add(r);
+					}
+				}
+			}
+			else
+			{
+				filterlist = new ArrayList<Room>(roomlist);
+			}
+			
+			if(0 == filterlist.size())
+			{
+				throw new NoSuchElementException("checkout");
+			}
+			
+			logger.info("Check for amenities");
+			
+			status = true;
+		}
+		catch (NoSuchElementException ex)
+		{
+			logger.info("sarch failed at : " + ex.getMessage());
+			status = false;
+		}
+		catch (Exception ex)
+		{
+			logger.info("unable to check if room meets search criteria");
+			throw ex;
+		}
+		finally
+		{
+		}
+		
+		logger.info("Return - " + status);
+		return status;
+	}
+	
+	@Override
+	public ArrayList<Hotel> SearchForHotel(SearchParameter sp) throws Exception 
+	{
+		ArrayList<Hotel> list = null;
+		ArrayList<Hotel> temp = null;
+		HotelDAO hotelDao = null;
+		
+		temp = new ArrayList<Hotel>();
+		try
+		{
+			logger.info("search for hotel");
+			hotelDao = new HotelDAO();
+			list = hotelDao.getAllHotel();
+			
+			for(Hotel h : list)
+			{
+				if(true == this.isHotelMatchSearch(h, sp))
+				{
+					logger.info("match - " + h.getName());
+					temp.add(h);
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			logger.info("unable to search");
+			throw ex;
+		}
+		finally
+		{
+		}
+		
+		return temp;
+	}
+	
 }

@@ -38,4 +38,6 @@ public interface IHotelServiceLayer
 	HashMap<Integer, String[]> getAllRoomTypes() throws Exception;
 	
 	ArrayList<Hotel> SearchForHotel(SearchParameter sp) throws Exception;
+	boolean isHotelMatchSearch(Hotel hotel, SearchParameter sp)
+			throws Exception;
 }

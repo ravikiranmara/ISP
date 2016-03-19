@@ -24,7 +24,7 @@ import ModelServiceLayer.HotelService;
 import ModelServiceLayer.IAuthenticationService;
 import ModelServiceLayer.IHotelServiceLayer;
 
-@WebServlet("/HotelSearchServlet")
+@WebServlet(name = "/HotelSearchServlet", urlPatterns = { "/HotelSearchServlet" })
 public class HotelSearchServlet extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
@@ -63,15 +63,16 @@ public class HotelSearchServlet extends HttpServlet
 		try
 		{
 			// get all the params
-			String hotelName = request.getParameter("hotelName");
+			String hotelName = request.getParameter("hotelname");
 			String city = request.getParameter("city");
 			String state = request.getParameter("state");
 			String checkinDateString = request.getParameter("checkIn");
 			String checkoutDateString = request.getParameter("checkOut");
-			String numRoom = request.getParameter("numroom");
+			String numRoom = request.getParameter("numrooms");
 			String roomType = request.getParameter("roomtype");
 			
-			
+			logger.info("Check for null - " + hotelName + "|" + city + "|" + state + "|" + checkinDateString
+					 + "|" + checkoutDateString + "|" + numRoom + "|" + roomType);
 			
 			if(hotelName == null || city == null || null == state || 
 					checkinDateString == null || checkoutDateString == null || numRoom == null ||
@@ -102,14 +103,14 @@ public class HotelSearchServlet extends HttpServlet
 	{
 		SearchParameter sp = new SearchParameter();
 		SimpleDateFormat sdf1 = new SimpleDateFormat("MM-dd-yyyy");
-		String hotelName = request.getParameter("hotelName");
+		String hotelName = request.getParameter("hotelname");
 		String city = request.getParameter("city");
 		String state = request.getParameter("state");
-		String checkinDateString = request.getParameter("checkInDate");
-		String checkoutDateString = request.getParameter("checkOutDate");
-		String numRoom = request.getParameter("numroom");
+		String checkinDateString = request.getParameter("checkIn");
+		String checkoutDateString = request.getParameter("checkOut");
+		String numRoom = request.getParameter("numrooms");
 		String roomType = request.getParameter("roomtype");
-	
+		
 		try
 		{
 			if(false == hotelName.isEmpty())
@@ -127,6 +128,7 @@ public class HotelSearchServlet extends HttpServlet
 				sp.setState(state);
 			}
 			
+			logger.info("checkin checkout dates");
 			if(false == checkinDateString.isEmpty())
 			{
 				java.util.Date date = sdf1.parse(checkinDateString);
@@ -136,24 +138,35 @@ public class HotelSearchServlet extends HttpServlet
 	
 			if(false == checkoutDateString.isEmpty())
 			{
-				java.util.Date date = sdf1.parse(checkinDateString);
+				java.util.Date date = sdf1.parse(checkoutDateString);
 				java.sql.Date sqlStartDate = new java.sql.Date(date.getTime()); 
 				sp.setCheckoutDate(sqlStartDate);
 			}
-	
+
+			logger.info("get numrooms");
 			if(false == numRoom.isEmpty())
 			{
 				sp.setNumRooms(Integer.parseInt(numRoom));
 			}
 			
+			logger.info("get roomtype");
 			if(false == roomType.isEmpty())
 			{
-				sp.setRoomType(roomType);
+				//sp.setRoomType(roomType);
+				int rt = Integer.valueOf(roomType);
+				if(rt == 1)
+					sp.setRoomType("standard");
+				else if(rt == 2)
+					sp.setRoomType("family");
+				else 
+					sp.setRoomType("suite");
 			}
+			
+			logger.info("got search parameters");
 		}
 		catch (Exception ex)
 		{
-			logger.fatal("unable to get serarch parameters");
+			logger.fatal("unable to get serarch parameters : " + ex.getMessage());
 			throw ex;
 		}
 		
@@ -167,18 +180,40 @@ public class HotelSearchServlet extends HttpServlet
         User user = null;
         ArrayList<Hotel> hlist = null;
         IHotelServiceLayer hs = null;
+        SearchParameter sp = null;
         
         try
         {
-	        // validate input
+	        logger.info("validate input");
 	        this.IsRequestParametersValid(request);
 	        
-	        // get search parameter
-	        //this.loadSearchParameters(request);
+	        logger.info("get search parameter");
+	        sp = this.loadSearchParameters(request);
 	        
 	        // now send it off to 
 	        //hs = new HotelService();
 	        
+	        /*
+	        out.println(sp.getHotelname());
+	        out.println(sp.getNumRooms());
+	        out.println(sp.getRoomType());
+	        out.println(sp.getCity());
+	        out.println(sp.getState());
+	        out.println(sp.getCheckinDate());
+	        out.println(sp.getCheckoutDate());
+	    	*/
+	        
+	        hs = new HotelService();
+	        hlist = hs.SearchForHotel(sp);
+	        
+	        for(Hotel h : hlist)
+	        {
+	        	out.println("   res : " + h.getName());	        	
+	        }
+	        
+	        logger.info("redirect");
+	      //response.sendRedirect("ReservationSearchResults.jsp");
+			
         }
         catch(Exception ex)
 		{
@@ -186,7 +221,6 @@ public class HotelSearchServlet extends HttpServlet
 			throw ex;
 		}
 		
-        response.sendRedirect("ReservationSearchResults.jsp");
-		return;
+        return;
 	}
 }
