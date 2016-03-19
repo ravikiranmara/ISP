@@ -35,7 +35,7 @@ import="ModelServiceLayer.IHotelServiceLayer"
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12">
-			<center><h3><label>The reservation has been cancelled</label></h3></center>
+			<center><h3><label>The reservation will be cancelled</label></h3></center>
 		</div>
 	</div>
 	<div class="row">

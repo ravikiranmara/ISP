@@ -27,7 +27,7 @@ import="ModelServiceLayer.IHotelServiceLayer"
 
 
 <%
-	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_custCancelBean);
+	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_customerCancelBean);
 %>
 
 

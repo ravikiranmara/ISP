@@ -14,31 +14,53 @@
 </head>
 <body>
 
-<jsp:include page="headerClient.jsp" />
+<jsp:include page="headerCustomer.jsp" />
+
+<%@ page 
+import="java.util.ArrayList"
+import="modelObject.Reservation"
+import="utils.globals"
+import="modelObject.ReservationsBean"
+import="ModelServiceLayer.HotelService"
+import="ModelServiceLayer.IHotelServiceLayer"
+%>
+
+
+<%
+	ArrayList<ReservationsBean> rbean = (ArrayList<ReservationsBean>)session.getAttribute(globals.session_customerReservationsList);
+%>
+
 
 <div class="container">
-  <h2>Manage Your Reservations</h2>       
+  <h2>Search Results</h2>
   <table class="table">
     <thead>
       <tr>
         <th>Hotel name</th>
-        <th>Hotel address</th>
+        <th>Customer Name</th>
         <th>Room type</th>
-        <th>Price per night</th>
-        <th>Amenities available</th>
-        <th>Cancelation</th>
+        <th>Total rooms</th>
+        <th>Total price</th>
+        <th>CheckIn Date</th>
+        <th>CheckOut Date</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Excalibur</td>
-        <td>New York</td>
-        <td>Family</td>
-        <td>$45</td>
-        <td>Free Breakfast, Free Wi-Fi, Gym</td>
-        <td><a href="CancelReservations.jsp"><button type="submit" class="btn btn-primary btn-sm">Cancel Reservation</button></a></td>
-      </tr>
-    </tbody>
+
+		<% for(ReservationsBean r : rbean) {%>
+			<tr>
+				<td> <%= r.getHotelName() %> </td>
+				<td> <%= r.getUser().getFirstName() %></td>
+				<td> <%= r.getRoomType() %></td>
+				<td> <%= r.getReservation().getNumberOfRooms() %></td>
+				<td> <%= r.getTransaction().getAmount() %></td>
+				<td> <%= r.getReservation().getCheckInDate() %> </td>
+				<td> <%= r.getReservation().getCheckOutDate() %> </td>
+				<td> <a href="CustomerCancelReservationServlet?id=<%= r.getReservation().getId() %>">cancel</a> </td>
+			</tr> 			
+		<% } %>
+		
+	</tbody>
   </table>
 </div>
 </body>

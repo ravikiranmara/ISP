@@ -1,7 +1,5 @@
 package reservationsTransactionsPackage;
 
-import hotels.EditHotels;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -14,33 +12,33 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
+import modelObject.Hotel;
+import modelObject.Reservation;
+import modelObject.ReservationsBean;
+import modelObject.Room;
+import modelObject.Transaction;
+import utils.globals;
 import ModelServiceLayer.HotelService;
 import ModelServiceLayer.IHotelServiceLayer;
 import ModelServiceLayer.PaymentService;
 import ModelServiceLayer.ReservationService;
 import ModelServiceLayer.TransactionService;
 
-import utils.globals;
-
-import modelObject.Hotel;
-import modelObject.Reservation;
-import modelObject.ReservationsBean;
-import modelObject.Room;
-import modelObject.Transaction;
-
 /**
- * Servlet implementation class ClientCancelReservationAndRefund
+ * Servlet implementation class CustomerCancelReservationAndRefund
  */
-@WebServlet(name = "/ClientCancelReservationAndRefund", urlPatterns = { "/ClientCancelReservationAndRefund" })
-public class ClientCancelReservationAndRefund extends HttpServlet {
+@WebServlet(name = "/CustomerCancelReservationAndRefund", urlPatterns = { "/CustomerCancelReservationAndRefund" })
+public class CustomerCancelReservationAndRefund extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	static Logger logger = Logger.getLogger(ClientCancelReservationAndRefund.class.getName());
+	static Logger logger = Logger.getLogger(CustomerCancelReservationAndRefund.class.getName());
 	
-    public ClientCancelReservationAndRefund() {
+       
+    public CustomerCancelReservationAndRefund() {
         super();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
 		try {
 			this.handleRequest(request, response);
 		} catch (Exception e) {
@@ -49,15 +47,16 @@ public class ClientCancelReservationAndRefund extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
 		try {
 			this.handleRequest(request, response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
 	}
-
+	
 	protected void handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception 
 	{
 		HttpSession session = null;
@@ -76,7 +75,7 @@ public class ClientCancelReservationAndRefund extends HttpServlet {
 			logger.info("cancel and refund reservation");
 			
 			session = request.getSession();
-			rbean = (ReservationsBean)session.getAttribute(globals.session_clientCancelBean);
+			rbean = (ReservationsBean)session.getAttribute(globals.session_customerCancelBean);
 
 			if(null == rbean)
 			{
@@ -132,13 +131,14 @@ public class ClientCancelReservationAndRefund extends HttpServlet {
 			hotelService.updateRoomForHotel(hotel, room);
 			
 			logger.info("cancelled reservation. now redirect");
-			response.sendRedirect("ClientCancelReservationConfirmation.jsp");
+			response.sendRedirect("ReservationCancellationConfirmation.jsp");
 		}
 		catch (Exception ex)
 		{
 			logger.fatal("unable to cancel and refund reservation" + ex.getMessage());
-			response.sendRedirect("ClientCancelReservationFaile.jsp");
+			response.sendRedirect("CustomerCancelReservationFailed.jsp");
 		}
 	}
-	
+
+
 }

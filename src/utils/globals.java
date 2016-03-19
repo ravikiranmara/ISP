@@ -28,8 +28,9 @@ public class globals
 	static public String session_clientResCustCC = "session_clientResCustCC";
 	static public String session_clientCurrResList = "session_clientCurrResList";
 	static public String session_clientCancelBean = "session_clientCancelBean";
-	static public String session_custCancelBean = "session_custCancelBean";
 	static public String session_CreateReshotelsByOwner = "session_CreateReshotelsByOwner";
+	static public String session_customerReservationsList = "session_customerReservationsList";
+	static public String session_customerCancelBean = "session_customerCancelBean";
 	static public short transaction_cancelFalse = 0;
 	static public short transaction_cancelTrue = 1;
 	static public short transaction_reservationTrue = 0;

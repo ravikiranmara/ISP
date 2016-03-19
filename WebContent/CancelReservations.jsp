@@ -28,15 +28,14 @@ import="ModelServiceLayer.IHotelServiceLayer"
 
 
 <%
-	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_clientCancelBean);
+	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_customerCancelBean);
 %>
 
 
-<form action="CancelReservationAndRefund" method="post">
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12">
-			<center><h3><label>The reservation has been cancelled</label></h3></center>
+			<center><h3><label>The reservation will be cancelled</label></h3></center>
 		</div>
 	</div>
 	<div class="row">
@@ -62,14 +61,13 @@ import="ModelServiceLayer.IHotelServiceLayer"
 	</div>
 	<div class="row">
 				<div class="col-xs-2">
-					<button type="submit" class="btn btn-primary btn-sm">Confirm Cancellation</button></a>
+					<a href="CustomerCancelReservationAndRefund"><button type="submit" class="btn btn-primary btn-sm">Confirm Cancellation</button></a>
 				</div>
 				<div class="col-xs-2">
-					<a href="ClientHomePage.jsp"><button type="submit" class="btn btn-primary btn-sm">Cancel</button></a>
+					<a href="CustomerHomePage.jsp"><button type="submit" class="btn btn-primary btn-sm">Cancel</button></a>
 				</div>
 				<div class="col-xs-8"></div>
 	</div><br>
 </div>
-</form>
 </body>
 </html>
