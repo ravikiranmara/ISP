@@ -1,16 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-<!-- Load Custom Scripts and Styles -->
-<link rel="stylesheet" type="text/css" href="css/custom_styles.css">
+
+<jsp:include page="headerClient.jsp" />
+
 <title>Client Create Reservation</title>
 
 <%@ page 
@@ -27,25 +19,36 @@ import="utils.globals"
 <body>
 
 	 
-	<script type="text/javascript">
-	function validate(){
+<script type="text/javascript">
+	function validate() {
+
 		var a = document.getElementById("datepicker1").value;
 		var b = document.getElementById("datepicker2").value;
-		if(a && b){
-			document.getElementById("search-form").action = "ClientCreateReservation";
-			document.forms[0].submit;
-			
+		console.log(a, b);
+		if (a && b) {
+			var from = a.split("/");
+			var f = new Date(from[1] - 1, from[2], from[0]);
+
+			var to = b.split("/");
+			var t = new Date(to[1] - 1, to[2], to[0]);
+
+			if (f >= t) {
+				alert("Checkin date is after checkout date");
+				return false;
+			}
+
+			document.getElementById("searchform").action = "HotelSearchServlet";
+			document.getElementById("searchform").submit();
+
 			return true;
-		}
-		else
-		{
+		} else {
 			alert("Enter Checkin and checkout dates");
 			return false;
 		}
-	}  
+	}
 </script>
 
-<jsp:include page="headerClient.jsp" />
+
 <form action="ClientCreateReservation" method="post">
 <div class="container ">
 	<br>
@@ -153,4 +156,18 @@ import="utils.globals"
 </div>
 </form>
 </body>
+<script>
+	
+	  $(function() {
+		  $("#datepicker1").datepicker();
+			format: 'yyyy-mm-dd';
+	  });
+		
+	  $(function() {
+		  $("#datepicker2").datepicker();
+			format: 'yyyy-mm-dd';
+	  });
+	</script>
+
+
 </html>

@@ -72,7 +72,7 @@ public class ClientCreateReservation extends HttpServlet
 		int available = 0;
 		Date checkinUser = null, checkoutUser = null;
 		Date checkinAvailable = null, checkoutAvailable = null;
-		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
 		Reservation res = null;
 		int userNumRooms = 0;
 		int numrooms = 0;
@@ -87,6 +87,7 @@ public class ClientCreateReservation extends HttpServlet
 		Hotel hotel = null;
 		int roomid = 0;
 		Room room = null;
+		long numDays = 1;
 		
 		
 		String HotelId = request.getParameter("HotelName");
@@ -165,6 +166,10 @@ public class ClientCreateReservation extends HttpServlet
 				throw new InvalidParameterException("rooom not available");
 			}
 			
+			logger.info("date rrr : " + checkoutUser + "|" + checkinUser);
+			long diff = checkoutUser.getTime() - checkinUser.getTime();
+			numDays = diff / (24 * 60 * 60 * 1000);
+			
 			logger.info("get customer");
 			userService = new UserService();
 			user = userService.getUserByUsername(Username);
@@ -186,7 +191,7 @@ public class ClientCreateReservation extends HttpServlet
 			transaction = new Transaction();
 			transaction.setOwnerUserId(ownerId);
 			transaction.setCustomerUserId(user.getUserId());
-			transaction.setAmount(price * userNumRooms);
+			transaction.setAmount(price * userNumRooms * numDays);
 			transaction.setCancelledReservation(globals.transaction_cancelFalse);
 			transaction.setTransactionStatus(globals.transaction_reservationFalse);
 			session.setAttribute(globals.session_clientResTrans, transaction);

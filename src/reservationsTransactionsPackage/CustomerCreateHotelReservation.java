@@ -1,7 +1,9 @@
 package reservationsTransactionsPackage;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,7 +44,8 @@ public class CustomerCreateHotelReservation extends HttpServlet {
 		try {
 			this.handleRequest(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			request.getSession().setAttribute(globals.session_Exception, e);
+			response.sendRedirect("CustomerGenericErrorPage.jsp");
 			e.printStackTrace();
 		}
 	}
@@ -52,7 +55,8 @@ public class CustomerCreateHotelReservation extends HttpServlet {
 		try {
 			this.handleRequest(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			request.getSession().setAttribute(globals.session_Exception, e);
+			response.sendRedirect("CustomerGenericErrorPage.jsp");
 			e.printStackTrace();
 		}
 	}
@@ -81,32 +85,33 @@ public class CustomerCreateHotelReservation extends HttpServlet {
 			reservation = (Reservation)session.getAttribute(globals.session_customerReservationObject);
 			username = (String)session.getAttribute(globals.session_username);
 			
-			hotelIdStr = request.getParameter("id");
+			logger.info("get parameters");
 			roomsStr = request.getParameter("rooms");
+			hotelIdStr = request.getParameter("id");
 			
 			if(null == hotelIdStr)
 			{
-				throw new Exception("Parameter id is null");
+				throw new Exception("Hotel id is null");
 			}
 			hotelId = Integer.valueOf(hotelIdStr);
 			
 			if(null == roomsStr)
 			{
-//				throw new Exception("rooms is null");
-				roomsStr = "1";
+				throw new Exception("rooms is null");
 			}
 			numrooms = Integer.valueOf(roomsStr);
 			
-			logger.info("get selected hotel");
+			logger.info("get selected hotel: " + hotelId);
 			for(CustomerHotelSearchBean c : searchList)
 			{
 				if(c.getHotel().getId() == hotelId)
 				{
 					selectbean = c;
+					logger.info("got selectbean");
 				}
 			}
 			
-			logger.info("get user details");
+			logger.info("get user details : " + username);
 			us = new UserService();
 			user = us.getUserByUsername(username);
 			if(null == user)
@@ -114,6 +119,7 @@ public class CustomerCreateHotelReservation extends HttpServlet {
 				throw new Exception("cannot find user");
 			}
 			
+			logger.info("Get owner" );
 			User owner = us.getUserById(selectbean.getHotel().getOwnerUserId()); 
 			
 			logger.info("Update hotel details in reservation object");
@@ -122,9 +128,17 @@ public class CustomerCreateHotelReservation extends HttpServlet {
 			reservation.setReservationStatus(globals.reservation_cancelFalse);
 			reservation.setNotes("");
 			
-			logger.info("Update transaction Object");
+			logger.info("calculate total amount" );
+			Date checkin = reservation.getCheckInDate();
+			Date checkout = reservation.getCheckOutDate();
+			
+			logger.info("date rrr : " + checkout + "|" + checkin);
+			long diff = checkout.getTime() - checkin.getTime();
+			long numDays = diff / (24 * 60 * 60 * 1000);
+			
+			logger.info("Update transaction Object : " + numDays);
 			transaction = new Transaction();
-			transaction.setAmount(selectbean.getRoom().getPricePerNight() * numrooms);
+			transaction.setAmount(selectbean.getRoom().getPricePerNight() * numrooms * numDays);
 			transaction.setCustomerUserId(user.getUserId());
 			transaction.setOwnerUserId(owner.getUserId());
 			transaction.setOwnerCreditCardId(owner.getCreditCard().get(0).getId());

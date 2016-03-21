@@ -37,6 +37,7 @@ public class globals
 	static public String session_customerSelectBean = "session_customerSelectBean";
 	static public String session_customerReserveTransUser = "session_customerReserveTransUser";
 	static public String session_customerResCustCC = "session_customerResCustCC";
+	static public String session_Exception = "session_Exception";
 	static public short transaction_cancelFalse = 0;
 	static public short transaction_cancelTrue = 1;
 	static public short transaction_reservationTrue = 0;

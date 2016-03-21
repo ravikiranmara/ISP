@@ -214,10 +214,10 @@ import="utils.globals"
 				</div>
 			</div><br>
 			<div class="row">
-				<div class="col-xs-3">
-					<button type="submit" class="btn btn-primary btn-xs">Confirm Reservation</button>S
+				<div class="col-xs-6">
+					<button type="submit" class="btn btn-primary btn-xs">Confirm Reservation</button>
 				</div>
-				<div class="col-xs-3">
+				<div class="col-xs-6">
 					<a href="ReservationSearchResults.jsp">Cancel</a>
 				</div>
 				<div class="col-xs-6"></div>

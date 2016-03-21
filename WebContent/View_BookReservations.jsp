@@ -22,16 +22,18 @@ import="modelObject.Hotel"
 import="modelObject.CustomerHotelSearchBean"
 import="modelObject.Room"
 import="modelObject.Review"
+import="modelObject.Reservation"
 import="utils.globals"
 %>
 
 <%
 
+	Reservation reservation = (Reservation)session.getAttribute(globals.session_customerReservationObject);
 	ArrayList<CustomerHotelSearchBean> results = (ArrayList<CustomerHotelSearchBean>)session.getAttribute(globals.session_customerSearchHotelList);
+	int id = Integer.valueOf(request.getParameter("id"));
 	CustomerHotelSearchBean bean = null;
 	ArrayList<Review> revlist = null;
 	
-	int id = Integer.valueOf(request.getParameter("id"));
 	for(CustomerHotelSearchBean c : results)
 	{
 		if(c.getHotel().getId() == id)
@@ -43,13 +45,14 @@ import="utils.globals"
 	revlist = bean.getHotel().getReview();
 %>
 
-
+<form action="CustomerCreateHotelReservation" method="post">
 	<div class="container">
 	<div class="row"><br>
 	<div> Number of rooms:</div>
 	<div class="col-xs-1">
 			<div class="dropdown">
-				<select name="rooms" class="form-control">
+				<select name="rooms" class="form-control" >
+						<option selected="selected"><%= reservation.getNumberOfRooms() %></option>
 						<option value=1>1</option>
 					    <option value=2>2</option>
 					    <option value=3>3</option>
@@ -57,13 +60,14 @@ import="utils.globals"
 					    <option value=5>5</option>
 				</select>
 			</div>
+			<input type="hidden" name="id" value="<%= bean.getHotel().getId() %>" id="hotelid"/>
 		</div>
 	</div>
 	<div class="col-xs-1">
-		<a href="CustomerCreateHotelReservation?id=<%= id%>"><button type="submit" class="btn btn-primary btn-md">Book</button></a>
+		<a href="CustomerCreateHotelReservation"><button type="submit" class="btn btn-primary btn-md">Book</button></a>
 	</div>
 	<div class="col-xs-1">
-		<a href="ReservationSearchResults.jsp"><button type="submit" class="btn btn-primary btn-md">Back</button></a>
+		<a href="ReservationSearchResults.jsp"><h4>Back</h4></a>
 	</div>
 <br>
 <br>
@@ -93,7 +97,7 @@ import="utils.globals"
     	<% for(Review r : revlist) {%>
 			<tr>
 				<td><%= r.getRating() %> </td>
-				<td><%= r.getReview() %></td>
+				<td><%= r.getReviewerName() %></td>
 				<td><%= r.getDate() %></td>
 				<td><%= r.getReview() %></td>
 			</tr> 			
@@ -108,7 +112,8 @@ import="utils.globals"
 	<div class="col-xs-1"></div>
 	<div class="col-xs-1"></div>
 	<div class="col-xs-1"></div>
-	
+
 </div>
+</form>
 </body>
 </html>

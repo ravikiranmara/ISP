@@ -468,7 +468,7 @@ public class HotelService implements IHotelServiceLayer
 				{
 					if(true == roomType.equalsIgnoreCase(r.getRoomType()))
 					{
-						logger.info("found room type - " + r.getRoomType());
+						logger.info("found room type - " + r.getRoomType() + "|" + r.getAvailableNumber());
 						if(r.getAvailableNumber() >= sp.getNumRooms())
 						{
 							filterlist.add(r);
@@ -489,13 +489,14 @@ public class HotelService implements IHotelServiceLayer
 			roomlist = new ArrayList(filterlist);
 			logger.info("roomtype and available :" + roomlist.size());
 			filterlist = new ArrayList<Room>();
-			Date checkin = sp.getCheckinDate();
-			logger.info("Checkin checkout date - " + sp.getCheckinDate());
+			java.sql.Date checkin = sp.getCheckinDate();
+			logger.info("Checkin checkout date - " + checkin);
 			if(false == checkin.equals(globals.invalidDate))
 			{
 				for(Room r : roomlist)
 				{
-					if(r.getStartDate().after(checkin) || r.getStartDate().equals(checkin)) 
+					logger.info("start : " + r.getStartDate() + "|" + r.getEndDate());
+					if(r.getStartDate().before(checkin) || r.getStartDate().equals(checkin)) 
 					{
 						filterlist.add(r);
 					}
@@ -522,7 +523,7 @@ public class HotelService implements IHotelServiceLayer
 				logger.info("at checkout");
 				for(Room r : roomlist)
 				{
-					logger.info(r.getEndDate());
+					logger.info(r.getEndDate() + "|" + checkout); 
 					if(r.getEndDate().after(checkout) || r.getEndDate().equals(checkout)) 
 					{
 						logger.info("add");

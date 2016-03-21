@@ -46,8 +46,9 @@ public class HotelSearchServlet extends HttpServlet
 		try {
 			this.handleRequest(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			request.getSession().setAttribute(globals.session_Exception, e);
+			response.sendRedirect("CustomerGenericErrorPage.jsp");
 		}
 	}
 
@@ -56,8 +57,9 @@ public class HotelSearchServlet extends HttpServlet
 		try {
 			this.handleRequest(request, response);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			request.getSession().setAttribute(globals.session_Exception, e);
+			response.sendRedirect("CustomerGenericErrorPage.jsp");
 		}
 	}
 
@@ -86,7 +88,7 @@ public class HotelSearchServlet extends HttpServlet
 				throw new InvalidParameterException("Some parameter is missing in serach page");
 			}
 			
-			logger.info("checkin " + checkinDateString);
+			
 			
 		}
 		catch (InvalidParameterException ex)
@@ -107,7 +109,7 @@ public class HotelSearchServlet extends HttpServlet
 	private SearchParameter loadSearchParameters(HttpServletRequest request) throws Exception
 	{
 		SearchParameter sp = new SearchParameter();
-		SimpleDateFormat sdf1 = new SimpleDateFormat("MM-dd-yyyy");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
 		String hotelName = request.getParameter("hotelname");
 		String city = request.getParameter("city");
 		String state = request.getParameter("state");
@@ -133,7 +135,7 @@ public class HotelSearchServlet extends HttpServlet
 				sp.setState(state);
 			}
 			
-			logger.info("checkin checkout dates");
+			logger.info("checkin checkout dates : " + checkinDateString + "|" + checkoutDateString);
 			if(false == checkinDateString.isEmpty())
 			{
 				java.util.Date date = sdf1.parse(checkinDateString);
@@ -147,6 +149,8 @@ public class HotelSearchServlet extends HttpServlet
 				java.sql.Date sqlStartDate = new java.sql.Date(date.getTime()); 
 				sp.setCheckoutDate(sqlStartDate);
 			}
+			
+			logger.info("rrr date : " + sp.getCheckoutDate() + "|" + sp.getCheckinDate());
 
 			logger.info("get numrooms");
 			if(false == numRoom.isEmpty())

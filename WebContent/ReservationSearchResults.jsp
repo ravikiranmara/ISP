@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,7 +15,7 @@
 <title>Reservation search results</title>
 </head>
 <body>
-
+<%@ page errorPage="CustomerGenericErrorPage.jsp" %>
 <jsp:include page="headerCustomer.jsp" />
 
 
@@ -27,12 +28,11 @@ import="utils.globals"
 %>
 
 <%
-
 	ArrayList<CustomerHotelSearchBean> results = (ArrayList<CustomerHotelSearchBean>)session.getAttribute(globals.session_customerSearchHotelList);
 %>
 
-
-<div class="container">
+<form action="View_BookReservations.jsp" method="post" >
+  <div class="container">
   <h2>Search Results</h2>
   <table class="table">
     <thead>
@@ -49,18 +49,19 @@ import="utils.globals"
     
     	<% for(CustomerHotelSearchBean r : results) {%>
 			<tr>
+				<td style="display:none;"><%= r.getHotel().getId() %></td>
 				<td><%= r.getHotel().getName()	%> </td>
 				<td><%= r.getHotel().getAddress() %></td>
 				<td><%= r.getHotel().getDescription() %></td>
 				<td><%= r.getRoom().getRoomType() %></td>
 				<td><%= r.getRoom().getPricePerNight() %></td>
-				
-				<td> <a href="View_BookReservations.jsp?id=<%= r.getHotel().getId() %>">View And Book</a> </td>
+				<td><button type="submit" name="id" value="<%= r.getHotel().getId() %>" id="book"> View And Book </button> </td>
 			</tr> 			
 		<% } %>
 		
     </tbody>
   </table>
 </div>
+</form>
 </body>
 </html>
