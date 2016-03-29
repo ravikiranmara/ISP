@@ -45,13 +45,13 @@ import="utils.globals"
 	revlist = bean.getHotel().getReview();
 %>
 
-<form action="CustomerCreateHotelReservation" method="post">
+<!--  <form action="CustomerCreateHotelReservation" method="post"> -->
 	<div class="container">
 	<div class="row"><br>
 	<div> Number of rooms:</div>
 	<div class="col-xs-1">
 			<div class="dropdown">
-				<select name="rooms" class="form-control" >
+				<select name="rooms" id="numrooms" class="form-control" >
 						<option selected="selected"><%= reservation.getNumberOfRooms() %></option>
 						<option value=1>1</option>
 					    <option value=2>2</option>
@@ -60,11 +60,12 @@ import="utils.globals"
 					    <option value=5>5</option>
 				</select>
 			</div>
-			<input type="hidden" name="id" value="<%= bean.getHotel().getId() %>" id="hotelid"/>
+			<input type="hidden" id="hotelid" name="id" value="<%= bean.getHotel().getId() %>" id="hotelid"/>
 		</div>
 	</div>
 	<div class="col-xs-1">
-		<a href="CustomerCreateHotelReservation"><button type="submit" class="btn btn-primary btn-md">Book</button></a>
+<!-- 		<a href="CustomerCreateHotelReservation"><button onclick="return validate();" type="submit" class="btn btn-primary btn-md">Book</button></a>  -->
+			<button id="bookbutton" name="bookbutton" class="btn btn-primary btn-md">Book</button>  
 	</div>
 	<div class="col-xs-1">
 		<a href="ReservationSearchResults.jsp"><h4>Back</h4></a>
@@ -114,6 +115,37 @@ import="utils.globals"
 	<div class="col-xs-1"></div>
 
 </div>
-</form>
+<!-- </form>  -->
 </body>
+
+<script>
+$(document).ready(function(){
+	$('#bookbutton').click(function(){
+		var a = document.getElementById("hotelid").value;
+		var b = document.getElementById("numrooms").value;
+		
+		var cartobj = '{'
+			+ '"hotelid" : ' + a 
+			+ ' , "numrooms" : ' + b 
+			+ '}';
+		
+		alert (cartobj);
+		
+		$.ajax({
+		    type: 'post',
+		    url: 'ShoppingCartServlet',
+		    data: cartobj,
+		    contentType: "application/json",
+		    traditional: true,
+		    success: function (data) {
+		        alert("data posted successfully");
+		    }
+		});
+
+		
+		return true;
+	});
+}); 
+</script>
+
 </html>

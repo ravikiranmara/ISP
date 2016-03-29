@@ -126,6 +126,7 @@ public class Login extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute(globals.session_username, username);
 			session.setAttribute(globals.session_userid, user.getUserId());
+			session.setAttribute(globals.session_loginUserBean, user);
 		    if(UserType.Client == user.getUserType())
 		    {
 		        response.sendRedirect("ClientHomePage.jsp");

@@ -87,9 +87,6 @@ public class HotelSearchServlet extends HttpServlet
 			{
 				throw new InvalidParameterException("Some parameter is missing in serach page");
 			}
-			
-			
-			
 		}
 		catch (InvalidParameterException ex)
 		{

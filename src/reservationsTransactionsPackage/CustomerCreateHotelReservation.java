@@ -164,8 +164,6 @@ public class CustomerCreateHotelReservation extends HttpServlet {
 			logger.info("also user object into session");
 			session.setAttribute(globals.session_customerReserveTransUser, user);
 			
-			
-			
 			logger.info("redirect");
 			response.sendRedirect("ReservationTransaction.jsp");
 		}
