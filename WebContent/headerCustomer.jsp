@@ -29,8 +29,9 @@
      			<li class="active"><a href="CustomerHomePage.jsp">Home</a></li>
     			<li><a href="ManageReservationsCustomer">Manage Reservations</a></li>
      	 	</ul>
-     	 	<ul class="nav navbar-nav navbar-right">
-     			<li class="active"><a href="#">Hello <%= username %></a></li>
+     	  	<ul class="nav navbar-nav navbar-right">
+     			<li class="active"><a href="CustomerShoppingCart.jsp">ShoppingCart</a></li>
+    			<li class="active"><a href="#">Hello <%= username %></a></li>
     			<li><a></a></li>
      	 	</ul>
      	 	<ul class="nav navbar-nav navbar-right">

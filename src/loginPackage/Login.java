@@ -26,6 +26,7 @@ import ModelServiceLayer.UserService;
 import utils.UserType;
 import utils.globals;
 
+import modelObject.ShoppingCartBean;
 import modelObject.User;
 import dataAccessObject.IUserDao;
 import dataAccessObject.UserPropertiesDao;
@@ -133,6 +134,9 @@ public class Login extends HttpServlet {
 		    }
 		    else
 		    {
+		    	// not the ideal place to put this
+		    	ShoppingCartBean csc = new ShoppingCartBean();
+		    	session.setAttribute(globals.session_shoppingcart, csc);
 		        response.sendRedirect("CustomerHomePage.jsp");
 		        //RequestDispatcher RequetsDispatcherObj =request.getRequestDispatcher("CustomerHomePage.jsp");
 		        //RequetsDispatcherObj.forward(request, response);

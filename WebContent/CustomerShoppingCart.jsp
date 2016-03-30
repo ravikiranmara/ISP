@@ -16,24 +16,10 @@
 
 <jsp:include page="headerCustomer.jsp" />
 
-<%@ page 
-import="java.util.ArrayList"
-import="modelObject.Reservation"
-import="utils.globals"
-import="modelObject.ReservationsBean"
-import="ModelServiceLayer.HotelService"
-import="ModelServiceLayer.IHotelServiceLayer"
-%>
-
-
-<%
-	ArrayList<ReservationsBean> rbean = (ArrayList<ReservationsBean>)session.getAttribute(globals.session_customerReservationsList);
-%>
-
 
 <div class="container">
   <h2>Items in Shopping Cart</h2>
-  <table class="table">
+  <table class="table" id="carttable">
     <thead>
       <tr>
         <th>Hotel name</th>
@@ -45,23 +31,55 @@ import="ModelServiceLayer.IHotelServiceLayer"
         <th>CheckOut Date</th>
       </tr>
     </thead>
-    <tbody>
 
-		<% for(ReservationsBean r : rbean) {%>
-			<tr>
-				<td> <%= r.getHotelName() %> </td>
-				<td> <%= r.getUser().getFirstName() %></td>
-				<td> <%= r.getRoomType() %></td>
-				<td> <%= r.getReservation().getNumberOfRooms() %></td>
-				<td> <%= r.getTransaction().getAmount() %></td>
-				<td> <%= r.getReservation().getCheckInDate() %> </td>
-				<td> <%= r.getReservation().getCheckOutDate() %> </td>
-			</tr> 			
-		<% } %>
-		
-		<!--  add button for checkout  -->
+    <tbody id="tbody">
 	</tbody>
+
   </table>
 </div>
 </body>
+
+<script>
+	$(document).ready(function(){
+	$.ajax({ 
+	    url: 'ShoppingCartServlet?method=getAllItemsInCart',
+		type: 'post',
+		success: function(data){
+			displayTable(data);
+		},
+		error: function(data){
+			alert ("error : " + JSON.stringify(data));	
+		}});
+	});
+	
+	function displayTable(data)
+	{
+		var cartitems = data.cart;
+		var length = cartitems.length;
+		
+		for(var i=0; i<length; i++)
+		{
+			var cartitem = cartitems[i];
+			
+			var tr = "<tr>";
+			var hotelid = "<td>" + cartitem.hotelid + "</td>";
+			var userid = "<td>" + cartitem.userid + "</td>";
+			var numrooms = "<td>" + cartitem.numrooms + "</td>";
+			var checkoutdate = "<td>" + cartitem.checkOutDate + "</td>";
+			var checkindate = "<td>" + cartitem.checkInDate + "</td>";
+			var roomtypeid = "<td>" + cartitem.roomTypeId + "</td>";
+			var priceperroom = "<td>" + cartitem.pricePerRoom + "</td>";
+			var trend = "</tr>";
+			
+			$("#tbody").append(tr + hotelid + userid +
+					roomtypeid + numrooms + 
+					checkindate + checkoutdate + 
+					priceperroom + trend); 
+		}
+		
+		alert(result.itemid);
+           alert("success" + JSON.stringify(data));
+	}
+</script>
+
 </html>

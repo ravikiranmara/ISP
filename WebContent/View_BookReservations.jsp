@@ -60,7 +60,12 @@ import="utils.globals"
 					    <option value=5>5</option>
 				</select>
 			</div>
-			<input type="hidden" id="hotelid" name="id" value="<%= bean.getHotel().getId() %>" id="hotelid"/>
+			<input type="hidden" id="hotelid" name="hotelid" value="<%= bean.getHotel().getId() %>" />
+			<input type="hidden" id="userid" name="userid" value="<%= reservation.getUserId() %>" />
+			<input type="hidden" id="roomtypeid" name="roomtypeid" value="<%= reservation.getRoomTypeId() %>" />
+			<input type="hidden" id="checkoutdate" name="checkoutdate" value="<%= reservation.getCheckOutDate() %>" />
+			<input type="hidden" id="checkindate" name="checkindate" value="<%= reservation.getCheckInDate() %>" />
+			<input type="hidden" id="priceperroom" name="priceperroom" value="<%= bean.getRoom().getPricePerNight() %>" />
 		</div>
 	</div>
 	<div class="col-xs-1">
@@ -121,25 +126,40 @@ import="utils.globals"
 <script>
 $(document).ready(function(){
 	$('#bookbutton').click(function(){
-		var a = document.getElementById("hotelid").value;
-		var b = document.getElementById("numrooms").value;
+		var hotelid = document.getElementById("hotelid").value;
+		var numrooms = document.getElementById("numrooms").value;
+		var userid = document.getElementById("userid").value;
+		var checkoutdate = document.getElementById("checkoutdate").value;
+		var checkindate = document.getElementById("checkindate").value;
+		var priceperroom = document.getElementById("priceperroom").value;
+		var roomtypeid = document.getElementById("roomtypeid").value;
 		
 		var cartobj = '{'
-			+ '"hotelid" : ' + a 
-			+ ' , "numrooms" : ' + b 
+			+ '"hotelid" : ' + hotelid 
+			+ ' , "itemid" : ' + 1 
+			+ ' , "numrooms" : ' + numrooms 
+			+ ' , "userid" : ' + userid 
+			+ ' , "checkOutDate" : "' + checkoutdate 
+			+ '" , "checkInDate" : "' + checkindate 
+			+ '" , "pricePerRoom" : ' + priceperroom 
+			+ ' , "roomTypeId" : ' + roomtypeid 
 			+ '}';
 		
 		alert (cartobj);
 		
 		$.ajax({
 		    type: 'post',
-		    url: 'ShoppingCartServlet',
+		    url: 'ShoppingCartServlet?method=addToCart',
 		    data: cartobj,
 		    contentType: "application/json",
 		    traditional: true,
 		    success: function (data) {
 		        alert("data posted successfully");
-		    }
+		    },
+		    error: function (xhr, ajaxOptions, thrownError) {
+		        alert(xhr.responseText);
+		        alert(thrownError);
+		      }
 		});
 
 		
