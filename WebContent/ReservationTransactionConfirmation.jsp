@@ -22,22 +22,19 @@ import="modelObject.User"
 import="modelObject.Hotel"
 import="modelObject.CreditCard"
 import="utils.globals"
-import="modelObject.ReservationsBean"
+import="modelObject.CustomerReservationListBean"
 import="modelObject.CustomerHotelSearchBean"
 import="modelObject.Room"
 %>
 
 <%
 
-	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_customerReservationBean);
+	CustomerReservationListBean rbean = (CustomerReservationListBean)session.getAttribute(globals.session_customerReservationBean);
 	CustomerHotelSearchBean selectbean = (CustomerHotelSearchBean)session.getAttribute(globals.session_customerSelectBean);
 
 
 	Transaction transaction = rbean.getTransaction();
-	Reservation reservation = rbean.getReservation();
 	User customer = rbean.getUser();
-	Hotel hotel = selectbean.getHotel();
-	Room room = selectbean.getRoom();
 	CreditCard cc = (CreditCard)session.getAttribute(globals.session_customerResCustCC);
 	
 %>
@@ -52,12 +49,6 @@ import="modelObject.Room"
 	</dev>
 	<div class="row">
 		<div class="col-xs-3"></div>
-		<div class="col-xs-3">
-			<h5><label>Hotel: <%= hotel.getName() %></label></h5>
-		</div>
-		<div class="col-xs-3">
-			<h5><label>Room type: <%= room.getRoomType() %></label></h5>
-		</div>
 		<div class="col-xs-3">
 			<h5><label>Total cost: <%= transaction.getAmount() %></label></h5>
 		</div>
@@ -80,7 +71,7 @@ import="modelObject.Room"
 		</div>
 	<div class="row">
 		<div class="col-xs-3"></div>
-		<h5><label>Reservation Number : <%= reservation.getReservationNumber() %></label></h5>
+		<h5><label>Transaction Number : <%= transaction.getId() %></label></h5>
 	</div><br>
 	<div class="row">
 		<div class="col-xs-12">

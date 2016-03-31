@@ -45,5 +45,4 @@ public class ReservationsBean
 	public void setRoomType(String roomType) {
 		this.roomType = roomType;
 	}
-
 }

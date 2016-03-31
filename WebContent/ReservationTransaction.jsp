@@ -20,7 +20,7 @@
 
 <%@ page 
 import="java.util.ArrayList"
-import="modelObject.ReservationsBean"
+import="modelObject.CustomerReservationListBean"
 import="modelObject.CustomerHotelSearchBean"
 import="modelObject.Reservation"
 import="modelObject.Transaction"
@@ -32,7 +32,7 @@ import="utils.globals"
 
 <%
 
-	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_customerReservationBean);
+	CustomerReservationListBean rbean = (CustomerReservationListBean)session.getAttribute(globals.session_customerReservationBean);
 	CustomerHotelSearchBean selectbean = (CustomerHotelSearchBean)session.getAttribute(globals.session_customerSelectBean);
 
 	User customer = (User)session.getAttribute(globals.session_customerReserveTransUser);

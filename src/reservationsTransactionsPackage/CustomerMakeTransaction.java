@@ -19,6 +19,7 @@ import modelObject.Hotel;
 import modelObject.Reservation;
 import modelObject.ReservationsBean;
 import modelObject.Room;
+import modelObject.ShoppingCartBean;
 import modelObject.Transaction;
 
 import org.apache.log4j.Logger;
@@ -157,6 +158,10 @@ public class CustomerMakeTransaction extends HttpServlet {
 				room.setAvailableNumber(available - reservation.getNumberOfRooms());
 				hotelService.updateRoomForHotel(hotel, room);
 			}
+			
+			logger.info("empty shopping cart");
+			ShoppingCartBean scb = (ShoppingCartBean)session.getAttribute(globals.session_shoppingcart);
+			scb.reset();
 				
 			logger.info("Update session objects for transaction conf page");
 			rbean.setTransaction(transaction);
