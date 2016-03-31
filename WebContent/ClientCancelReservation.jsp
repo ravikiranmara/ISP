@@ -48,6 +48,21 @@ import="ModelServiceLayer.IHotelServiceLayer"
 		</div>
 		<div class="col-xs-3">
 			<h5><label>Number of Rooms : ${sessionScope.session_clientCancelBean.getReservation().getNumberOfRooms() }</label></h5>
+			<h5><label>Hotel: ${sessionScope.globals.session_clientCancelBean.getHotelName() }</label></h5>
+			<h5><label>Hotel: ${sessionScope.session_clientCancelBean.getHotelName()}</label></h5>
+		</div>
+		<div class="col-xs-3">
+			<h5><label>Room type: ${sessionScope.session_clientCancelBean.getRoomType()}</label></h5>
+		</div>
+		<div class="col-xs-3">
+			<h5><label>Number of Rooms : ${sessionScope.session_clientCancelBean.getReservation().getNumberOfRooms() }</label></h5>
+			<h5><label>Hotel: ${sessionScope.globals.session_clientCancelBean.getHotelName() }</label></h5>
+		</div>
+		<div class="col-xs-3">
+			<h5><label>Room type: ${sessionScope.globals.session_clientCancelBean.getRoomType()}</label></h5>
+		</div>
+		<div class="col-xs-3">
+			<h5><label>Number of Rooms : ${sessionScope.globals.session_clientCancelBean.getReservation().getNumberOfRooms() }</label></h5>
 		</div>
 	</div>
 	<div class="row">
@@ -57,6 +72,10 @@ import="ModelServiceLayer.IHotelServiceLayer"
 		</div>
 		<div class="col-xs-3">
 			<h5><label>Amount to refund: ${sessionScope.session_clientCancelBean.getTransaction().getAmount()}</label></h5>
+			<h5><label>Reservation Number: ${sessionScope.globals.session_clientCancelBean.getReservation().getReservationNumber()}</label></h5>
+		</div>
+		<div class="col-xs-3">
+			<h5><label>Amount to refund: ${sessionScope.globals.session_clientCancelBean.getTransaction().getAmount()}</label></h5>
 		</div>
 	</div>
 	<div class="row">

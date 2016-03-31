@@ -47,12 +47,21 @@ import="ModelServiceLayer.IHotelServiceLayer"
 		</div>
 		<div class="col-xs-3">
 			<h5><label>Number of Rooms : ${sessionScope.session_clientCancelBean.getReservation().getNumberOfRooms()}</label></h5>
+			<h5><label>Hotel: ${sessionScope.globals.session_clientCancelBean.getHotelName() }</label></h5>
+		</div>
+		<div class="col-xs-3">
+			<h5><label>Room type: ${sessionScope.globals.session_clientCancelBean.getRoomType() }</label></h5>
+		</div>
+		<div class="col-xs-3">
+			<h5><label>Number of Rooms : ${sessionScope.globals.session_clientCancelBean.getReservation().getNumberOfRooms() }</label></h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
 			<h5><label>A payment of ${sessionScope.session_clientCancelBean.getTransaction().getAmount()}is credited to: 
 			${sessionScope.session_clientCancelBean.getUser().getFirstName() }</label></h5>
+			<h5><label>A payment of ${sessionScope.globals.session_clientCancelBean.getTransaction().getAmount()}is credited to: 
+			${sessionScope.globals.session_clientCancelBean.getUser().getFirstName() }</label></h5>
 		</div>
 	</div>
 </div>
