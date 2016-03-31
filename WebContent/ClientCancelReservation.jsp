@@ -17,21 +17,6 @@
 <jsp:include page="headerClient.jsp" />
 
 
-<%@ page 
-import="java.util.ArrayList"
-import="modelObject.Reservation"
-import="utils.globals"
-import="modelObject.ReservationsBean"
-import="ModelServiceLayer.HotelService"
-import="ModelServiceLayer.IHotelServiceLayer"
-%>
-
-
-<%
-	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_clientCancelBean);
-%>
-
-
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12">
@@ -41,22 +26,22 @@ import="ModelServiceLayer.IHotelServiceLayer"
 	<div class="row">
 		<div class="col-xs-3"></div>
 		<div class="col-xs-3">
-			<h5><label>Hotel: <%= rbean.getHotelName() %></label></h5>
+			<h5><label>Hotel: ${sessionScope.globals.session_clientCancelBean.getHotelName() }</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<h5><label>Room type: <%= rbean.getRoomType() %></label></h5>
+			<h5><label>Room type: ${sessionScope.globals.session_clientCancelBean.getRoomType()}</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<h5><label>Number of Rooms : <%= rbean.getReservation().getNumberOfRooms()  %></label></h5>
+			<h5><label>Number of Rooms : ${sessionScope.globals.session_clientCancelBean.getReservation().getNumberOfRooms() }</label></h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3"></div>
 		<div class="col-xs-3">
-			<h5><label>Reservation Number: <%= rbean.getReservation().getReservationNumber() %></label></h5>
+			<h5><label>Reservation Number: ${sessionScope.globals.session_clientCancelBean.getReservation().getReservationNumber()}</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<h5><label>Amount to refund: <%= rbean.getTransaction().getAmount() %></label></h5>
+			<h5><label>Amount to refund: ${sessionScope.globals.session_clientCancelBean.getTransaction().getAmount()}</label></h5>
 		</div>
 	</div>
 	<div class="row">
