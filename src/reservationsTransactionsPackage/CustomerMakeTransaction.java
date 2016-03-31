@@ -103,7 +103,7 @@ public class CustomerMakeTransaction extends HttpServlet {
 			logger.info("Get session objects");
 			session = request.getSession();
 			
-			customerccid = request.getParameter("customercreditcard");
+			customerccid = request.getParameter("fromusercc");
 			if(null == customerccid)
 			{
 				throw new InvalidParameterException("Atleast one of the input is null");
@@ -170,12 +170,13 @@ public class CustomerMakeTransaction extends HttpServlet {
 			session.setAttribute(globals.session_customerResCustCC, customercc);
 
 			logger.info("redirect to transaction success");
-			response.sendRedirect("ReservationTransactionConfirmation.jsp");
+			//response.sendRedirect("ReservationTransactionConfirmation.jsp");
+			response.getWriter().print("success");
 		}
 		catch(Exception ex)
 		{
 			logger.fatal("unable to make transaction:");
-			response.sendRedirect("CustomerReservationTransactionConfirmationFailed.jsp");
+			//response.sendRedirect("CustomerReservationTransactionConfirmationFailed.jsp");
 		}
 
 	}
