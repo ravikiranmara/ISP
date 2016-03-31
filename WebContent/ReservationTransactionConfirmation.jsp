@@ -13,7 +13,7 @@
 <title>Reservation Transaction Confirmation</title>
 </head>
 <body>
-
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.Reservation"
@@ -31,15 +31,13 @@ import="modelObject.Room"
 
 	CustomerReservationListBean rbean = (CustomerReservationListBean)session.getAttribute(globals.session_customerReservationBean);
 	CustomerHotelSearchBean selectbean = (CustomerHotelSearchBean)session.getAttribute(globals.session_customerSelectBean);
-
-
 	Transaction transaction = rbean.getTransaction();
 	User customer = rbean.getUser();
 	CreditCard cc = (CreditCard)session.getAttribute(globals.session_customerResCustCC);
 	
 %>
-
-<jsp:include page="headerCustomer.jsp" />
+--%>
+<%@ include file="headerCustomer.jsp" %>
 
 <div class="container ">
 	<dev class="row">
@@ -50,28 +48,28 @@ import="modelObject.Room"
 	<div class="row">
 		<div class="col-xs-3"></div>
 		<div class="col-xs-3">
-			<h5><label>Total cost: <%= transaction.getAmount() %></label></h5>
+			<h5><label>Total cost: ${sessionScope.session_customerReservationBean.getTransaction().getAmount()}</label></h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
-			<h5><label>A/C Holders Name: <%= cc.getHolderName() %></label></h5>
+			<h5><label>A/C Holders Name: ${sessionScope.session_customerResCustCC.getHolderName()}</label></h5>
 		</div>
 		<div class="col-xs-3"></div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
-			<h5><label>Card Type: <%= cc.getNickName() %> </label></h5>
+			<h5><label>Card Type: ${sessionScope.session_customerResCustCC.getNickName()}</label></h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
-			<h5><label>Customer Name : <%= customer.getFirstName() %></label></h5>
+			<h5><label>Customer Name : ${sessionScope.session_customerReservationBean.getUser().getFirstName()}</label></h5>
 		</div>
 		</div>
 	<div class="row">
 		<div class="col-xs-3"></div>
-		<h5><label>Transaction Number : <%= transaction.getId() %></label></h5>
+		<h5><label>Transaction Number : ${sessionScope.session_customerReservationBean.getTransaction().getId()}</label></h5>
 	</div><br>
 	<div class="row">
 		<div class="col-xs-12">
