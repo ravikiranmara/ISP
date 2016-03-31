@@ -16,8 +16,8 @@
 
 <jsp:include page="headerCustomer.jsp" />
 
-
-<div class="container">
+<form id="cart-list-form" action="CustomerCreateHotelReservation" method="post">
+  <div class="container">
   <h2>Items in Shopping Cart</h2>
   <table class="table" id="carttable">
     <thead>
@@ -36,7 +36,13 @@
 	</tbody>
 
   </table>
+  
+  <input type="submit" value="Home" name="homebutton" 
+  		onclick="document.forms[0].action = 'CustomerHomePage.jsp'; return true;"/>
+  <input type="submit" value="CheckOut" name="checkoutbutton" 
+  		onclick="document.forms[0].action = 'CustomerCreateHotelReservation'; return true;"/>
 </div>
+</form>
 </body>
 
 <script>
@@ -62,6 +68,7 @@
 			var cartitem = cartitems[i];
 			
 			var tr = "<tr>";
+			var itemid = '<td style="display:none;">' + cartitem.itemid + "</td>";
 			var hotelid = "<td>" + cartitem.hotelid + "</td>";
 			var userid = "<td>" + cartitem.userid + "</td>";
 			var numrooms = "<td>" + cartitem.numrooms + "</td>";
@@ -77,8 +84,12 @@
 					priceperroom + trend); 
 		}
 		
-		alert(result.itemid);
-           alert("success" + JSON.stringify(data));
+		alert("success" + JSON.stringify(data));
+	}
+	
+	function checkout(){
+		alert("checkout click");
+		return true;
 	}
 </script>
 

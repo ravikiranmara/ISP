@@ -37,8 +37,6 @@ import="utils.globals"
 
 	User customer = (User)session.getAttribute(globals.session_customerReserveTransUser);
 	Transaction transaction = rbean.getTransaction();
-	Reservation reservation = rbean.getReservation();
-	Hotel hotel = (Hotel)selectbean.getHotel();
 	
 	ArrayList<CreditCard> cclist = customer.getCreditCard();
 	
@@ -66,12 +64,9 @@ import="utils.globals"
 				<div class="col-xs-3"></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-3">
-					<h5><label>"<%= hotel.getName() %>"</label></h5>
-				</div>
-				<div class="col-xs-3">
-					<h5><label>"<%= selectbean.getRoom().getRoomType() %>"</label></h5>
-				</div>
+				
+				<!--  display table list of transactions here  -->
+				
 				<div class="col-xs-3">
 					<h5><label>total cost: "<%= transaction.getAmount() %>"</label></h5>
 				</div>
