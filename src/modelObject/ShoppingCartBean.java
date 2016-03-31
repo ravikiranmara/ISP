@@ -14,6 +14,11 @@ public class ShoppingCartBean
 	// constructor
 	public ShoppingCartBean()
 	{
+		this.reset();
+	}
+	
+	public void reset()
+	{
 		itemid = 0;
 		cart = new ArrayList<ShoppingCartItem>();
 	}

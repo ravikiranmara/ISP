@@ -20,7 +20,7 @@
 
 <%@ page 
 import="java.util.ArrayList"
-import="modelObject.ReservationsBean"
+import="modelObject.CustomerReservationListBean"
 import="modelObject.CustomerHotelSearchBean"
 import="modelObject.Reservation"
 import="modelObject.Transaction"
@@ -32,19 +32,17 @@ import="utils.globals"
 
 <%
 
-	ReservationsBean rbean = (ReservationsBean)session.getAttribute(globals.session_customerReservationBean);
+	CustomerReservationListBean rbean = (CustomerReservationListBean)session.getAttribute(globals.session_customerReservationBean);
 	CustomerHotelSearchBean selectbean = (CustomerHotelSearchBean)session.getAttribute(globals.session_customerSelectBean);
 
 	User customer = (User)session.getAttribute(globals.session_customerReserveTransUser);
 	Transaction transaction = rbean.getTransaction();
-	Reservation reservation = rbean.getReservation();
-	Hotel hotel = (Hotel)selectbean.getHotel();
 	
 	ArrayList<CreditCard> cclist = customer.getCreditCard();
 	
 %>
 
-<form action="CustomerMakeTransaction" method="post">
+<form action="CustomerMakeTransaction" id="confirm-form" name="confirm-form" method="post">
 <div class="container ">
 	<div class="container ">
 	<div class="row">
@@ -58,6 +56,12 @@ import="utils.globals"
 		<div class="col-xs-1"></div>
 		<div class="col-xs-7">
 			<div class="row">
+			
+				<input type="hidden" id="touserid" name="touserid" value="<%= transaction.getOwnerUserId() %>" />
+				<input type="hidden" id="tousercc" name="tousercc" value="<%= transaction.getOwnerCreditCardId() %>" />
+				<input type="hidden" id="fromuserid" name="fromuserid" value="<%= transaction.getCustomerUserId() %>" />
+				<input type="hidden" id="amount" name="amount" value="<%= transaction.getAmount() %>" />
+				
 				<div class="col-xs-3">
 					<h4><label>Details:</label></h4>
 				</div>
@@ -66,12 +70,9 @@ import="utils.globals"
 				<div class="col-xs-3"></div>
 			</div>
 			<div class="row">
-				<div class="col-xs-3">
-					<h5><label>"<%= hotel.getName() %>"</label></h5>
-				</div>
-				<div class="col-xs-3">
-					<h5><label>"<%= selectbean.getRoom().getRoomType() %>"</label></h5>
-				</div>
+				
+				<!--  display table list of transactions here  -->
+				
 				<div class="col-xs-3">
 					<h5><label>total cost: "<%= transaction.getAmount() %>"</label></h5>
 				</div>
@@ -89,7 +90,7 @@ import="utils.globals"
 			</div>
 			<div class="col-xs-3">
 			<div class="dropdown">
-				<select name="customercreditcard" class="form-control">
+				<select id="fromusercc" name="customercreditcard" class="form-control">
 				<% for(CreditCard c : cclist) {%>
 					<option value="<%= c.getId()%>"><%= c.getNickName()%></option>
 				<% } %>
@@ -215,7 +216,7 @@ import="utils.globals"
 			</div><br>
 			<div class="row">
 				<div class="col-xs-6">
-					<button type="submit" class="btn btn-primary btn-xs">Confirm Reservation</button>
+					<button onclick="return validate();" type="submit" class="btn btn-primary btn-xs">Confirm Reservation</button>
 				</div>
 				<div class="col-xs-6">
 					<a href="ReservationSearchResults.jsp">Cancel</a>
@@ -228,6 +229,65 @@ import="utils.globals"
 </div>
 </form>
 </body>
+
+<script type="text/javascript">
+	function validate(){
+			var touserid = document.getElementById("touserid").value;
+			var tousercc = document.getElementById("tousercc").value;
+			var fromuserid = document.getElementById("fromuserid").value;
+			var fromusercc = document.getElementById("fromusercc").value;
+			var amount = document.getElementById("amount").value;
+			
+			var cartobj = '{'
+				+ '"toUserId" : ' + touserid 
+				+ ' , "fromUserId" : ' + fromuserid
+				+ ' , "toCreditCardId" : ' + tousercc 
+				+ ' , "fromCreditCardId" : ' + fromusercc 
+				+ ' , "amount" : ' + amount  
+				+ '}';
+			
+			jQuery.support.cors = true;
+			//alert(cartobj);
+		
+			var status = false;		
+			$.ajax({
+			    type: 'post',
+			    url: 'http://localhost:8081/BankTransaction/MakeTransaction',
+			    data: cartobj,
+			    contentType: "application/json",
+			    traditional: true,
+			    success: function (data) {
+			        alert("Transaction Status : " + data);
+			        /*document.getElementById("confirm-form").action = "CustomerMakeTransaction";
+					document.forms[0].submit;
+					*/
+					$.post("CustomerMakeTransaction",
+					{
+						fromusercc: fromusercc
+					},
+					function(data,status){
+						if(data == "success"){
+							window.location.href('ReservationTransactionConfirmation.jsp');
+						}
+						else
+						{
+							 window.location.href('CustomerReservationTransactionConfirmationFailed.jsp');
+						}
+					});
+					return true;
+			    },
+			    error: function (xhr, ajaxOptions, thrownError) {
+			        alert(xhr.responseText);
+			        alert(thrownError);
+			      }
+			});
+			
+			
+			return status;
+	}; 
+</script>
+
+
 </html>
 
 

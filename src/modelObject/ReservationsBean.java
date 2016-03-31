@@ -1,31 +1,20 @@
 package modelObject;
 
+import java.util.ArrayList;
+
 public class ReservationsBean 
 {
-	String hotelName = null;
-	String roomType = null;
 	Reservation reservation = null;
 	Transaction transaction = null;
 	User user = null;
+	String hotelName;
+	String roomType;
 	
 	public ReservationsBean()
-	{
-		
+	{	
 	}
 	
 	// getter and setter
-	public String getHotelName() {
-		return hotelName;
-	}
-	public void setHotelName(String hotelName) {
-		this.hotelName = hotelName;
-	}
-	public String getRoomType() {
-		return roomType;
-	}
-	public void setRoomType(String roomType) {
-		this.roomType = roomType;
-	}
 	public Reservation getReservation() {
 		return reservation;
 	}
@@ -43,5 +32,17 @@ public class ReservationsBean
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public String getHotelName() {
+		return hotelName;
+	}
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
+	}
+	public String getRoomType() {
+		return roomType;
+	}
+	public void setRoomType(String roomType) {
+		this.roomType = roomType;
 	}
 }

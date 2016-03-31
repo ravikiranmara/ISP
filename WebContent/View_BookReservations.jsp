@@ -161,7 +161,6 @@ $(document).ready(function(){
 		        alert(thrownError);
 		      }
 		});
-
 		
 		return true;
 	});

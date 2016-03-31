@@ -14,13 +14,17 @@ import javax.servlet.http.HttpSession;
 
 import modelObject.CreditCard;
 import modelObject.CustomerHotelSearchBean;
+import modelObject.CustomerReservationListBean;
 import modelObject.Reservation;
-import modelObject.ReservationsBean;
+import modelObject.CustomerReservationListBean;
+import modelObject.ShoppingCartBean;
+import modelObject.ShoppingCartItem;
 import modelObject.Transaction;
 import modelObject.User;
 
 import org.apache.log4j.Logger;
 
+import ModelServiceLayer.HotelService;
 import ModelServiceLayer.IHotelServiceLayer;
 import ModelServiceLayer.IUserService;
 import ModelServiceLayer.UserService;
@@ -69,76 +73,85 @@ public class CustomerCreateHotelReservation extends HttpServlet {
 		Transaction transaction = null;
 		IUserService us = null;
 		User user = null;
-		ReservationsBean rb = null;
+		CustomerReservationListBean rb = null;
 		CustomerHotelSearchBean selectbean = null;
 		int hotelId = -1;
 		String hotelIdStr = null;
 		String roomsStr = null;
 		int numrooms = -1;
 		String username = null;
+		ArrayList<Reservation> reservations = null;
+		ShoppingCartBean scb = null;
+		ArrayList<ShoppingCartItem> cartItems = null;
+		IHotelServiceLayer hs = null; 
+		float totalTransactionCost = 0;
+		User owner = null;
 		
 		try
 		{
 			logger.info("create a reservation for user");
 			session = request.getSession();
 			searchList = (ArrayList<CustomerHotelSearchBean>)session.getAttribute(globals.session_customerSearchHotelList);
-			reservation = (Reservation)session.getAttribute(globals.session_customerReservationObject);
 			username = (String)session.getAttribute(globals.session_username);
+			scb = (ShoppingCartBean)session.getAttribute(globals.session_shoppingcart);
 			
 			logger.info("get parameters");
 			roomsStr = request.getParameter("rooms");
 			hotelIdStr = request.getParameter("id");
 			
-			if(null == hotelIdStr)
-			{
-				throw new Exception("Hotel id is null");
-			}
-			hotelId = Integer.valueOf(hotelIdStr);
-			
-			if(null == roomsStr)
-			{
-				throw new Exception("rooms is null");
-			}
-			numrooms = Integer.valueOf(roomsStr);
-			
-			logger.info("get selected hotel: " + hotelId);
-			for(CustomerHotelSearchBean c : searchList)
-			{
-				if(c.getHotel().getId() == hotelId)
-				{
-					selectbean = c;
-					logger.info("got selectbean");
-				}
-			}
-			
-			logger.info("get user details : " + username);
+			// setup some services for later
+			hs = new HotelService();
 			us = new UserService();
-			user = us.getUserByUsername(username);
-			if(null == user)
+			totalTransactionCost = 0;
+			reservations = new ArrayList<Reservation>();
+			
+			logger.info("Foreach item in shopping cart, create a reservation");
+			cartItems = scb.getCart();
+			for(ShoppingCartItem sci : cartItems)
 			{
-				throw new Exception("cannot find user");
+				reservation = new Reservation();
+				
+				hotelId = sci.getHotelid();
+				numrooms = sci.getNumrooms();
+
+				logger.info("get user details : " + username);
+				user = us.getUserById(sci.getUserid());
+				if(null == user)
+				{
+					throw new Exception("cannot find user");
+				}
+				
+				logger.info("Get owner" );
+				int ownerid = hs.getHotelById(sci.getHotelid()).getOwnerUserId();
+				owner = us.getUserById(ownerid);
+			
+				logger.info("Update hotel details in reservation object");
+				reservation.setHotelId(hotelId);
+				reservation.setNumberOfRooms(numrooms);
+				reservation.setReservationStatus(globals.reservation_cancelFalse);
+				reservation.setNotes("");
+				reservation.setCheckInDate(sci.getCheckInDate());
+				reservation.setCheckOutDate(sci.getCheckOutDate());
+				reservation.setRoomTypeId(sci.getRoomTypeId());
+				reservation.setUserId(sci.getUserid());
+				
+				logger.info("calculate total amount" );
+				Date checkin = reservation.getCheckInDate();
+				Date checkout = reservation.getCheckOutDate();
+				
+				logger.info("date rrr : " + checkout + "|" + checkin);
+				long diff = checkout.getTime() - checkin.getTime();
+				long numDays = diff / (24 * 60 * 60 * 1000);
+				
+				float costOfReservation = sci.getPricePerRoom() * numrooms * numDays;
+				totalTransactionCost += costOfReservation;
+				
+				reservations.add(reservation);
 			}
 			
-			logger.info("Get owner" );
-			User owner = us.getUserById(selectbean.getHotel().getOwnerUserId()); 
-			
-			logger.info("Update hotel details in reservation object");
-			reservation.setHotelId(selectbean.getHotel().getId());
-			reservation.setNumberOfRooms(numrooms);
-			reservation.setReservationStatus(globals.reservation_cancelFalse);
-			reservation.setNotes("");
-			
-			logger.info("calculate total amount" );
-			Date checkin = reservation.getCheckInDate();
-			Date checkout = reservation.getCheckOutDate();
-			
-			logger.info("date rrr : " + checkout + "|" + checkin);
-			long diff = checkout.getTime() - checkin.getTime();
-			long numDays = diff / (24 * 60 * 60 * 1000);
-			
-			logger.info("Update transaction Object : " + numDays);
+			logger.info("Update transaction Object : " + totalTransactionCost);
 			transaction = new Transaction();
-			transaction.setAmount(selectbean.getRoom().getPricePerNight() * numrooms * numDays);
+			transaction.setAmount(totalTransactionCost);
 			transaction.setCustomerUserId(user.getUserId());
 			transaction.setOwnerUserId(owner.getUserId());
 			transaction.setOwnerCreditCardId(owner.getCreditCard().get(0).getId());
@@ -146,16 +159,13 @@ public class CustomerCreateHotelReservation extends HttpServlet {
 			transaction.setTransactionStatus(globals.transaction_reservationFalse);
 			
 			logger.info("fill up reservation bean");
-			rb = new ReservationsBean();
-			rb.setHotelName(selectbean.getHotel().getName());
-			rb.setReservation(reservation);
+			rb = new CustomerReservationListBean();
+			rb.setReservation(reservations);
 			rb.setTransaction(transaction);
-			rb.setRoomType(selectbean.getRoom().getRoomType());
 			rb.setUser(user);
 			
 			logger.info("Throw the bean into session");
 			session.setAttribute(globals.session_customerReservationBean, rb);
-			System.out.println(rb.getHotelName());
 			System.out.println(rb.getUser().getUsername());
 			
 			logger.info("throw select bean also into session");
@@ -176,5 +186,4 @@ public class CustomerCreateHotelReservation extends HttpServlet {
         {
         }
 	}
-
 }

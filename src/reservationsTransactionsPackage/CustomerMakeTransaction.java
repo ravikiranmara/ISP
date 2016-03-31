@@ -3,6 +3,7 @@ package reservationsTransactionsPackage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,10 +14,12 @@ import javax.servlet.http.HttpSession;
 
 import modelObject.CreditCard;
 import modelObject.CustomerHotelSearchBean;
+import modelObject.CustomerReservationListBean;
 import modelObject.Hotel;
 import modelObject.Reservation;
 import modelObject.ReservationsBean;
 import modelObject.Room;
+import modelObject.ShoppingCartBean;
 import modelObject.Transaction;
 
 import org.apache.log4j.Logger;
@@ -45,21 +48,27 @@ public class CustomerMakeTransaction extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		try {
+		try 
+		{
 			this.handleRequest(request, response);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		}
+		catch (Exception e) 
+		{
 			e.printStackTrace();
+			throw new ServletException(e.getMessage());
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
-		try {
+		try 
+		{
 			this.handleRequest(request, response);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		}
+		catch (Exception e) 
+		{
 			e.printStackTrace();
+			throw new ServletException(e.getMessage());
 		}
 	}
 
@@ -73,7 +82,6 @@ public class CustomerMakeTransaction extends HttpServlet {
 		PaymentService paymentService = null;
 		
 		Transaction transaction = null;
-		Reservation reservation = null;
 		
 		IHotelServiceLayer hotelService = null;
 		Hotel hotel = null;
@@ -86,15 +94,16 @@ public class CustomerMakeTransaction extends HttpServlet {
 		int ccid = 0;
 		int ocid = 0;
 		
-		ReservationsBean rbean = null; 
+		CustomerReservationListBean rbean = null; 
+		ArrayList<Reservation> reservationList = null;
 		
 		try
 		{
 			logger.info("make transaction and confirm reservation");
 			logger.info("Get session objects");
 			session = request.getSession();
-		
-			customerccid = request.getParameter("customercreditcard");
+			
+			customerccid = request.getParameter("fromusercc");
 			if(null == customerccid)
 			{
 				throw new InvalidParameterException("Atleast one of the input is null");
@@ -103,10 +112,10 @@ public class CustomerMakeTransaction extends HttpServlet {
 			ccid = Integer.valueOf(customerccid);
 			
 			logger.info("get reservation bean");
-			rbean = (ReservationsBean)session.getAttribute(globals.session_customerReservationBean);
+			rbean = (CustomerReservationListBean)session.getAttribute(globals.session_customerReservationBean);
 			
 			transaction = rbean.getTransaction();
-			reservation = rbean.getReservation();
+			reservationList = rbean.getReservation();
 			
 			logger.info("get credit card for user and owner");
 			userService = new UserService();
@@ -118,6 +127,7 @@ public class CustomerMakeTransaction extends HttpServlet {
 			transaction.setCustomerCreditCardId(ccid);
 			transaction.setTransactionStatus(globals.transaction_reservationTrue);
 			
+			// comment this part of the code for bank transaction 
 			logger.info("make payment for user");
 			paymentService = new PaymentService();
 			if(false == paymentService.makePayment(transaction.getCustomerUserId(), transaction.getCustomerCreditCardId(),
@@ -125,39 +135,48 @@ public class CustomerMakeTransaction extends HttpServlet {
 			{
 				throw new Exception ("Payment not successful. cancelling transaction");
 			}
+			// end of comment this part of code for bank transaction
 			
-			logger.info("Make transaction");
+			logger.info("add transaction");
 			transactionService.addTransaction(transaction);
 			
-			logger.info("add reservatition");
-			CustomerHotelSearchBean csb = (CustomerHotelSearchBean)session.getAttribute(globals.session_customerSelectBean);
-			room = csb.getRoom();
-			reservationService = new ReservationService();
-			reservation.setTransactionId(transaction.getId());
-			reservation.setReservationNumber(String.valueOf(transaction.getId()));
-			reservation.setRoomTypeId(room.getRoomTypeId());
-			reservationService.addReservation(reservation);
+			logger.info("foreach reservation in the shopping cart, add reservation : " + reservationList.size());
+			for (Reservation reservation : reservationList)
+			{
+				logger.info("add reservatition");
+				reservationService = new ReservationService();
+				reservation.setTransactionId(transaction.getId());
+				reservation.setReservationNumber(String.valueOf(transaction.getId()));
+				reservationService.addReservation(reservation);
+				
+				logger.info("Update available room");
+				hotelService = new HotelService();
+				hotel = hotelService.getHotelById(reservation.getHotelId());
+				room = hotelService.getHotelRoomOfRoomType(hotel, reservation.getRoomTypeId());
+				
+				int available = room.getAvailableNumber();
+				room.setAvailableNumber(available - reservation.getNumberOfRooms());
+				hotelService.updateRoomForHotel(hotel, room);
+			}
 			
-			logger.info("Update available room");
-			hotelService = new HotelService();
-			hotel = hotelService.getHotelById(reservation.getHotelId());
-			int available = room.getAvailableNumber();
-			room.setAvailableNumber(available - reservation.getNumberOfRooms());
-			hotelService.updateRoomForHotel(hotel, room);
-			
+			logger.info("empty shopping cart");
+			ShoppingCartBean scb = (ShoppingCartBean)session.getAttribute(globals.session_shoppingcart);
+			scb.reset();
+				
 			logger.info("Update session objects for transaction conf page");
 			rbean.setTransaction(transaction);
-			rbean.setReservation(reservation);
+			rbean.setReservation(reservationList);
 			session.setAttribute(globals.session_customerReservationBean, rbean);
 			session.setAttribute(globals.session_customerResCustCC, customercc);
 
 			logger.info("redirect to transaction success");
-			response.sendRedirect("ReservationTransactionConfirmation.jsp");
+			//response.sendRedirect("ReservationTransactionConfirmation.jsp");
+			response.getWriter().print("success");
 		}
 		catch(Exception ex)
 		{
 			logger.fatal("unable to make transaction:");
-			response.sendRedirect("CustomerReservationTransactionConfirmationFailed.jsp");
+			//response.sendRedirect("CustomerReservationTransactionConfirmationFailed.jsp");
 		}
 
 	}
