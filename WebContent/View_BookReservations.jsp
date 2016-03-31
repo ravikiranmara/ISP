@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<jsp:include page="headerCustomer.jsp" />
+<%@ include file="headerCustomer.jsp" %>
 
 <%@ page 
 import="java.util.ArrayList"
@@ -34,6 +34,8 @@ import="utils.globals"
 	CustomerHotelSearchBean bean = null;
 	ArrayList<Review> revlist = null;
 	
+	
+
 	for(CustomerHotelSearchBean c : results)
 	{
 		if(c.getHotel().getId() == id)
@@ -44,7 +46,12 @@ import="utils.globals"
 	
 	revlist = bean.getHotel().getReview();
 %>
-
+<%--  
+	<c:forEach items="${sessionScope.session_customerSearchHotelList}" var="c" > 
+		<c:if test="${c.getHotel().getId() == }">
+		</c:if>
+	</c:forEach>
+--%>
 <!--  <form action="CustomerCreateHotelReservation" method="post"> -->
 	<div class="container">
 	<div class="row"><br>

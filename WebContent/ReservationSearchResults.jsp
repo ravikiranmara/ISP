@@ -16,9 +16,9 @@
 </head>
 <body>
 <%@ page errorPage="CustomerGenericErrorPage.jsp" %>
-<jsp:include page="headerCustomer.jsp" />
+<%@ include file="headerCustomer.jsp" %>
 
-
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.Hotel"
@@ -30,6 +30,7 @@ import="utils.globals"
 <%
 	ArrayList<CustomerHotelSearchBean> results = (ArrayList<CustomerHotelSearchBean>)session.getAttribute(globals.session_customerSearchHotelList);
 %>
+--%>
 
 <form action="View_BookReservations.jsp" method="post" >
   <div class="container">
@@ -46,8 +47,8 @@ import="utils.globals"
       </tr>
     </thead>
     <tbody>
-    
-    	<% for(CustomerHotelSearchBean r : results) {%>
+    <%-- 
+    	<% for(CustomerHotelSearchBean r : results) {
 			<tr>
 				<td style="display:none;"><%= r.getHotel().getId() %></td>
 				<td><%= r.getHotel().getName()	%> </td>
@@ -58,6 +59,19 @@ import="utils.globals"
 				<td><button type="submit" name="id" value="<%= r.getHotel().getId() %>" id="book"> View And Book </button> </td>
 			</tr> 			
 		<% } %>
+	--%>
+		<c:forEach items="${sessionScope.session_customerSearchHotelList}" var="c">	
+		 	<tr>	
+		 			<td style="display:none;">${sessionScope.session_customerSearchHotelList.getHotel().getId()}</td>
+					<td>${sessionScope.session_customerSearchHotelList.getHotel().getName()} </td>
+					<td>${sessionScope.session_customerSearchHotelList.getHotel().getAddress()}</td>
+					<td>${sessionScope.session_customerSearchHotelList.getHotel().getDescription()}</td>
+					<td>${sessionScope.session_customerSearchHotelList.getRoom().getRoomType()}</td>
+					<td>${sessionScope.session_customerSearchHotelList.getRoom().getPricePerNight()}</td>
+					<td><button type="submit" name="id" value="${sessionScope.session_customerSearchHotelList.getHotel().getId()}" id="book"> View And Book </button> </td>
+			</tr>
+		 </c:forEach>
+		
 		
     </tbody>
   </table>

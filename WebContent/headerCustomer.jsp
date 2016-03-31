@@ -16,11 +16,11 @@
 <link rel="stylesheet" type="text/css" href="css/custom_styles.css">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 </head>
-
+<%-- 
 <%
 	String username = (String)session.getAttribute("username");
 %>
-
+--%>
 <nav class="navbar navbar-inverse">
 	<div class="container-fluid">
    		<div class="navbar-header">
@@ -32,7 +32,7 @@
      	 	</ul>
      	  	<ul class="nav navbar-nav navbar-right">
      			<li class="active"><a href="CustomerShoppingCart.jsp">ShoppingCart</a></li>
-    			<li class="active"><a href="#">Hello <%= username %></a></li>
+    			<li class="active"><a href="#">Hello ${sessionScope.username}</a></li>
     			<li><a></a></li>
      	 	</ul>
      	 	<ul class="nav navbar-nav navbar-right">

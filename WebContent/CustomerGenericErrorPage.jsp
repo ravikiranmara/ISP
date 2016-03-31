@@ -8,7 +8,7 @@
 <title>Error Page</title>
 </head>
 
-
+<%-- 
 <%@ page 
 import="utils.globals"
 %>
@@ -17,7 +17,7 @@ import="utils.globals"
 <%
 	Exception ex = (Exception)session.getAttribute(globals.session_Exception);
 %>
-
+--%>
 <jsp:include page="headerCustomer.jsp" />
 
 

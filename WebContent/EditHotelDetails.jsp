@@ -16,9 +16,9 @@
 </head>
 <body>
 
-<jsp:include page="headerClient.jsp" />
+<%@ include file="headerClient.jsp" %>
 
-
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.Hotel"
@@ -26,9 +26,9 @@ import="utils.globals"
 %>
 
 <%
-
 	Hotel h = (Hotel)session.getAttribute(globals.session_editHotelObject);
 %>
+--%>
 
 <form action="UpdateHotelDetails" method="post">
 	
@@ -39,7 +39,7 @@ import="utils.globals"
 			<h5><label>Hotel Name:</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" name="hotelname" id="hotelname" placeholder="Name" value="<%=h.getName() %>">
+			<input type="text" class="form-control" name="hotelname" id="hotelname" placeholder="Name" value="${sessionScope.session_editHotelObject.getName()}">
 		</div>
 		<div class="col-xs-3"></div>
 	</div>
@@ -48,7 +48,7 @@ import="utils.globals"
 			<h5><label>Description:</label></h5>
 		</div>
 		<div class="col-xs-9">
-			<input type="text" class="form-control" name="description" id="Description" placeholder="Description" value="<%= h.getDescription() %>">
+			<input type="text" class="form-control" name="description" id="Description" placeholder="Description" value="${sessionScope.session_editHotelObject.getDescription()}">
 		</div>
 	</div>
 	<br>
@@ -58,14 +58,14 @@ import="utils.globals"
 			<label>Location city:</label>
 		</div>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" name="city" id="city" placeholder="Location city" value=<%= h.getCity() %>>
+			<input type="text" class="form-control" name="city" id="city" placeholder="Location city" value="${sessionScope.session_editHotelObject.getCity()}">
 	</div>
 	<div class="row">	
 		<div class="col-xs-3">
 			<label>Location State:</label>
 		</div>
 		<div class="col-xs-3">
-			<input type="text" class="form-control" name="state" id="state" placeholder="State" value=<%= h.getState() %>>
+			<input type="text" class="form-control" name="state" id="state" placeholder="State" value="${sessionScope.session_editHotelObject.getState()}">
 		</div>
 	</div>
 	</div>
@@ -139,7 +139,7 @@ import="utils.globals"
 		<div class="col-xs-3"></div>
 	</div>
 	<div>
-		<input type="hidden" name="id" value=<%= h.getId()%>>
+		<input type="hidden" name="id" value="${sessionScope.session_editHotelObject.getId()}">
 		</div>
 	<div class="row">
 		<div class="col-xs-3"></div>

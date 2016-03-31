@@ -13,7 +13,7 @@
 <title>Reservation Transaction Confirmation</title>
 </head>
 <body>
-
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.Reservation"
@@ -26,7 +26,6 @@ import="modelObject.Room"
 %>
 
 <%
-
 	Transaction transaction = (Transaction)session.getAttribute(globals.session_clientResTrans);
 	Reservation reservation = (Reservation)session.getAttribute(globals.session_clientres);
 	User customer = (User)session.getAttribute(globals.session_clientResCust);
@@ -36,8 +35,9 @@ import="modelObject.Room"
 	CreditCard cc = (CreditCard)session.getAttribute(globals.session_clientResCustCC);
 	
 %>
+--%>
 
-<jsp:include page="headerClient.jsp" />
+<%@ include file="headerClient.jsp" %>
 
 <div class="container ">
 	<dev class="row">
@@ -48,34 +48,34 @@ import="modelObject.Room"
 	<div class="row">
 		<div class="col-xs-3"></div>
 		<div class="col-xs-3">
-			<h5><label>Hotel: <%= hotel.getName() %></label></h5>
+			<h5><label>Hotel: "${sessionScope.session_clientResHotelname.getName()}"</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<h5><label>Room type: <%= room.getRoomType() %></label></h5>
+			<h5><label>Room type: "${sessionScope.session_clientResRoom.getRoomType()}"</label></h5>
 		</div>
 		<div class="col-xs-3">
-			<h5><label>Total cost: <%= transaction.getAmount() %></label></h5>
+			<h5><label>Total cost: "${sessionScope.session_clientResTrans.getAmount()}"</label></h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
-			<h5><label>A/C Holders Name: <%= cc.getHolderName() %></label></h5>
+			<h5><label>A/C Holders Name: "${sessionScope.session_clientResCustCC.getHolderName()}" </label></h5>
 		</div>
 		<div class="col-xs-3"></div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
-			<h5><label>Card Type: <%= cc.getNickName() %> </label></h5>
+			<h5><label>Card Type: "${sessionScope.session_clientResCustCC.getNickName()}" </label></h5>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-3">
-			<h5><label>Customer Name : <%= customer.getFirstName() %></label></h5>
+			<h5><label>Customer Name : "${sessionScope.session_clientResCust.getFirstName()}"</label></h5>
 		</div>
 		</div>
 	<div class="row">
 		<div class="col-xs-3"></div>
-		<h5><label>Reservation Number : <%= reservation.getReservationNumber() %></label></h5>
+		<h5><label>Reservation Number : "${sessionScope.session_clientres.getReservationNumber()}"</label></h5>
 	</div><br>
 	<div class="row">
 		<div class="col-xs-12">

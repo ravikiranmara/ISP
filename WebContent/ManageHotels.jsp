@@ -15,8 +15,8 @@
 </head>
 <body>
 
-<jsp:include page="headerClient.jsp" />
-
+<%@ include file="headerClient.jsp" %>
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.Hotel"
@@ -26,7 +26,7 @@ import="utils.globals"
 <%
 	ArrayList<Hotel> hotelList = (ArrayList<Hotel>)session.getAttribute(globals.session_hotelsByOwner);
 %>
-
+--%>
 
 <div class="container">
   <h2>Hotel List</h2>
@@ -43,6 +43,7 @@ import="utils.globals"
       </tr>
     </thead>
     <tbody>
+    <%-- 
 		<% for(Hotel h : hotelList) {%>
 			<tr>
 				<td> <%= h.getName() %></td> 
@@ -51,7 +52,16 @@ import="utils.globals"
 				<td> <a href="EditHotels?id=<%= h.getId() %>">Edit</a> </td>
 			</tr> 			
 		<% } %>
-
+	--%>	
+		 <c:forEach items="${sessionScope.session_hotelsByOwner}" var="c">	
+		 	<tr>	
+					<td>${sessionScope.session_hotelsByOwner.getName()}</td>
+					<td>${sessionScope.session_hotelsByOwner.getAddress()}</td>
+					<td>${sessionScope.session_hotelsByOwner.getDescription()}</td>
+					<td> <a href="EditHotels?id=${sessionScope.session_hotelsByOwner.getId()}">Edit</a> </td>
+			</tr>
+		 </c:forEach>
+		 
     </tbody>
   </table>
 </div>

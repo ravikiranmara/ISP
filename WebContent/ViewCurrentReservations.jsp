@@ -14,7 +14,7 @@
 <title>View Current Reservations</title>
 </head>
 <body>
-
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.Reservation"
@@ -25,11 +25,14 @@ import="ModelServiceLayer.IHotelServiceLayer"
 %>
 
 
-<jsp:include page="headerClient.jsp" />
-
 <%
 	ArrayList<ReservationsBean> rlist = (ArrayList<ReservationsBean>)session.getAttribute(globals.session_clientCurrResList);
 %>
+
+
+--%>
+
+<%@ include file="headerCustomer.jsp" %>
 
 
 <div class="container">
@@ -48,7 +51,7 @@ import="ModelServiceLayer.IHotelServiceLayer"
       </tr>
     </thead>
     <tbody>
-
+	<%-- 
 		<% for(ReservationsBean r : rlist) {%>
 			<tr>
 				<td> <%= r.getHotelName() %> </td>
@@ -62,7 +65,20 @@ import="ModelServiceLayer.IHotelServiceLayer"
 				<td> <a href="ClientCancelReservationServlet?id=<%= r.getReservation().getId() %>">cancel</a> </td>
 			</tr> 			
 		<% } %>
-		
+	--%>	
+		<c:forEach items="${sessionScope.session_clientCurrResList}" var="c">	
+		 	<tr>	
+		 		<td> ${sessionScope.session_clientCurrResList.getHotelName()} </td>
+				<td> ${sessionScope.session_clientCurrResList.getUser().getFirstName()}</td>
+				<td> ${sessionScope.session_clientCurrResList.getRoomType()}</td>
+				<td> ${sessionScope.session_clientCurrResList.getReservation().getNumberOfRooms()}</td>
+				<td> ${sessionScope.session_clientCurrResList.getTransaction().getAmount()}</td>
+				<td> ${sessionScope.session_clientCurrResList.getReservation().getCheckInDate()} </td>
+				<td> ${sessionScope.session_clientCurrResList.getReservation().getCheckOutDate()} </td>
+				<td> ${sessionScope.session_clientCurrResList.getReservation().getReservationStatus()}</td>
+				<td> <a href="ClientCancelReservationServlet?id=${sessionScope.session_clientCurrResList.getReservation().getId()}">cancel</a> </td>
+			</tr>
+		 </c:forEach>
 	</tbody>
   </table>
 </div>

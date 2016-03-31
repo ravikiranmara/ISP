@@ -16,8 +16,8 @@
 </head>
 <body>
 
-<jsp:include page="headerCustomer.jsp" />
-
+<%@ include file="headerCustomer.jsp" %>
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.CustomerReservationListBean"
@@ -34,14 +34,12 @@ import="utils.globals"
 
 	CustomerReservationListBean rbean = (CustomerReservationListBean)session.getAttribute(globals.session_customerReservationBean);
 	CustomerHotelSearchBean selectbean = (CustomerHotelSearchBean)session.getAttribute(globals.session_customerSelectBean);
-
 	User customer = (User)session.getAttribute(globals.session_customerReserveTransUser);
 	Transaction transaction = rbean.getTransaction();
-	
 	ArrayList<CreditCard> cclist = customer.getCreditCard();
 	
 %>
-
+--%>
 <form action="CustomerMakeTransaction" id="confirm-form" name="confirm-form" method="post">
 <div class="container ">
 	<div class="container ">
@@ -57,10 +55,10 @@ import="utils.globals"
 		<div class="col-xs-7">
 			<div class="row">
 			
-				<input type="hidden" id="touserid" name="touserid" value="<%= transaction.getOwnerUserId() %>" />
-				<input type="hidden" id="tousercc" name="tousercc" value="<%= transaction.getOwnerCreditCardId() %>" />
-				<input type="hidden" id="fromuserid" name="fromuserid" value="<%= transaction.getCustomerUserId() %>" />
-				<input type="hidden" id="amount" name="amount" value="<%= transaction.getAmount() %>" />
+				<input type="hidden" id="touserid" name="touserid" value="${sessionScope.session_customerReservationBean.getTransaction().getOwnerUserId()}" />
+				<input type="hidden" id="tousercc" name="tousercc" value="${sessionScope.session_customerReservationBean.getTransaction().getOwnerCreditCardId()}" />
+				<input type="hidden" id="fromuserid" name="fromuserid" value="${sessionScope.session_customerReservationBean.getTransaction().getCustomerUserId()}" />
+				<input type="hidden" id="amount" name="amount" value="${sessionScope.session_customerReservationBean.getTransaction().getAmount()}" />
 				
 				<div class="col-xs-3">
 					<h4><label>Details:</label></h4>
@@ -74,7 +72,7 @@ import="utils.globals"
 				<!--  display table list of transactions here  -->
 				
 				<div class="col-xs-3">
-					<h5><label>total cost: "<%= transaction.getAmount() %>"</label></h5>
+					<h5><label>total cost: "${sessionScope.session_customerReservationBean.getTransaction().getAmount()}"</label></h5>
 				</div>
 				<div class="col-xs-3"></div>
 			</div>
@@ -91,9 +89,15 @@ import="utils.globals"
 			<div class="col-xs-3">
 			<div class="dropdown">
 				<select id="fromusercc" name="customercreditcard" class="form-control">
+				<%-- 
 				<% for(CreditCard c : cclist) {%>
 					<option value="<%= c.getId()%>"><%= c.getNickName()%></option>
 				<% } %>
+				--%>
+				<c:forEach items="${sessionScope.session_customerReserveTransUser.getCreditCard()}" var="c">
+					<option value="${c.getId()}">${c.getNickName()}</option>
+				</c:forEach>
+				
 				</select>
 			</div>		
 		</div>
