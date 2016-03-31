@@ -15,6 +15,7 @@
 </head>
 <body>
 
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.Reservation"
@@ -36,9 +37,10 @@ import="utils.globals"
 	ArrayList<CreditCard> cclist = customer.getCreditCard();
 	ArrayList<CreditCard> oclist = owner.getCreditCard();
 %>
+--%>
 
 
-<jsp:include page="headerClient.jsp" />
+<%@ include file="headerClient.jsp" %>
 
 <form action="MakeTransactionServlet" method="post">
 
@@ -62,13 +64,13 @@ import="utils.globals"
 			</div>
 			<div class="row">
 				<div class="col-xs-3">
-					<h5><label>"<%= hotel.getName() %>"</label></h5>
+					<h5><label>"${sessionScope.session_clientResHotelname.getName()}"</label></h5>
 				</div>
 				<div class="col-xs-3">
-					<h5><label>"<%= roomType %>"</label></h5>
+					<h5><label>"${sessionScope.session_clientResRoomType}"</label></h5>
 				</div>
 				<div class="col-xs-3">
-					<h5><label>total cost: "<%= transaction.getAmount() %>"</label></h5>
+					<h5><label>total cost: "${sessionScope.session_clientResTrans.getAmount()}"</label></h5>
 				</div>
 				<div class="col-xs-3"></div>
 			</div>
@@ -85,9 +87,17 @@ import="utils.globals"
 			<div class="col-xs-3">
 			<div class="dropdown">
 				<select name="customercreditcard" class="form-control">
-				<% for(CreditCard c : cclist) {%>
+				<%--
+				 <% for(CreditCard c : cclist) {
 					<option value="<%= c.getId()%>"><%= c.getNickName()%></option>
 				<% } %>
+				--%>
+				 <c:forEach items="${sessionScope.session_clientResCust.getCreditCard()}" var="c">
+				
+					<option value="${c.getId()}">${c.getNickName()}</option>
+				
+				</c:forEach>
+				
 				</select>
 			</div>		
 		</div>
@@ -99,9 +109,15 @@ import="utils.globals"
 			<div class="col-xs-3">
 			<div class="dropdown">
 				<select name="ownercreditcard" class="form-control">
+				<%--
 				<% for(CreditCard o : oclist) {%>
 					<option value="<%= o.getId()%>"><%= o.getNickName()%></option>
 				<% } %>
+				  --%>
+				 <c:forEach items="${sessionScope.session_clientResCli.getCreditCard()}" var="h">
+				 	<option value="${h.getId()}">${h.getNickName()}</option>
+				 </c:forEach>
+				
 				</select>
 			</div>		
 		</div>

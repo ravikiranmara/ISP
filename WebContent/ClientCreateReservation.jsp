@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
-<jsp:include page="headerClient.jsp" />
+<%@ include file ="headerClient.jsp" %>
 
 <title>Client Create Reservation</title>
-
+<%-- 
 <%@ page 
 import="java.util.ArrayList"
 import="modelObject.Hotel"
@@ -15,6 +15,7 @@ import="utils.globals"
 
 	ArrayList<Hotel> hotelList = (ArrayList<Hotel>)session.getAttribute(globals.session_CreateReshotelsByOwner);
 %>
+--%>
 </head>
 <body>
 
@@ -60,9 +61,14 @@ import="utils.globals"
 			<div class="dropdown">
 		
 				<select name="HotelName" class="form-control">
+				<%--
 				<% for(Hotel h : hotelList) {%>
 					<option value="<%= h.getId()%>"><%= h.getName() %></option>
 				<% } %>
+				 --%>
+				 <c:forEach items="${sessionScope.session_CreateReshotelsByOwner}" var="h">
+				 	<option value="${h.getId()}">${h.getName()}</option>
+				 </c:forEach>
 				</select>
 		
 			</div>		
