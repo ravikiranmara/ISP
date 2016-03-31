@@ -14,6 +14,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- Load Custom Scripts and Styles -->
 <link rel="stylesheet" type="text/css" href="css/custom_styles.css">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 </head>
 
 

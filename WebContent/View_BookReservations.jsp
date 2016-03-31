@@ -70,7 +70,8 @@ import="utils.globals"
 	</div>
 	<div class="col-xs-1">
 <!-- 		<a href="CustomerCreateHotelReservation"><button onclick="return validate();" type="submit" class="btn btn-primary btn-md">Book</button></a>  -->
-			<button id="bookbutton" name="bookbutton" class="btn btn-primary btn-md">Book</button>  
+			<button id="bookbutton" name="bookbutton" class="btn btn-primary btn-md">Add To Cart</button>
+			<button id="bookbutton" name="bookbutton" class="btn btn-primary btn-md">New Search</button>  
 	</div>
 	<div class="col-xs-1">
 		<a href="ReservationSearchResults.jsp"><h4>Back</h4></a>
@@ -145,8 +146,7 @@ $(document).ready(function(){
 			+ ' , "roomTypeId" : ' + roomtypeid 
 			+ '}';
 		
-		alert (cartobj);
-		
+		//alert (cartobj);
 		$.ajax({
 		    type: 'post',
 		    url: 'ShoppingCartServlet?method=addToCart',
